@@ -10,48 +10,59 @@ export const loader = async ({ request }) => {
     });
 };
 
-export default function IndexPage() {
+export default function RootPage() {
     const data = useLoaderData();
     console.log(data)
 
     const [isTypingDone, setTypingDone] = React.useState(0);
 
+    // is it possible not to use useEffect???
+    React.useEffect(() => {
+        setTypingDone(0);
+    }, [isTypingDone]);
+
     return (
-        <div className='flex justify-center items-center h-screen bg-black p-64' >
-            <div className='absolute top-12 left-28 z-0 scale-100z' width="500" height="500">
-                <MakaraIcon />
+        <div className='min-h-screen bg-black'>
+            <div className='flex justify-between px-8 py-6'>
+                <MakaraIcon size={48} />
+                <Link
+                    to="/play"
+                    className='px-10 py-3 inline-block text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-lg  text-center'
+                >
+                    Play
+                </Link>
             </div>
-            <div className='flex flex-col items-center'>
-                <h1 className='z-50 text-white text-9xl font-bold uppercase'>
-                    {isTypingDone ? "" : (
-                        <Typist avgTypingDelay={100} cursor={{ blink: true, }} onTypingDone={() => setTypingDone(1)}>
-                            <span>adm</span><br />
-                            <Typist.Delay ms={100} />
+            <div className='py-12 md:py-16 px-8 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full m-auto'>
+                <div className='p-5'>
+                    <MakaraIcon size={228} />
+                </div>
+                <div className='md:order-first'>
+                    <h1 className='h-48 text-white text-6xl font-bold uppercase'>
+                        {isTypingDone ? "" : (
+                            <Typist avgTypingDelay={100} cursor={{ blink: true, }} onTypingDone={() => setTypingDone(0)}>
+                                <span>adm</span><br />
+                                <Typist.Delay ms={100} />
 
-                            <span>makarov</span><br />
-                            <Typist.Delay ms={1000} />
+                                <span>makarov</span><br />
+                                <Typist.Delay ms={1000} />
 
-                            <span>stf </span>
-                            <Typist.Backspace count={4} delay={1000} />
+                                <span>stf </span>
+                                <Typist.Backspace count={4} delay={1000} />
 
-                            <span> ctf </span>
-                            <Typist.Delay ms={100} />
+                                <span> ctf </span>
+                                <Typist.Delay ms={100} />
 
-                            <span>2022!</span>
-                            <Typist.Delay ms={1000} />
-                        </Typist>
-                    )}
-                </h1>
-                <div className='my-16'>
-                    <Link to="/play"
-                        className='px-5 py-2.5 text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-sm text-center'
+                                <span>2022.</span>
+                                <Typist.Delay ms={1000} />
+                            </Typist>
+                        )}
+                    </h1>
+                    <p className='text-red-500 my-24'>Начало - Конец</p>
+                    <Link
+                        to="/play"
+                        className='px-10 py-3 inline-block text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-lg  text-center'
                     >
-                        <span>Play</span>
-                    </Link>
-                    <Link to="/about"
-                        className='px-5 py-2.5 ml-10 text-white underline focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-sm text-center'
-                    >
-                        <span>Learn more</span>
+                        Play
                     </Link>
                 </div>
             </div>
