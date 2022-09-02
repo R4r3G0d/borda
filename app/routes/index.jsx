@@ -69,3 +69,8 @@ export default function RootPage() {
         </div>
     );
 }
+
+export function ErrorBoundary({error}) {
+    console.error(error)
+    return <ServerError error={error} />
+  }

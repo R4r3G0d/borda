@@ -10,7 +10,7 @@ export default function NotFoundPage() {
         <main>
             <div>
                 <h1>404 - Oh no, you found a page that's missing stuff.</h1>
-                <p>This is not a page on admctf.com. So sorry.</p>
+                <p>This is not a page on admctf.ru. So sorry.</p>
                 <MakaraIcon size={128}/>
             </div>
         </main>

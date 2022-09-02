@@ -23,20 +23,21 @@ enum Role {
 }
 
 model Player {
-  id          String     @id @default(uuid())
-  email       String     @unique(map: "Player.email_unique")
+  id          String    @id @default(uuid())
+  email       String    @unique(map: "Player.email_unique")
+  password    String
   displayName String
   telegramId  String?
-  role        Role       @default(PLAYER)
+  role        Role      @default(PLAYER)
   sessions    Session[]
-  
-  team        Team?      @relation(fields: [teamId], references: [id])
-  teamId      String?
-  tasks       Task[]
-  solutions   Solution[]
 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  team      Team?      @relation(fields: [teamId], references: [id])
+  teamId    String?
+  tasks     Task[]
+  solutions Solution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Session {
@@ -48,14 +49,14 @@ model Session {
 }
 
 model Team {
-  id        String     @id @default(uuid())
-  name      String
-  
+  id   String @id @default(uuid())
+  name String
+
   captainId String
-  
-  players   Player[]
-  playerId  String
-  
+
+  players  Player[]
+  playerId String
+
   solutions Solution[]
 }
 
@@ -112,7 +113,7 @@ model Solution {
 
   answer String
 
-  task Task @relation(fields: [taskId], references: [id])
+  task   Task   @relation(fields: [taskId], references: [id])
   taskId String
 
   team   Team   @relation(fields: [teamId], references: [id])
