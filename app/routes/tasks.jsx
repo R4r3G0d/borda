@@ -1,13 +1,17 @@
 import * as React from 'react'
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData, useParams, useSearchParams } from "@remix-run/react";
-import prisma from "../utils/prisma.server";
-import clsx from "clsx";
 import { Listbox, Transition } from '@headlessui/react'
 import { SelectorIcon } from '@heroicons/react/solid'
-import {TaskCard} from '~/components/Task/TaskCard'
+import prisma from "../utils/prisma.server";
+import authenticator from '~/utils/auth.server';
+import { TaskGrid } from '../components/Task';
 
-export let loader = async () => {
+export let loader = async ({ request }) => {
+	let player = await authenticator.isAuthenticated(request, {
+		failureRedirect: "/sign-in"
+	});
+
 	let tasks = await prisma.task.findMany();
 
 	return json({ tasks });
@@ -20,7 +24,6 @@ export default function TasksRoute() {
 	let [searchParams] = useSearchParams();
 	let sortProp = searchParams.get("sort");
 	let activeTaskId = useParams();
-	console.log(activeTaskId)
 
 
 	// let sortedTasks = [...tasks].sort((a, b) => {
@@ -57,12 +60,7 @@ export default function TasksRoute() {
 					</Listbox.Options>
 				</Listbox>
 			</div>
-
-			<div className="w-full grid auto-cols-auto grid-flow-row-dense gap-10 mt-5">
-				{tasks.map((task) => (
-					<TaskCard key={task.id} task={task}/>
-				))}
-			</div>
+			<TaskGrid tasks={tasks} />
 			<Outlet />
 		</div>
 	);

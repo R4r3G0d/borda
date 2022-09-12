@@ -1,12 +1,11 @@
 import * as React from 'react'
+import clsx from 'clsx'
 
-function MakaraIcon({ size = 500 }) {
+function MakaraIcon({ className }) {
   return (
-    <div className='relative' style={{width: size+'px', height: size+'px'}}>
+    <div className={clsx('relative', className)}>
       <svg
         className='absolute animate-spin-slow'
-        width={size}
-        height={size}
         viewBox="0 0 500 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -34,8 +33,6 @@ function MakaraIcon({ size = 500 }) {
       </svg>
       <svg
         className='absolute'
-        width={size}
-        height={size}
         viewBox="0 0 500 500"
         fill="none" xmlns="http://www.w3.org/2000/svg"
       >

@@ -6,7 +6,7 @@ import { sessionStorage } from '~/utils/session.server';
 
 export const loader = async ({ request }) => {
     await authenticator.isAuthenticated(request, {
-        successRedirect: "/"
+        successRedirect: "/tasks"
     });
 
     const session = await sessionStorage.getSession(
@@ -20,8 +20,8 @@ export const loader = async ({ request }) => {
 export const action = async ({ request, context }) => {
     // call my authenticator
     const resp = await authenticator.authenticate("form", request, {
-        successRedirect: "/",
-        failureRedirect: "/login",
+        successRedirect: "/tasks",
+        failureRedirect: "/sign-in",
         throwOnError: true,
         context,
     });
@@ -31,16 +31,15 @@ export const action = async ({ request, context }) => {
 
 export default function LoginPage() {
     const loaderData = useLoaderData();
-    console.log(loaderData)
 
     return (
         <div className='min-h-screen bg-white flex flex-col'>
-            <div className='w-full m-auto pt-28 flex flex-grow justify-center'>
+            <div className='w-full m-auto pt-12 flex flex-grow justify-center'>
                 <Form method='post'
                     className='flex flex-col items-center p-8 max-w-sm w-full text-base text-black'
                 >
                     <div className='p-4 flex justify-center'>
-                        <MakaraIcon size={200} />
+                        <MakaraIcon className={'w-56 h-56'} />
                     </div>
 
                     <div className='h-4'></div>
@@ -57,7 +56,7 @@ export default function LoginPage() {
                         name="password"
                         type="password"
                         placeholder="Password"
-                        autocomplete="current-password"
+                        autocomplete="password"
                         className='w-full h-12 px-3 mt-4 border-2 focus-ring rounded-lg text-black border-black focus:border-blue-800'
                     >
                     </input>

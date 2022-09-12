@@ -6,11 +6,15 @@ import {
     Scripts,
     ScrollRestoration,
     useLocation,
-    useCatch
+    useCatch,
+    useLoaderData
 } from "@remix-run/react";
 import { FourOhFour, ServerError } from "./components/Errors";
 import Header from "./components/Header";
+import authenticator from "./utils/auth.server";
+import { Navbar } from "./components/Navbar";
 import styles from "./styles/tailwind.css";
+import { json } from "@remix-run/node";
 
 export const meta = () => ({
     charset: "utf-8",
@@ -24,9 +28,14 @@ export function links() {
     ]
 }
 
+export const loader = async ({ request }) => {
+    let user = await authenticator.isAuthenticated(request);
+
+    return json({user})
+};
+
 export default function App() {
-    const location = useLocation()
-    console.log(location)
+    let data = useLoaderData()
 
     return (
         <html lang='en' theme='dark'>
@@ -38,7 +47,8 @@ export default function App() {
                 <title>{meta.title ? title : 'ADMCTF'}</title>
             </head>
             <body>
-                {location.pathname !== "/" && location.pathname !== "/login" ? (<Header />) : null}
+                {/* {location.pathname !== "/" && location.pathname !== "/login" ? (<Header />) : null} */}
+                <Navbar data={data.user}/>
                 <Outlet />
                 {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
                 <ScrollRestoration />

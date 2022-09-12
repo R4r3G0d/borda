@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'jit',
   content: [
     './public/**/*.html',
     './app/**/*.{js,jsx,ts,tsx,vue}',

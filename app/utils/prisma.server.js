@@ -12,15 +12,14 @@ if (process.env.NODE_ENV === 'production') {
     prisma = global.prisma;
 }
 
-export default prisma;
-
 prisma.$use(async (params, next) => {
     if (params.action == 'create' && params.model == 'Player') {
-        const player = params.args.data;
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(player.password, salt);
+        let player = params.args.data;
+        const hash = await bcrypt.hash(player.password, 10);
         player.password = hash;
         params.args.data = player;
-      }
-      return next(params);
-  });
+    }
+    return next(params);
+});
+
+export default prisma;

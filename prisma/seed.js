@@ -1,6 +1,20 @@
 // import {PrismaClient} from '@prisma/client'
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcrypt')
 const prisma = new PrismaClient();
+
+// import prisma from '../utils/prisma.server'
+prisma.$use(async (params, next) => {
+    if (params.action == 'create' && params.model == 'Player') {
+        const player = params.args.data;
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(player.password, salt);
+        console.log(hash)
+        player.password = hash;
+        params.args.data = player;
+    }
+    return next(params);
+});
 
 async function main() {
     await prisma.task.deleteMany({})
@@ -20,7 +34,7 @@ async function main() {
             task = Object.assign(task, {
                 author: {
                     connect: {
-                        email: players[0].email
+                        email: players[0].email,
                     }
                 }
             });
@@ -44,6 +58,7 @@ main()
         process.exit(1)
     })
     .finally(async () => {
+        console.log('disconnect')
         await prisma.$disconnect()
     })
 
@@ -87,10 +102,12 @@ function fakePlayers() {
         {
             email: 'max@test.com',
             displayName: 'Max',
+            password: 'password'
         },
         {
             email: 'ivan@test.com',
             displayName: 'Ivan',
+            password: 'password'
         }
     ];
 }
