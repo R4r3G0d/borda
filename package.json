@@ -1,6 +1,6 @@
 {
   "name": "borda",
-  "version": "0.0.0-dev",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "remix-serve build",
