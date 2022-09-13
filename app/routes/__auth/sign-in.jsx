@@ -1,5 +1,6 @@
-import { Form, Link, useLoaderData } from '@remix-run/react';
+import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
 import { json } from '@remix-run/server-runtime';
+import clsx from 'clsx';
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
 import authenticator from '~/utils/auth.server';
 import { sessionStorage } from '~/utils/session.server';
@@ -31,6 +32,7 @@ export const action = async ({ request, context }) => {
 
 export default function LoginPage() {
     const loaderData = useLoaderData();
+    const transition = useTransition();
 
     return (
         <div className='min-h-screen bg-white flex flex-col'>
@@ -61,8 +63,14 @@ export default function LoginPage() {
                     >
                     </input>
 
-                    <button className='w-full h-12 px-5 mt-4 rounded-lg bg-black text-white text-lg'>
-                        Sign In
+                    <button
+                        className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700': 'bg-black' }  text-white text-lg`}
+                        disabled={transition.submission}
+                    >
+                        {transition.submission
+                            ? 'Wait...'
+                            : 'Sign In'}
+                        
                     </button>
 
 

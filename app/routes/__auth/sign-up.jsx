@@ -1,5 +1,5 @@
 import { AuthorizationError } from 'remix-auth';
-import { Form, Link, useLoaderData } from '@remix-run/react';
+import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
 import { json, redirect } from "@remix-run/node";
 import prisma from '~/utils/prisma.server';
 import authenticator from '~/utils/auth.server';
@@ -50,6 +50,8 @@ export const action = async ({ request, context }) => {
 
 export default function SignupPage() {
     const loaderData = useLoaderData();
+    const transition = useTransition();
+
     return (
         <div className='min-h-screen bg-white flex flex-col'>
             <div className='w-full m-auto pt-12 flex flex-grow justify-center'>
@@ -84,8 +86,14 @@ export default function SignupPage() {
                     >
                     </input>
 
-                    <button className='w-full h-12 px-5 mt-4 rounded-lg bg-black text-white text-lg'>
-                        Create account
+                    <button
+                        className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700': 'bg-black' }  text-white text-lg`}
+                        disabled={transition.submission}
+                    >
+                        {transition.submission
+                            ? 'Creating account...'
+                            : 'Create account'}
+                        
                     </button>
 
 
