@@ -39,7 +39,7 @@ authenticator.use(
         if (!player) throw new AuthorizationError("Player Not Found");
         
         const hash = player.password;
-        const isCorrectPassword = bcrypt.compare(password, hash)
+        const isCorrectPassword = await bcrypt.compare(password, hash)
         if (!isCorrectPassword) throw new AuthorizationError("Bad Credentials: Incorrect password")
 
         return await Promise.resolve({ ...player });
