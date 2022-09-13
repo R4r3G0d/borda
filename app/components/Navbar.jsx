@@ -1,18 +1,14 @@
 import * as React from 'react'
-import { Link, NavLink, useLocation } from '@remix-run/react'
-import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon, TemplateIcon, UserCircleIcon } from '@heroicons/react/outline'
-import { MakaraIcon } from './icons/MakaraIcon'
 import clsx from 'clsx'
+import { NavLink, useLocation } from '@remix-run/react'
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon, UserCircleIcon } from '@heroicons/react/outline'
+import { MakaraIcon } from './icons/MakaraIcon'
 
-const activeStyle = {
-    backgroundColor: "#000",
-};
-
-function DropdownMenu(props) {
-    const menuButton = props.menuButton
-    const menuItems = props.menuItems
-    const align = props.align
+function DropdownMenu({ menuItems, align, children }) {
+    // const menuButton = props.menuButton
+    // const menuItems = props.menuItems
+    // const align = props.align
 
     return (
         <Menu as='div' className={'relative mr-3'}>
@@ -26,7 +22,7 @@ function DropdownMenu(props) {
                     >
                         <div className={clsx('flex items-center h-14 hover:bg-black', { ['bg-black']: open })}
                         >
-                            {props.children}
+                            {children}
                             <div className='w-5 h-full flex flex-row justify-center items-center'>
                                 <ChevronDownIcon
                                     className="w-3 h-3"
@@ -54,21 +50,16 @@ function DropdownMenu(props) {
                                 {menuItems.map((item, idx) => (
                                     // <DropDownMenuItem label={item} />
                                     <Menu.Item key={idx}>
-                                        {({ active }) => (
-                                            <NavLink
-                                                style={({ isActive }) =>
-                                                    isActive ? activeStyle : undefined
-                                                }
-                                                to={`/${item}`}
-                                                className={`px-2 ${active ? "bg-blue-600" : ""} hover:bg-blue-600`}
-                                            >
-                                                <div className="h-8 flex flex-row items-center">
-                                                    <div className="normal-case text-sm pl-3">
-                                                        {item.charAt(0).toUpperCase() + item.slice(1).split('-').join(' ')}
-                                                    </div>
+                                        <NavLink to={item.path}
+                                            className={({ isActive }) => clsx('px-2 hover:bg-blue-600', { 'bg-blue-600': isActive })}
+                                        >
+                                            <div className="h-8 flex flex-row items-center">
+                                                <div className="normal-case text-sm pl-3">
+                                                    {/* {item.charAt(0).toUpperCase() + item.slice(1).split('-').join(' ')} */}
+                                                    {item.text}
                                                 </div>
-                                            </NavLink>
-                                        )}
+                                            </div>
+                                        </NavLink>
                                     </Menu.Item>
                                 ))}
                             </div>
@@ -80,14 +71,24 @@ function DropdownMenu(props) {
     );
 }
 
-const locations = ["/tasks", "/cards"]
 
 function Navigation() {
+    const locations = [
+        {
+            path: '/tasks',
+            text: 'Tasks',
+        },
+        {
+            path: '/scoreboard',
+            text: 'Scoreboard',
+        },
+    ]
+
     let actualLocation = useLocation()
     return (
         <div className='flex-none flex flex-row items-center'>
             <DropdownMenu
-                menuItems={["home", "cards/1"]}
+                menuItems={locations}
                 align='left'
                 className='flex-none'
             >
@@ -104,12 +105,21 @@ function Navigation() {
 }
 
 function Profile({ player }) {
-    let location = useLocation()
-    console.log(player)
+    const locations = [
+        {
+            path: '/account',
+            text: 'Settings',
+        },
+        {
+            path: '/sign-out',
+            text: 'Sign out',
+        },
+    ]
+
     return (
         <>
             {player ? (
-                <DropdownMenu menuItems={['settings', "sign-out"]} align='right'>
+                <DropdownMenu menuItems={locations} align='right'>
                     <div className='flex flex-row items-center h-full pl-3 mr-3'>
                         <UserCircleIcon className="h-9 w-9" strokeWidth={1} />
                         <div className='w-48 pl-4 flex flex-col items-start'>
