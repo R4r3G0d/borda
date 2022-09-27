@@ -53,9 +53,7 @@ model Team {
   name String
 
   captainId String
-
   players  Player[]
-  playerId String
 
   solutions Solution[]
 }
@@ -109,9 +107,10 @@ model Task {
 
 model Solution {
   id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  flag String
+  isCorrect Boolean @default(false)
 
-  answer String
+  createdAt DateTime @default(now())
 
   task   Task   @relation(fields: [taskId], references: [id])
   taskId String

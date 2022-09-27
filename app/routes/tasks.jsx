@@ -1,67 +1,109 @@
 import * as React from 'react'
 import { json } from "@remix-run/node";
-import { Outlet, useLoaderData, useParams, useSearchParams } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useLocation, useParams, useSearchParams } from "@remix-run/react";
 import { Listbox, Transition } from '@headlessui/react'
-import { SelectorIcon } from '@heroicons/react/solid'
+import { SelectorIcon, CheckIcon } from '@heroicons/react/solid'
+
 import prisma from "../utils/prisma.server";
 import authenticator from '~/utils/auth.server';
-import { TaskGrid } from '../components/Task';
+import { TaskGrid, TaskCard, TaskFooter, TaskHeader } from '../components/Task';
 
 export let loader = async ({ request }) => {
 	let player = await authenticator.isAuthenticated(request, {
 		failureRedirect: "/sign-in"
 	});
 
-	let tasks = await prisma.task.findMany();
+	let tasks = await prisma.task.findMany({
+		where: {
+			disabled: false,
+		},
+		include: {
+			author: {
+				select: {
+					id: true,
+					displayName: true,
+				},
+			},
+		},
+	});
 
 	return json({ tasks });
 }
 
-const sortOptions = ['category', 'name', 'points', 'difficulty']
+const sortOptions = ['category', 'name', 'points']
 
 export default function TasksRoute() {
 	let { tasks } = useLoaderData();
 	let [searchParams] = useSearchParams();
 	let sortProp = searchParams.get("sort");
-	let activeTaskId = useParams();
 
+	let sortedTasks = tasks.sort(function (a, b) {
+		return a[sortProp]?.toString().localeCompare(b[sortProp], undefined, { 'numeric': true });
+	});
 
-	// let sortedTasks = [...tasks].sort((a, b) => {
-	// 	return desc
-	// 	  ? b[sortProp]?.localeCompare(a[sortProp])
-	// 	  : a[sortProp]?.localeCompare(b[sortProp]);
-	//   });
+	let location = useLocation();
+	let url = location.pathname
+	// let newSearchParams = new URLSearchParams({ sort: sortProp });
+
 
 	return (
-		<div className="px-8">
-			<div className='py-2 flex justify-between'>
-				<Listbox as={'div'} className={'w-32'}>
-					<div className='grid grid-rows-2'>
-						<Listbox.Label className={'px-3 h-8 font-semibold leading-8 text-sm'}>Sort</Listbox.Label>
-						<Listbox.Button className="h-8 relative flex flex-row justify-between items-center border">
-							<div className="px-3 text-sm capitalize">{sortProp}</div>
-							<SelectorIcon
-								className="h-5 w-5 text-gray-400"
-								aria-hidden="true"
-							/>
-						</Listbox.Button>
+		<div className="bg-white ">
+			<div className='sticky top-14 z-10 bg-white py-2 flex border-b border-gray-300'>
+				<div className={'px-3 h-8 font-semibold leading-8 text-sm'}>
+					Sort:
+				</div>
+				<Listbox as={'div'} className={'w-32 relative'} value={sortProp}>
 
-					</div>
-					<Listbox.Options className={'absolute py-2 bg-black text-white'}>
-						{sortOptions.map((option) => (
-							<Listbox.Option
-								className={'h-8 w-32 px-5 text-sm leading-8 capitalize hover:bg-blue-600'}
-								key={option}
-								value={option}
-							>
-								{option}
-							</Listbox.Option>
-						))}
-					</Listbox.Options>
+					<Listbox.Button className="h-8 relative flex flex-row justify-between items-center border">
+						<div className="px-3 text-sm capitalize">{sortProp}</div>
+						<SelectorIcon
+							className="h-5 w-5 text-gray-400"
+							aria-hidden="true"
+						/>
+					</Listbox.Button>
+					<Transition
+						enter="transition duration-100 ease-out"
+						enterFrom="transform scale-95 opacity-0"
+						enterTo="transform scale-100 opacity-100"
+						leave="transition duration-75 ease-out"
+						leaveFrom="transform scale-100 opacity-100"
+						leaveTo="transform scale-95 opacity-0"
+					>
+						<Listbox.Options className={'absolute py-2 bg-black text-white w-32 min-w-full'}>
+							{sortOptions.map((option) => (
+								<Listbox.Option
+									key={option}
+									value={option}
+								>
+									{({ active, selected }) => (
+										<Link
+											to={`${url}?sort=${option}`}
+											className={''}
+										>
+											<div className='h-8  px-5 text-sm leading-8 capitalize hover:bg-blue-600 w-full flex flex-row justify-between items-center'>
+												{option}
+												{selected && <CheckIcon className='h-4 w-4' strokeWidth={1} />}
+											</div>
+										</Link>
+									)}
+
+								</Listbox.Option>
+							))}
+						</Listbox.Options>
+					</Transition>
 				</Listbox>
 			</div>
-			<TaskGrid tasks={tasks} />
-			<Outlet />
+			<div className='w-full relative min-h-screen'>
+				<TaskGrid>
+					{sortedTasks.map((task) => (
+						<TaskCard key={task.id} link={`./${task.id}?${searchParams}`}>
+							<TaskHeader name={task.name} category={task.category} points={task.points} />
+							<TaskFooter />
+						</TaskCard>
+					))}
+				</TaskGrid>
+				<Outlet />
+			</div>
 		</div>
 	);
 }
