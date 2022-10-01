@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { FlagIcon, ThumbUpIcon, CheckIcon, XCircleIcon } from '@heroicons/react/outline'
 import { Link, useActionData, useFetcher, useLoaderData } from '@remix-run/react'
 import moment from 'moment'
@@ -36,6 +37,14 @@ export function TaskBody({ author, content, tags = ['easy', 'linux'] }) {
     const Flag = useFetcher();
     const data = useActionData();
 
+    let inputRef = React.useRef();
+
+    React.useEffect(function () {
+        // if (Flag.data?.error) {
+        // }
+        inputRef.current.focus();
+    }, [])
+
     return (
         <>
             <div className='mt-2'>
@@ -59,21 +68,24 @@ export function TaskBody({ author, content, tags = ['easy', 'linux'] }) {
             >
                 {Flag.data?.error ? (
                     <div className='pb-2'>
-                        <div className='bg-red-600 text-red-300 rounded-md h-10 flex items-center w-full'>
-                            <p className='text-red-300 px-3'>
-                                {Flag.data?.error}
+                        <div className='bg-red-100 text-red-500 rounded-md h-10 flex items-center w-full'>
+                            <p className='px-3'>
+                                {Flag.data.error.message}
                             </p>
                         </div>
 
                     </div>
                 ) : null}
 
-                <div className='flex flex-row'>
+                <fieldset
+                    className='flex flex-row'
+                    disabled={Flag.submission}>
                     <input
+                        ref={inputRef}
                         type='text'
                         name='flag'
                         placeholder='flag{s0m3_fl4g}'
-                        disabled={Flag.submission}
+                        // disabled={Flag.submission}
                         className='w-full h-10 px-2 border-2 focus-ring rounded-md text-black text-sm border-gray-500 focus:border-black'
                     >
                     </input>
@@ -81,11 +93,11 @@ export function TaskBody({ author, content, tags = ['easy', 'linux'] }) {
                     <button
                         type='submit'
                         className={`ml-2 h-10 px-3 rounded-md ${Flag.submission ? 'bg-gray-700' : 'bg-black'}  text-white text-sm`}
-                        disabled={Flag.submission}
+
                     >
                         Check
                     </button>
-                </div>
+                </fieldset>
 
             </Flag.Form>
         </>
@@ -108,7 +120,7 @@ export function TaskSolutionsList({ solutions }) {
                     {solutions.map((solution) => (
                         <tr className='h-10 whitespace-nowrap'>
                             <td>{moment().from(solution.createdAt, Boolean)} ago</td>
-                            <td className='px-3'>{solution.playerId}</td>
+                            <td className='px-3'>{solution.player.displayName}</td>
                             <td className='px-3'>{solution.flag}</td>
                             <td>
                                 {solution.isCorrect

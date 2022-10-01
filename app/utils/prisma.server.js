@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
     prisma = global.prisma;
 }
 
-prisma.$use(async (params, next) => {
+prisma.$use(async function (params, next) {
     if (params.action == 'create' && params.model == 'Player') {
         let player = params.args.data;
         const hash = await bcrypt.hash(player.password, 10);

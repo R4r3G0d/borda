@@ -27,16 +27,21 @@
 1. Запустить котейнер
 
     ```shell
-    docker run docker run --name PGWEB -p 5433:8081 -d sosedoff/pgweb
+    docker run --name PGWEB -p 5433:8081 \
+        -e DATABASE_URL=postgresql://postgres:randompwd@POSTGRES_NETWORK:5432/postgres?sslmode=disable \
+        -d sosedoff/pgweb
     ```
 
-1. Создать виртуальну сеть
+    ```shell
+    pgweb --url postgresql://postgres:randompwd@localhost:5432/postgres?sslmode=disable
+    ```
+2. Создать виртуальну сеть
 
     ```shell
     docker network create POSTGRES_NETWORK
     ```
 
-1. Присоеденить к созданной сети оба контейнера
+3. Присоеденить к созданной сети оба контейнера
   
     ```shell
     docker network connect POSTGRES_NETWORK POSTGRES
@@ -45,4 +50,4 @@
 
     >Теперь веб интерфейс `pgweb` должен быть доступен по адресу [http://localhost:5433](http://localhost:5433)
 
-1. Для подключения выбрать URLShema и вставить URL базы данных, как указана в переменной DATABASE_URL в `.env` файле
+4. Для подключения выбрать URLShema и вставить URL базы данных, как указана в переменной DATABASE_URL в `.env` файле

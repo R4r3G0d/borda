@@ -9,39 +9,50 @@ function RedBox({ error }) {
     const frames = errorStack.parse(error)
 
     return (
-        <div
-            className={clsx(
-                'fixed inset-0 z-10 flex items-center justify-center transition',
-                {
-                    'pointer-events-none opacity-0': !isVisible,
-                },
-            )}
+        <pre
+            style={{
+                padding: "2rem",
+                background: "hsla(10, 50%, 50%, 0.1)",
+                color: "red",
+                overflow: "auto",
+            }}
         >
-            <button
-                className="absolute inset-0 block h-full w-full bg-black opacity-75"
-                onClick={() => setIsVisible(false)}
-            />
-            <div className="border-lg text-primary relative mx-5vw my-16 max-h-75vh overflow-y-auto rounded-lg bg-red-500 p-12">
-                <h2>{error.message}</h2>
-                <div>
-                    {frames.map(frame => (
-                        <div
-                            key={[frame.fileName, frame.lineNumber, frame.columnNumber].join(
-                                '-',
-                            )}
-                            className="pt-4"
-                        >
-                            <h6 as="div" className="pt-2">
-                                {frame.functionName}
-                            </h6>
-                            <div className="font-mono opacity-75">
-                                {frame.fileName}:{frame.lineNumber}:{frame.columnNumber}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
+            {error.stack}
+        </pre>
+
+        // <div
+        //     className={clsx(
+        //         'fixed inset-0 z-10 flex items-center justify-center transition',
+        //         {
+        //             'pointer-events-none opacity-0': !isVisible,
+        //         },
+        //     )}
+        // >
+        //     <button
+        //         className="absolute inset-0 block h-full w-full bg-black opacity-75"
+        //         onClick={() => setIsVisible(false)}
+        //     />
+        //     <div className="border-lg text-primary relative mx-5vw my-16 max-h-75vh overflow-y-auto rounded-lg bg-red-500 p-12">
+        //         <h2>{error.message}</h2>
+        //         <div>
+        //             {frames.map(frame => (
+        //                 <div
+        //                     key={[frame.fileName, frame.lineNumber, frame.columnNumber].join(
+        //                         '-',
+        //                     )}
+        //                     className="pt-4"
+        //                 >
+        //                     <h6 as="div" className="pt-2">
+        //                         {frame.functionName}
+        //                     </h6>
+        //                     <div className="font-mono opacity-75">
+        //                         {frame.fileName}:{frame.lineNumber}:{frame.columnNumber}
+        //                     </div>
+        //                 </div>
+        //             ))}
+        //         </div>
+        //     </div>
+        // </div>
     )
 }
 
@@ -64,16 +75,16 @@ function ErrorPage({ error, errorProps }) {
                     </small>
                 </div>
             </noscript>
-            <main className="relative">
+            <main className="p-8">
+                <div className='pb-4'>
+                    <h1 className=' text-2xl font-bold'>{errorProps.title}</h1>
+                    <p>{errorProps.subtitle}</p>
+                    {errorProps.action ? errorProps.action : null}
+                </div>
+                
                 {error && process.env.NODE_ENV === 'development' ? (
                     <RedBox error={error} />
                 ) : null}
-
-                <div>
-                    <h1>{errorProps.title}</h1>
-                    <p>{errorProps.subtitle}</p>
-                    {errorProps.action ? errorProps.action: null}
-                </div>
             </main>
         </>
     )
@@ -95,7 +106,7 @@ function FourOhFour() {
     )
 }
 
-function ServerError({error}){
+function ServerError({ error }) {
     const matches = useMatches()
     const last = matches[matches.length - 1]
     const pathname = last?.pathname

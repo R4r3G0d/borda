@@ -14,7 +14,7 @@ const authenticator = new Authenticator(sessionStorage, {
 
 // Tell the Authenticator to use the form strategy
 authenticator.use(
-    new FormStrategy(async ({ form }) => {
+    new FormStrategy(async function ({ form }) {
 
         // get the data from the form...
         let email = form.get('email');
@@ -34,33 +34,39 @@ authenticator.use(
             where: {
                 email: email,
             },
+            include: {
+                team: {
+                    select: {
+                        name: true,
+                    },
+                },
+            }
         })
 
         if (!player) throw new AuthorizationError("Player Not Found");
-        
+
         const hash = player.password;
         const isCorrectPassword = await bcrypt.compare(password, hash)
         if (!isCorrectPassword) throw new AuthorizationError("Bad Credentials: Incorrect password")
 
+        delete player.password;
+
         return await Promise.resolve({ ...player });
-
-        // if (email === 'max@test.com' && password === 'password') {
-        //     user = {
-        //         name: email,
-        //         token: `${password}-${new Date().getTime()}`,
-        //     };
-
-        //     // the type of this user must match the type you pass to the Authenticator
-        //     // the strategy will automatically inherit the type if you instantiate
-        //     // directly inside the `use` method
-        //     return await Promise.resolve({ ...user });
-
-        // } else {
-        //     // if problem with user throw error AuthorizationError
-        //     throw new AuthorizationError("Bad Credentials")
-        // }
 
     }),
 );
 
+function validateSignUpInput(email, password, name){
+
+}
+
+function validatePassword(password, hashedPassword){
+    return bcrypt.compare(password, hashedPassword);
+}
+
+function hashPassword(password) {
+    return bcrypt.hash(password, 10);
+};
+
 export default authenticator
+export {hashPassword, validatePassword, validateSignUpInput}

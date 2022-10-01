@@ -77,19 +77,19 @@ export default function App() {
 //     throw new Error(`Unhandled error: ${caught.status}`)
 // }
 
-// export function ErrorBoundary({ error }) {
-//     console.error(error)
-//     const location = useLocation()
-//     return (
-//         <html lang="en" className="dark">
-//             <head>
-//                 <title>Oh no...</title>
-//                 <Links />
-//             </head>
-//             <body className="bg-white transition duration-500 dark:bg-gray-900">
-//                 <ServerError error={erorr}/>
-//                 <Scripts />
-//             </body>
-//         </html>
-//     )
-// }
+export function ErrorBoundary({ error }) {
+    console.error(error)
+    const location = useLocation()
+    return (
+        <html lang="en" className="dark">
+            <head>
+                <title>Oh no...</title>
+                <Links />
+            </head>
+            <body>
+                <ServerError error={error}/>
+                <Scripts />
+            </body>
+        </html>
+    )
+}
