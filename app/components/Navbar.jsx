@@ -82,6 +82,10 @@ function Navigation() {
             path: '/scoreboard',
             text: 'Scoreboard',
         },
+        {
+            path: '/users',
+            text: 'Users',
+        },
     ]
 
     let actualLocation = useLocation()
