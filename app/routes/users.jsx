@@ -21,20 +21,23 @@ export default function(){
     console.log(data)
     // return(<div>123</div>)
     return (
-        <div className='grow mt-5 w-full overflow-auto h-96'>
-            <table class="table-auto">
-                {/* <thead>
+        <div className='grow mt-5 w-full overflow-auto flex items-stretch md:items-center content-center'>
+            <table className="table-auto shadow-lg bg-white border-separate">
+                { <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Team</th>
+                            <th className='bg-blue-100 border text-left px-8 py-4'>Name</th>
+                            <th className='bg-blue-100 border text-left px-8 py-4'>Team</th>
                         </tr>
-                    </thead> */}
+                    </thead> }
                 <tbody>
                     {data.user.map((user) => (
                         <tr className='h-10 whitespace-nowrap'>
-                            <td className='px-3'>{user.displayName}</td>
-                            <td className='px-3'>{user.team? user.team.name: "no team"}</td> 
-                           
+                            <td className='border px-8 py-4'>
+                                <span>{user.displayName}</span>
+                            </td>
+                            <td className='border px-8 py-4'>
+                                <span>{user.team? user.team.name: "no team"}</span>
+                            </td> 
                         </tr>
                     ))}
                 </tbody>
