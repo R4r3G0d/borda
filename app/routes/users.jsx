@@ -21,17 +21,21 @@ export default function(){
     console.log(data)
     // return(<div>123</div>)
     return (
-        <div className='grow mt-5 w-full overflow-auto flex items-stretch md:items-center content-center'>
-            <table className="table-auto shadow-lg bg-white border-separate">
+        <div className='flex justify-center w-full overflow-auto items-stretch rounded-xl md:items-center content-center'>
+            <table className="border-auto table-auto w-full max-w-3xl text-sm">
                 { <thead>
                         <tr>
+                            <th className='w-16 bg-blue-100 border text-left px-8 py-4'>№</th>
                             <th className='bg-blue-100 border text-left px-8 py-4'>Name</th>
                             <th className='bg-blue-100 border text-left px-8 py-4'>Team</th>
                         </tr>
                     </thead> }
                 <tbody>
-                    {data.user.map((user) => (
+                    {data.user.map((user, index) => (
                         <tr className='h-10 whitespace-nowrap'>
+                            <td className="border px-8 py-4">
+                                <span>{ index + 1}</span>
+                            </td>
                             <td className='border px-8 py-4'>
                                 <span>{user.displayName}</span>
                             </td>
