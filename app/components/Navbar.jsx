@@ -82,6 +82,10 @@ function Navigation() {
             path: '/scoreboard',
             text: 'Scoreboard',
         },
+        {
+            path: '/users',
+            text: 'Users',
+        },
     ]
 
     let actualLocation = useLocation()
@@ -124,7 +128,7 @@ function Profile({ player }) {
                         <UserCircleIcon className="h-9 w-9" strokeWidth={1} />
                         <div className='w-48 pl-4 flex flex-col items-start'>
                             <div className=" text-gray-200 text-sm font-semibold">{player.displayName}</div>
-                            <div className='text-xs'>{player.Team ? player.Team : 'No Team'}</div>
+                            <div className='text-xs'>{player.team ? player.team.name : 'No Team'}</div>
                         </div>
                     </div>
                 </DropdownMenu>
@@ -138,7 +142,7 @@ function Navbar({ data }) {
     if (location.pathname === "" || location.pathname === "/") return null
 
     return (
-        <header className='w-full h-14 bg-zinc-800 text-white flex flex-row items-center justify-between'>
+        <header className='sticky top-0 z-50 w-full h-14 bg-zinc-800 text-white flex flex-row items-center justify-between'>
             <Navigation />
             <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
             <Profile className='flex-none' player={data} />

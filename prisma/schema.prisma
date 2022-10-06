@@ -53,9 +53,7 @@ model Team {
   name String
 
   captainId String
-
   players  Player[]
-  playerId String
 
   solutions Solution[]
 }
@@ -70,14 +68,14 @@ enum Category {
   OTHER
 }
 
-model Label {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
-  color String?
+// model Label {
+//   id    Int     @id @default(autoincrement())
+//   name  String  @unique
+//   color String?
 
-  task   Task?   @relation(fields: [taskId], references: [id])
-  taskId String?
-}
+//   task   Task?   @relation(fields: [taskId], references: [id])
+//   taskId String?
+// }
 
 model TaskLabel {
   taskId  String @id
@@ -89,7 +87,7 @@ model Task {
 
   name     String   @unique
   category Category @default(OTHER)
-  labels   Label[]
+  labels   String?
   points   Int
   flag     String
   content  String
@@ -109,9 +107,10 @@ model Task {
 
 model Solution {
   id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  flag String
+  isCorrect Boolean @default(false)
 
-  answer String
+  createdAt DateTime @default(now())
 
   task   Task   @relation(fields: [taskId], references: [id])
   taskId String
@@ -123,7 +122,7 @@ model Solution {
   playerId String
 }
 
-model Setting {
+model Settings {
   id        Int      @id @default(autoincrement())
   name      String   @unique
   value     String

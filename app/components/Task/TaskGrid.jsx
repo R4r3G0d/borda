@@ -1,11 +1,11 @@
-import TaskComponent from "./TaskComponent"
+import clsx from 'clsx'
 
-export default ({ tasks }) => {
+function TaskGrid({ children, className }) {
     return (
-        <div className="w-full grid grid-cols-3 grid-flow-row gap-10 mt-5">
-            {tasks.map((task) => (
-                <TaskComponent key={task.id} task={task} />
-            ))}
+        <div className={clsx('p-5 w-1/2 lg:w-2/3 grid grid-auto-fit gap-5', className)}>
+            {children}
         </div>
     )
 }
+
+export default TaskGrid
