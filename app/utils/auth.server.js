@@ -1,72 +1,56 @@
-import { Authenticator, AuthorizationError } from 'remix-auth';
-import { FormStrategy } from 'remix-auth-form';
-import { sessionStorage } from '~/utils/session.server';
-import prisma from './prisma.server';
-import * as bcrypt from 'bcrypt';
+import { Authenticator, AuthorizationError } from 'remix-auth'
+import { FormStrategy } from 'remix-auth-form'
+import { NotFoundError } from '@prisma/client/runtime'
+import { z, ZodError } from 'zod'
+import * as bcrypt from 'bcrypt'
 
+import prisma from './prisma.server'
+import { sessionStorage } from './session.server'
 
-// Create an instance of the authenticator, pass a Type, User,  with what
-// strategies will return and will store in the session
 const authenticator = new Authenticator(sessionStorage, {
-    sessionKey: "sessionKey", // keep in sync
-    sessionErrorKey: "sessionErrorKey", // keep in sync
-});
+    sessionKey: "sessionKey",
+    sessionErrorKey: "sessionErrorKey",
+})
 
-// Tell the Authenticator to use the form strategy
 authenticator.use(
     new FormStrategy(async function ({ form }) {
+        let signInInput = {
+            email: form.get('email'),
+            password: form.get('password'),
+        }
 
-        // get the data from the form...
-        let email = form.get('email');
-        let password = form.get('password');
-
-        // do some validation, errors are in the sessionErrorKey
-        if (!email || email?.length === 0) throw new AuthorizationError('Bad Credentials: Email is required')
-        if (typeof email !== 'string')
-            throw new AuthorizationError('Bad Credentials: Email must be a string')
-
-        if (!password || password?.length === 0) throw new AuthorizationError('Bad Credentials: Password is required')
-        if (typeof password !== 'string')
-            throw new AuthorizationError('Bad Credentials: Password must be a string')
-
-        // login the user, this could be whatever process you want
-        const player = await prisma.player.findUnique({
-            where: {
-                email: email,
-            },
-            include: {
-                team: {
-                    select: {
-                        name: true,
-                    },
-                },
-            }
+        const validator = z.object({
+            email: z.string().email(),
+            password: z.string().min(5),
         })
 
-        if (!player) throw new AuthorizationError("Player Not Found");
+        let player = null
 
-        const hash = player.password;
-        const isCorrectPassword = await bcrypt.compare(password, hash)
-        if (!isCorrectPassword) throw new AuthorizationError("Bad Credentials: Incorrect password")
+        try {
+            await validator.parseAsync(signInInput)
 
-        delete player.password;
+            player = await prisma.player.findUniqueOrThrow({ where: { email: signInInput.email } })
+            console.log({ player })
 
-        return await Promise.resolve({ ...player });
+            let match = await bcrypt.compare(signInInput.password, player.password)
+
+            if (match) {
+                return await Promise.resolve({ id: player.id })
+            } else {
+                throw new AuthorizationError("That email and password combination is incorrect.")
+            }
+        } catch (err) {
+            console.log(err)
+            if (err instanceof NotFoundError) {
+                throw new AuthorizationError("Email is not not found.")
+            } else if (err instanceof ZodError) {
+                throw new AuthorizationError("That email or password is invalid format.")
+            } else {
+                throw new AuthorizationError("Internal error. Please try again later.")
+            }
+        }
 
     }),
 );
 
-function validateSignUpInput(email, password, name){
-
-}
-
-function validatePassword(password, hashedPassword){
-    return bcrypt.compare(password, hashedPassword);
-}
-
-function hashPassword(password) {
-    return bcrypt.hash(password, 10);
-};
-
 export default authenticator
-export {hashPassword, validatePassword, validateSignUpInput}

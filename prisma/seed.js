@@ -1,5 +1,6 @@
 const { PrismaClient, Role } = require('@prisma/client');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+
 const prisma = new PrismaClient();
 
 prisma.$use(async (params, next) => {
@@ -16,6 +17,7 @@ async function main() {
     await prisma.$queryRaw`SET TIMEZONE="Europe/Moscow";`
 
     const names = ['max', 'simen', 'nikita', 'vova', 'roma']
+    const roles = [Role.ADMIN, Role.PLAYER]
     const players = await Promise.all(
         names.map((name) => {
             return prisma.player.create({
@@ -23,7 +25,7 @@ async function main() {
                     email: name + '@borda.com',
                     displayName: name.toUpperCase(),
                     password: 'password',
-                    role: Role.ADMIN,
+                    role: roles[Math.floor(Math.random() * roles.length)],
                 }
             })
         })

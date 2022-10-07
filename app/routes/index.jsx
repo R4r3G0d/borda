@@ -1,14 +1,12 @@
 import * as React from 'react'
 import { Link, useLoaderData } from "@remix-run/react";
 import Typist from 'react-typist';
+
 import { MakaraIcon } from '~/components/icons/MakaraIcon';
 import authenticator from '~/utils/auth.server';
-import { FlagIcon } from '@heroicons/react/outline';
 
-export const loader = async ({ request }) => {
-    return await authenticator.isAuthenticated(request, {
-        // failureRedirect: "/login"
-    });
+export async function action({ request }) {
+    return await authenticator.logout(request, { redirectTo: "/sign-in", });
 };
 
 export default function RootPage() {
@@ -72,7 +70,7 @@ export default function RootPage() {
     );
 }
 
-export function ErrorBoundary({error}) {
+export function ErrorBoundary({ error }) {
     console.error(error)
     return <ServerError error={error} />
-  }
+}

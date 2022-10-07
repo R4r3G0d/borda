@@ -1,11 +1,11 @@
 import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
 import { json } from '@remix-run/server-runtime';
-import clsx from 'clsx';
+
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
 import authenticator from '~/utils/auth.server';
 import { sessionStorage } from '~/utils/session.server';
 
-export const loader = async ({ request }) => {
+export async function loader({ request }) {
     await authenticator.isAuthenticated(request, {
         successRedirect: "/tasks"
     });
@@ -18,15 +18,14 @@ export const loader = async ({ request }) => {
     return json({ error });
 };
 
-export const action = async ({ request, context }) => {
-    // call my authenticator
+export async function action({ request, context }) {
     const resp = await authenticator.authenticate("form", request, {
         successRedirect: "/tasks",
         failureRedirect: "/sign-in",
         throwOnError: true,
         context,
     });
-    console.log(resp);
+
     return resp;
 };
 
@@ -44,7 +43,10 @@ export default function LoginPage() {
                         <MakaraIcon className={'w-56 h-56'} />
                     </div>
 
-                    <div className='h-4'></div>
+                    <div className='min-h-8 mt-2'>
+                        {loaderData?.error ? <p className='text-red-600'>{loaderData?.error?.message}</p> : null}
+                    </div>
+
                     <input
                         name="email"
                         placeholder="Email"
@@ -64,13 +66,13 @@ export default function LoginPage() {
                     </input>
 
                     <button
-                        className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700': 'bg-black' }  text-white text-lg`}
+                        className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700' : 'bg-black'}  text-white text-lg`}
                         disabled={transition.submission}
                     >
                         {transition.submission
                             ? 'Wait...'
                             : 'Sign In'}
-                        
+
                     </button>
 
 
@@ -78,10 +80,6 @@ export default function LoginPage() {
                         No account?
                         <Link to="/sign-up" className="pl-3 text-indigo-700">Create new one</Link>
                     </div>
-                    <div>
-                        {loaderData?.error ? <p>ERROR: {loaderData?.error?.message}</p> : null}
-                    </div>
-
                 </Form>
             </div>
 

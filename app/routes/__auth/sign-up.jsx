@@ -1,6 +1,8 @@
 import { AuthorizationError } from 'remix-auth';
-import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
+import { Form, Link, useActionData, useLoaderData, useTransition } from '@remix-run/react';
 import { json, redirect } from "@remix-run/node";
+import { z } from 'zod';
+
 import prisma from '~/utils/prisma.server';
 import authenticator from '~/utils/auth.server';
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
@@ -11,46 +13,62 @@ export const loader = async ({ request }) => {
     });
 };
 
-export const action = async ({ request, context }) => {
-    let form = await request.formData()
-    let email = form.get('email')
-    let name = form.get('name')
-    let password = form.get('password')
+export async function action({ request }) {
+    let formData = await request.formData()
 
-    if (!email || email?.length === 0) throw new AuthorizationError('Bad Credentials: Email is required')
-    if (typeof email !== 'string') throw new AuthorizationError('Bad Credentials: Email must be a string')
-    if (!name || name?.length === 0) throw new AuthorizationError('Bad Credentials: Name is required')
-    if (typeof name !== 'string') throw new AuthorizationError('Bad Credentials: Name must be a string')
-    if (!password || password?.length === 0) throw new AuthorizationError('Bad Credentials: Password is required')
-    if (typeof password !== 'string') throw new AuthorizationError('Bad Credentials: Password must be a string')
+    let signUpInput = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        displayName: formData.get('name'),
+    }
 
-    // By unique identifier
+    const validator = z.object({
+        email: z.string().email(),
+        password: z.string().min(5),
+        displayName: z.string().min(2),
+    })
+
+    let result = validator.safeParse(signUpInput)
+    if (!result.success) {
+        // console.log(result)
+
+        let errors = new Object
+
+        let issues = result.error.issues
+        issues.forEach(function (issue) {
+            errors[issue.path[0]] = issue.message
+        });
+
+        // console.log({ errors })
+        return json({ error: errors })
+    }
+
     let player = await prisma.player.findUnique({
         where: {
-            email: email,
+            email: signUpInput.email,
         },
     })
 
-    if (player) throw new AuthorizationError('Bad Credentials: Player alredy exist')
-
-    let newPlayer = await prisma.player.create({
-        data: {
-            email: email,
-            displayName: name,
-            password: password
-        }
-    })
-
-    if (!newPlayer) throw new AuthorizationError("Create")
-
+    if (!player) {
+        let newPlayer = await prisma.player.create({
+            data: {
+                ...signUpInput,
+            }
+        })
+        if (!newPlayer) return json({ error: { message: 'Internal error. Please try again later.' } })
+    } else {
+        return json({ error: { message: 'This email is already in use. Please try another one.' } })
+    }
 
     return redirect('/sign-in')
-};
+}
 
 
-export default function SignupPage() {
-    const loaderData = useLoaderData();
+export default function SignUp() {
     const transition = useTransition();
+    let actionData = useActionData();
+
+    console.log({ actionData })
 
     return (
         <div className='min-h-screen bg-white flex flex-col'>
@@ -59,10 +77,15 @@ export default function SignupPage() {
                     className='flex flex-col items-center p-8 max-w-sm w-full text-base text-black'
                 >
                     <div className='p-4 flex justify-center'>
-                        <MakaraIcon className={'w-56 h-56'}/>
+                        <MakaraIcon className={'w-56 h-56'} />
                     </div>
 
-                    <div className='h-4'></div>
+                    <div className='min-h-8'>
+                        {actionData?.error ? <p>{actionData?.error?.message}</p> : null}
+                        {actionData?.error ? <p>{actionData?.error?.password}</p> : null}
+                        {actionData?.error ? <p>{actionData?.error?.email}</p> : null}   
+                    </div>
+
                     <input
                         name="email"
                         type="email"
@@ -87,13 +110,14 @@ export default function SignupPage() {
                     </input>
 
                     <button
-                        className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700': 'bg-black' }  text-white text-lg`}
+                        type='submit'
+                        className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700' : 'bg-black'}  text-white text-lg`}
                         disabled={transition.submission}
                     >
                         {transition.submission
                             ? 'Creating account...'
                             : 'Create account'}
-                        
+
                     </button>
 
 
@@ -101,10 +125,6 @@ export default function SignupPage() {
                         Already have an account?
                         <Link to="/sign-in" className="pl-3 text-indigo-700">Sign in</Link>
                     </div>
-                    <div>
-                        {loaderData?.error ? <p>ERROR: {loaderData?.error?.message}</p> : null}
-                    </div>
-
                 </Form>
             </div>
 
