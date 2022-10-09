@@ -24,27 +24,28 @@ authenticator.use(
             password: z.string().min(5),
         })
 
-        let player = null
-
         try {
             await validator.parseAsync(signInInput)
 
-            player = await prisma.player.findUniqueOrThrow({ where: { email: signInInput.email } })
-            console.log({ player })
+            let player = await prisma.player.findUniqueOrThrow({
+                where: { email: signInInput.email },
+                include: { team: { select: { id: true, name: true } } }
+            })
 
             let match = await bcrypt.compare(signInInput.password, player.password)
 
             if (match) {
-                return await Promise.resolve({ id: player.id })
+                delete player.password
+                return await Promise.resolve({ player })
             } else {
                 throw new AuthorizationError("That email and password combination is incorrect.")
             }
         } catch (err) {
             console.log(err)
             if (err instanceof NotFoundError) {
-                throw new AuthorizationError("Email is not not found.")
+                throw new AuthorizationError("Couldn't find your account.")
             } else if (err instanceof ZodError) {
-                throw new AuthorizationError("That email or password is invalid format.")
+                throw new AuthorizationError("Incorrect password or email format.")
             } else {
                 throw new AuthorizationError("Internal error. Please try again later.")
             }

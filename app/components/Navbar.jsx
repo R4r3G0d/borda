@@ -121,33 +121,30 @@ function Profile({ player }) {
     ]
 
     return (
-        <>
-            {player ? (
-                <DropdownMenu menuItems={locations} align='right'>
-                    <div className='flex flex-row items-center h-full pl-3 mr-3'>
-                        <UserCircleIcon className="h-9 w-9" strokeWidth={1} />
-                        <div className='w-48 pl-4 flex flex-col items-start'>
-                            <div className=" text-gray-200 text-sm font-semibold">{player.displayName}</div>
-                            <div className='text-xs'>{player.team ? player.team.name : 'No Team'}</div>
-                        </div>
-                    </div>
-                </DropdownMenu>
-            ) : null}
-        </>
+        <DropdownMenu menuItems={locations} align='right'>
+            <div className='flex flex-row items-center h-full pl-3 mr-3'>
+                <UserCircleIcon className="h-9 w-9" strokeWidth={1} />
+                <div className='w-48 pl-4 flex flex-col items-start'>
+                    <div className=" text-gray-200 text-sm font-semibold">{player.displayName}</div>
+                    <div className='text-xs'>{player.team ? player.team.name : 'No Team'}</div>
+                </div>
+            </div>
+        </DropdownMenu>
     )
 }
 
-function Navbar({ data }) {
-    let location = useLocation()
-    if (location.pathname === "" || location.pathname === "/") return null
+function Navbar({ children }) {
+    // let location = useLocation()
+    // if (location.pathname === "" || location.pathname === "/") return null
 
     return (
         <header className='sticky top-0 z-50 w-full h-14 bg-zinc-800 text-white flex flex-row items-center justify-between'>
-            <Navigation />
+            {/* <Navigation />
             <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
-            <Profile className='flex-none' player={data} />
+            <Profile className='flex-none' player={data} /> */}
+            {children}
         </header>
     )
 }
 
-export { Navbar }
+export { Navbar, Profile, Navigation }

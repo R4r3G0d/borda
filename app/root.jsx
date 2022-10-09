@@ -1,5 +1,6 @@
 import {
     Links,
+    Link,
     LiveReload,
     Meta,
     Outlet,
@@ -9,11 +10,13 @@ import {
     useCatch,
     useLoaderData
 } from "@remix-run/react";
-import { FourOhFour, ServerError } from "./components/Errors";
-import authenticator from "./utils/auth.server";
-import { Navbar } from "./components/Navbar";
-import styles from "./styles/tailwind.css";
 import { json } from "@remix-run/node";
+
+import styles from "./styles/tailwind.css";
+import authenticator from "./utils/auth.server";
+
+import { FourOhFour, ServerError } from "./components/Errors";
+import { Navbar, Profile, Navigation } from "./components/Navbar";
 
 export const meta = () => ({
     charset: "utf-8",
@@ -27,15 +30,16 @@ export function links() {
     ]
 }
 
-export const loader = async ({ request }) => {
-    let user = await authenticator.isAuthenticated(request);
+export async function loader({ request }) {
+    let session = await authenticator.isAuthenticated(request)
 
-    return json({user})
+    return json({ player: session.player })
 };
 
 export default function App() {
     let data = useLoaderData()
-    console.log(data.user)
+    let location = useLocation()
+
     return (
         <html lang='en' theme='dark'>
             <head>
@@ -46,13 +50,33 @@ export default function App() {
                 <title>{meta.title ? title : 'ADMCTF'}</title>
             </head>
             <body>
-                <Navbar data={data.user}/>
+                {location.pathname.includes('sign')
+                    ? null
+                    : (
+                        <Navbar>
+                            <Navigation />
+                            <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
+                            {data.player
+                                ? <Profile player={data.player} />
+                                : (
+                                    <Link
+                                        to="/tasks"
+                                        className='px-8 py-2 inline-block text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-lg  text-center'
+                                    >
+                                        Play
+                                    </Link>
+                                )
+                            }
+                        </Navbar>
+                    )
+                }
+
                 <Outlet />
                 {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
                 <ScrollRestoration />
                 <Scripts />
             </body>
-        </html>
+        </html >
     );
 }
 
@@ -87,7 +111,7 @@ export function ErrorBoundary({ error }) {
                 <Links />
             </head>
             <body>
-                <ServerError error={error}/>
+                <ServerError error={error} />
                 <Scripts />
             </body>
         </html>
