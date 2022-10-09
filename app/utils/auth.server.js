@@ -36,7 +36,7 @@ authenticator.use(
 
             if (match) {
                 delete player.password
-                return await Promise.resolve({ player })
+                return await Promise.resolve({ ...player })
             } else {
                 throw new AuthorizationError("That email and password combination is incorrect.")
             }
