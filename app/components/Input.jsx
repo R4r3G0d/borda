@@ -1,10 +1,11 @@
 import clsx from 'clsx';
+import { passwordValidator } from '~/utils/validator'
 
-export default function Input({ name, defaultValue, className, placeholder, readonly, errorMessage, type }) {
+export default function Input({ name, defaultValue, className, placeholder, readonly, errorMessage, type, title }) {
     let error = errorMessage ? true : false;
     return (
         <div className={clsx('mt-4 w-full', className)}>
-            <label for={name} className='inline-block mb-2 text-gray-700 capitalize'>{name}</label>
+            <label for={title} className='inline-block mb-2 text-gray-700'>{title}</label>
             <input
                 type={type}
                 readOnly={readonly}
