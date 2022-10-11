@@ -1,15 +1,17 @@
 import * as React from 'react'
 import { useFetcher } from '@remix-run/react'
+import Button from '~/components/Button'
+import Input from '~/components/Input'
 
 export default function () {
     const fetcher = useFetcher()
 
     let inputRef = React.useRef()
 
-    React.useEffect(function () {
-        inputRef.current.focus()
-    }, [])
-    
+    // React.useEffect(function () {
+    //     inputRef.current.focus()
+    // }, [])
+
     return (
         <fetcher.Form
             method='post'
@@ -30,24 +32,27 @@ export default function () {
             <fieldset
                 className='flex flex-row'
                 disabled={fetcher.submission}>
-                <input
+                <Input
                     ref={inputRef}
-                    type='text'
                     name='flag'
+                    id='flag'
                     placeholder='flag{s0m3_fl4g}'
-                    className='w-full h-10 px-2 border-2 focus-ring rounded-md text-black text-sm border-gray-500 focus:border-black'
-                >
-                </input>
-
-                <button
+                />
+                <Button
+                    // className={`ml-2 hover:bg-gray-800 ${fetcher.submission ? 'bg-gray-700' : 'bg-black'}`}
+                    className='ml-2'
+                    type='submit'
+                    name='check'
+                />
+                {/* <button
                     type='submit'
                     className={`ml-2 h-10 px-3 rounded-md ${fetcher.submission ? 'bg-gray-700' : 'bg-black'}  text-white text-sm`}
 
                 >
                     Check
-                </button>
+                </button> */}
             </fieldset>
 
-        </fetcher.Form>
+        </fetcher.Form >
     )
 }

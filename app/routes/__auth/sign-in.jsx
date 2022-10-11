@@ -1,9 +1,15 @@
-import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
-import { json } from '@remix-run/server-runtime';
+import {
+    Form,
+    Link,
+    useLoaderData,
+    useTransition
+} from '@remix-run/react'
+import { json } from '@remix-run/server-runtime'
 
+import authenticator from '~/utils/auth.server'
+import { sessionStorage } from '~/utils/session.server'
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
-import authenticator from '~/utils/auth.server';
-import { sessionStorage } from '~/utils/session.server';
+import { EmailInput, PasswordInput } from '~/components/Input'
 
 export async function loader({ request }) {
     await authenticator.isAuthenticated(request, {
@@ -46,24 +52,24 @@ export default function LoginPage() {
                     <div className='min-h-8 mt-2'>
                         {loaderData?.error ? <p className='text-red-600'>{loaderData?.error?.message}</p> : null}
                     </div>
-
-                    <input
+                    <EmailInput className='mb-1' />
+                    {/* <input
                         name="email"
                         placeholder="Email"
                         type="email"
                         autocomplete="email"
                         required
                         className='w-full h-12 px-3 mt-4 border-4 focus-ring rounded-lg border-blue-900'>
-                    </input>
-
-                    <input
+                    </input> */}
+                    <PasswordInput />
+                    {/* <input
                         name="password"
                         type="password"
                         placeholder="Password"
                         autocomplete="password"
                         className='w-full h-12 px-3 mt-4 border-2 focus-ring rounded-lg text-black border-black focus:border-blue-800'
                     >
-                    </input>
+                    </input> */}
 
                     <button
                         className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700' : 'bg-black'}  text-white text-lg`}
@@ -72,9 +78,7 @@ export default function LoginPage() {
                         {transition.submission
                             ? 'Wait...'
                             : 'Sign In'}
-
                     </button>
-
 
                     <div className="h-16 flex items-center place-content-center">
                         No account?

@@ -1,12 +1,25 @@
-import { useLoaderData, Form, useActionData } from "@remix-run/react";
-import { json, redirect, createCookieSessionStorage } from "@remix-run/node";
+import * as React from 'react'
+import {
+    useLoaderData,
+    Form,
+    useActionData,
+    useSubmit,
+    useNavigate
+} from '@remix-run/react'
+import {
+    json,
+    redirect,
+    createCookieSessionStorage
+} from '@remix-run/node'
 
 import prisma from '~/utils/prisma.server'
-import Input from '~/components/Input'
 import authenticator from '~/utils/auth.server'
 import { validatePassword, hashPassword } from '~/utils/auth.server'
 import { getSession, commitSession } from '~/utils/session.server'
 import { passwordValidator } from '~/utils/validator'
+import { EmailInput, PasswordInput } from '~/components/Input'
+import Input from '~/components/Input'
+import Button from '~/components/Button'
 
 export async function action({ request }) {
     let user = await authenticator.isAuthenticated(request);
@@ -101,23 +114,39 @@ export async function loader({ request }) {
 }
 
 export default function Profile() {
+    const submit = useSubmit();
+    function handleChange(event) {
+        submit(event.currentTarget, { replace: true })
+    }
+    // function disabledButton() {
+    //     disabled = false
+    //     console.log(disabled)
+    //     return disabled
+    // }
+
+    const [disabled, setDisabled] = React.useState(true)
+
+
+
     let { player, loaderData } = useLoaderData();
     let actionData = useActionData();
-    let paswords = ['old password', 'new password', 'repeat new password']
+
     return (
         <>
             <div class="container mx-auto">
                 <div class="w-full max-w-2xl p-6 mx-auto">
-                    <h2 class="text-2xl text-gray-900">Account Setting</h2>
-                    <Form class="mt-3" method="post">
+                    <h2 class="text-2xl text-gray-900 w-full px-3 mb-4 border-b pb-4 border-gray-400">Account Setting</h2>
+                    <Form reloadDocument class="mt-3" method="post" onChange={function (e) {
+                        if (player.displayName !== e.target.value) {
+                            setDisabled(false)
+                        } else { setDisabled(true) }
+                    }}>
                         <input type='hidden' name='_action' value='updateProfile' />
                         <div class='flex flex-wrap -mx-3 mb-6'>
                             <div class='w-full px-3 mb-6'>
-                                <Input
-                                    name='email'
-                                    title='Email'
-                                    id='email'
+                                <EmailInput
                                     defaultValue={player.email}
+                                    title='Email'
                                     readonly
                                 />
                             </div>
@@ -139,55 +168,71 @@ export default function Profile() {
                                     placeholder={"https://t.me/nickname"}
                                 />
                             </div>
-                            <div class='w-full relative pb-12 pt-4'>
-                                <button
-                                    type="submit"
-                                    class="bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md absolute right-0 mr-3"
-                                >
-                                    Update Profile
-                                </button>
+                            <div class='w-full relative pb-12'>
+                                <Button
+                                    className='absolute right-0 mr-3'
+                                    type='submit'
+                                    name='update profile'
+                                    disabled={disabled}
+                                />
+                                {console.log(disabled)}
                             </div>
                         </div>
                     </Form>
                     <h2 class="text-2xl text-gray-900 w-full px-3 mb-4 border-b pb-4 border-gray-400">Privacy Setting</h2>
                     <Form class="mt-3" method="post">
                         <input type='hidden' name='_action' value='updatePassword' />
-                        <div class='w-full px-3 mb-6'>
-                            <div class='w-1/2 px-3'>
-                                <Input
+                        <div class='flex flex-wrap -mx-3 mb-6'>
+                            <div class='md:w-1/2 px-3 py-50%'>
+                                <PasswordInput
+                                    name='password-old'
+                                    title='Password'
+                                    errorMessage={actionData?.error.message1}
+                                />
+                                {/* <Input
                                     name='password-old'
                                     title='Password'
                                     id='password'
                                     type='password'
                                     errorMessage={actionData?.error.message1}
-                                />
+                                /> */}
                             </div>
-                            <div class='pt-8 w-1/2 px-3'>
-                                <Input
+                            <div class='md:w-1/2 px-3 mb-6'>
+                                <PasswordInput
+                                    name='password-new'
+                                    title='New password'
+                                    errorMessage={actionData?.error.message2}
+                                />
+                                {/* <Input
                                     name='password-new'
                                     title='New password'
                                     id='newPassword'
                                     type='password'
                                     errorMessage={actionData?.error.message2}
-                                />
-                            </div>
-                            <div class='w-1/2 px-3'>
-                                <Input
+                                /> */}
+                                <PasswordInput
+                                    className='pt-3'
                                     name='password-repeat'
                                     title='Repeat new password'
-                                    id='password-repeat'
-                                    type='password'
                                     errorMessage={actionData?.error.message3}
                                 />
+                                {/* <Input
+                                        className='pt-2'
+                                        name='password-repeat'
+                                        title='Repeat new password'
+                                        id='password-repeat'
+                                        type='password'
+                                        errorMessage={actionData?.error.message3}
+                                    /> */}
                             </div>
-                        </div>
-                        <div class='w-full relative pb-12 pt-4'>
-                            <button
-                                type="submit"
-                                class="bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md absolute right-0 mr-1"
-                            >
-                                Update Password
-                            </button>
+
+                            <div class='w-full relative pb-12'>
+                                <Button
+                                    className='absolute right-0 mr-3'
+                                    type='submit'
+                                    name='update password'
+                                />
+                            </div>
                         </div>
                     </Form>
                 </div>

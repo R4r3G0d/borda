@@ -1,11 +1,17 @@
-import { AuthorizationError } from 'remix-auth';
-import { Form, Link, useActionData, useLoaderData, useTransition } from '@remix-run/react';
-import { json, redirect } from "@remix-run/node";
-import { z } from 'zod';
+import { AuthorizationError } from 'remix-auth'
+import {
+    Form,
+    Link,
+    useActionData,
+    useTransition
+} from '@remix-run/react'
+import { json, redirect } from '@remix-run/node'
+import { z } from 'zod'
 
-import prisma from '~/utils/prisma.server';
-import authenticator from '~/utils/auth.server';
+import prisma from '~/utils/prisma.server'
+import authenticator from '~/utils/auth.server'
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
+import { EmailInput } from '~/components/Input'
 
 export const loader = async ({ request }) => {
     return await authenticator.isAuthenticated(request, {
@@ -83,9 +89,10 @@ export default function SignUp() {
                     <div className='min-h-8'>
                         {actionData?.error ? <p>{actionData?.error?.message}</p> : null}
                         {actionData?.error ? <p>{actionData?.error?.password}</p> : null}
-                        {actionData?.error ? <p>{actionData?.error?.email}</p> : null}   
+                        {actionData?.error ? <p>{actionData?.error?.email}</p> : null}
                     </div>
 
+                    {/* <InputEmail/> */}
                     <input
                         name="email"
                         type="email"
