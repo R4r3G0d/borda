@@ -33,7 +33,7 @@ export function links() {
 export async function loader({ request }) {
     let session = await authenticator.isAuthenticated(request)
 
-    return json({ player: session })    
+    return json({ player: session })
 };
 
 export default function App() {

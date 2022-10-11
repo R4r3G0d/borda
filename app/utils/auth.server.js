@@ -55,12 +55,11 @@ authenticator.use(
 );
 
 async function validatePassword(password, hashedPassword) {
-    let res = await bcrypt.compare(password, hashedPassword);
-    return res
+    return await bcrypt.compare(password, hashedPassword)
 }
 
 function hashPassword(password) {
-    return bcrypt.hash(password, 10);
+    return bcrypt.hash(password, 10)
 };
 
 export default authenticator

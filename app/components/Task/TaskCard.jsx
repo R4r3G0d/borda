@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { NavLink } from '@remix-run/react'
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function ({ children, link, isActive }) {
     return (

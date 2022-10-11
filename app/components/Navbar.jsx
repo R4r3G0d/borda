@@ -134,14 +134,8 @@ function Profile({ player }) {
 }
 
 function Navbar({ children }) {
-    // let location = useLocation()
-    // if (location.pathname === "" || location.pathname === "/") return null
-
     return (
         <header className='sticky top-0 z-50 w-full h-14 bg-zinc-800 text-white flex flex-row items-center justify-between'>
-            {/* <Navigation />
-            <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
-            <Profile className='flex-none' player={data} /> */}
             {children}
         </header>
     )

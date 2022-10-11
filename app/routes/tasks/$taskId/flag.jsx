@@ -5,7 +5,7 @@ import { validateFlag } from '~/utils/task.server';
 
 
 export async function action({ request, params }) {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // await new Promise(resolve => setTimeout(resolve, 1000));
 
     const player = await authenticator.isAuthenticated(request);
     const inputFlag = (await request.formData()).get('flag');
@@ -19,7 +19,7 @@ export async function action({ request, params }) {
 
     try {
         await validateFlag(inputFlag)
-        flag = await prisma.task.findUnique({
+        task = await prisma.task.findUnique({
             where: {
                 id: taskId,
             },
@@ -28,10 +28,7 @@ export async function action({ request, params }) {
             },
         })
 
-        // console.log({ inputFlag, flag })
-
-        let isCorrect = (inputFlag == flag)
-        // console.log(isCorrect)
+        let isCorrect = (inputFlag == task.flag)
 
         let newSolution = await prisma.solution.create({
             data: {

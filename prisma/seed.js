@@ -13,13 +13,21 @@ prisma.$use(async (params, next) => {
     return next(params);
 });
 
+function getMultipleRandom(arr, num) {
+    const shuffled = [...arr].sort(function () {
+        return 0.5 - Math.random()
+    })
+
+    return shuffled.slice(0, num);
+}
+
 async function main() {
     await prisma.$queryRaw`SET TIMEZONE="Europe/Moscow";`
 
     const names = ['max', 'simen', 'nikita', 'vova', 'roma']
     const roles = [Role.ADMIN, Role.PLAYER]
     const players = await Promise.all(
-        names.map((name) => {
+        names.map(function (name) {
             return prisma.player.create({
                 data: {
                     email: name + '@borda.com',
@@ -68,9 +76,17 @@ async function main() {
             })
         })
     );
-    console.log({ players, tasks, teams })
 
     await prisma.settings.create({ data: { name: "flag_prefix", value: "flag" } })
+
+    playerWithTeams = await prisma.player.findMany({
+        include: { team: { select: { name: true } } }
+    })
+
+    console.log(`Created ${playerWithTeams.length} players`)
+    playerWithTeams.forEach(function(player){
+        console.log(`${player.displayName}: ${player.role}, Team: ${player.team?.name}`)
+    })
 }
 
 main()

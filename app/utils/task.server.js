@@ -1,8 +1,8 @@
-import { PrismaClientKnownRequestError } from '@prisma/client';
-import { Schema, z } from "zod";
-import { Category } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client'
+import { z } from 'zod'
+import { Category } from '@prisma/client'
 
-import prisma from '~/utils/prisma.server';
+import prisma from '~/utils/prisma.server'
 
 function deleteTask(taskId) {
   return prisma.task.delete({
@@ -73,25 +73,9 @@ async function validateFlag(flag) {
 
   // let pattern = regexp.replace('prefix', '\\' + prefix.value);
 
-  console.log({ pattern, prefix });
-
   const shema = z.string().regex(pattern);
 
   return shema.parseAsync(flag)
-
-  // return validate({ flag }, {
-  //   flag: {
-  //     format: pattern,
-  //     presence: { allowEmpty: false }
-  //   }
-  // }).catch(ValidationErrors, function (error) {
-  //   // Handle the validation errors
-  //   console.log("ValidationErrors", error);
-  // })
-  //   .catch(function (error) {
-  //     // Handle other errors;
-  //     console.log("SystemError", error);
-  //   });
 }
 
 export { deleteTask, validateFlag, validateNewTaskInput }

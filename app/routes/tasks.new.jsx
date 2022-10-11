@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { Form, useActionData, useTransition } from '@remix-run/react';
-import { json, redirect } from '@remix-run/node';
-import clsx from 'clsx';
+import * as React from 'react'
+import { Form, useActionData, useTransition } from '@remix-run/react'
+import { json, redirect } from '@remix-run/node'
+import clsx from 'clsx'
 
-import prisma from '~/utils/prisma.server';
-import authenticator from '~/utils/auth.server';
+import prisma from '~/utils/prisma.server'
+import authenticator from '~/utils/auth.server'
 import { validateNewTaskInput } from '~/utils/task.server'
 
 export async function action({ request }) {

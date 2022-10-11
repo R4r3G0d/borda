@@ -1,12 +1,15 @@
 import * as React from 'react'
-import { json } from "@remix-run/node";
-import { Link, Outlet, useLoaderData, useLocation, useParams, useSearchParams } from "@remix-run/react";
+import { json } from "@remix-run/node"
+import {
+	Link, Outlet,
+	useLoaderData, useLocation, useParams, useSearchParams
+} from '@remix-run/react'
 import { Listbox, Transition } from '@headlessui/react'
 import { SelectorIcon, CheckIcon, PlusIcon } from '@heroicons/react/solid'
 
-import prisma from "../utils/prisma.server";
-import authenticator from '~/utils/auth.server';
-import { TaskGrid, TaskCard, TaskFooter, TaskHeader } from '../components/Task';
+import prisma from '~/utils/prisma.server'
+import authenticator from '~/utils/auth.server'
+import { TaskGrid, TaskCard, TaskFooter, TaskHeader } from '~/components/Task'
 
 export let loader = async ({ request }) => {
 	let player = await authenticator.isAuthenticated(request, {
