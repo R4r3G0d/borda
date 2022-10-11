@@ -1,8 +1,8 @@
-import { TrashIcon, PencilAltIcon } from "@heroicons/react/outline";
-import { Link, useFetcher } from "@remix-run/react";
+import { TrashIcon, PencilAltIcon } from '@heroicons/react/outline'
+import { Link, useFetcher } from '@remix-run/react'
 
 
-export function TaskControls(taskID) {
+export default function() {
     let fetcher = useFetcher();
     return (
         <div className='flex flex-row justify-center items-center h-10'>
@@ -14,10 +14,6 @@ export function TaskControls(taskID) {
             <Link to='./edit' className='flex items-center ml-3'>
                 <PencilAltIcon className='w-5 h-5' strokeWidth={1} />
             </Link>
-
-            {/* <Link to={'./delete'}>
-                <TrashIcon className='w-5 h-5' strokeWidth={1} />
-            </Link> */}
         </div>
     )
 }

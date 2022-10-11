@@ -1,9 +1,9 @@
-import { useLoaderData, useParams, useCatch } from '@remix-run/react'
 import { json } from '@remix-run/node';
-import { TaskView, TaskFooter, TaskHeader, TaskBody, TaskControls, TaskSolutionsList } from '~/components/Task'
+import { useLoaderData, useParams, useCatch } from '@remix-run/react'
+
 import prisma from '~/utils/prisma.server';
 import authenticator from "~/utils/auth.server";
-// import { NotFoundError } from '@prisma/client/runtime';
+import { TaskView, TaskControls } from '~/components/Task'
 
 export async function loader({ request, params }) {
     let player = await authenticator.isAuthenticated(request);
@@ -43,24 +43,16 @@ export async function loader({ request, params }) {
 
 export default function Task() {
     let loaderData = useLoaderData();
-    let { task } = useLoaderData()
-    let sortedSolutions = task.solutions.sort(function (a, b) {
-        return b.createdAt.localeCompare(a.createdAt);
-    });
+
     return (
-        <TaskView>
-            {loaderData.player?.role == 'ADMIN'
-                ? <TaskControls />
-                : null
-            }
-            <TaskHeader name={task.name} category={task.category} points={task.points} />
-            <TaskBody author={task.author} content={task.content} tags={task.tags} />
-            {task.solutions.length > 0
-                ? <TaskSolutionsList solutions={sortedSolutions} />
-                : null
-            }
-            <TaskFooter />
-        </TaskView>
+        <div className={'absolute top-0 right-0 w-full md:w-1/2 lg:w-1/3 h-full bg-white border-l border-gray-300'}>
+            <TaskView task={loaderData.task}>
+                {loaderData.player?.role == 'ADMIN'
+                    ? <TaskControls />
+                    : null
+                }
+            </TaskView>
+        </div>
     )
 }
 
@@ -81,6 +73,7 @@ export function CatchBoundary() {
 }
 
 export function ErrorBoundary({ error }) {
+    console.log(error)
     return (
         <div className=''>
             <p>Something went wrong</p>

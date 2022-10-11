@@ -49,32 +49,34 @@ export default function App() {
                 <Links />
                 <title>{meta.title ? title : 'ADMCTF'}</title>
             </head>
-            <body>
-                {location.pathname.includes('sign')
-                    ? null
-                    : (
-                        <Navbar>
-                            <Navigation />
-                            <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
-                            {data.player
-                                ? <Profile player={data.player} />
-                                : (
-                                    <Link
-                                        to="/tasks"
-                                        className='px-8 py-2 inline-block text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-lg  text-center'
-                                    >
-                                        Play
-                                    </Link>
-                                )
-                            }
-                        </Navbar>
-                    )
-                }
+            <body className>
+                <main className="bg-slate-100 min-h-screen min-w-min">
+                    {location.pathname.includes('sign')
+                        ? null
+                        : (
+                            <Navbar>
+                                <Navigation />
+                                <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
+                                {data.player
+                                    ? <Profile player={data.player} />
+                                    : (
+                                        <Link
+                                            to="/tasks"
+                                            className='px-8 py-2 inline-block text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-lg  text-center'
+                                        >
+                                            Play
+                                        </Link>
+                                    )
+                                }
+                            </Navbar>
+                        )
+                    }
 
-                <Outlet />
-                {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
-                <ScrollRestoration />
-                <Scripts />
+                    <Outlet />
+                    {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
+                    <ScrollRestoration />
+                    <Scripts />
+                </main>
             </body>
         </html >
     );

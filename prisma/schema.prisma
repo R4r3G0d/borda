@@ -38,6 +38,7 @@ model Player {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  likes      Like[]
 }
 
 model Session {
@@ -53,7 +54,7 @@ model Team {
   name String
 
   captainId String
-  players  Player[]
+  players   Player[]
 
   solutions Solution[]
 }
@@ -103,11 +104,21 @@ model Task {
   updatedAt DateTime @updatedAt
 
   solutions Solution[]
+  likes     Like[]
+}
+
+model Like {
+  task      Task     @relation(fields: [taskId], references: [id])
+  taskId    String
+  player    Player   @relation(fields: [playerId], references: [id])
+  playerId  String
+  createdAt DateTime @default(now())
+  @@unique([taskId, playerId])
 }
 
 model Solution {
-  id        String   @id @default(uuid())
-  flag String
+  id        String  @id @default(uuid())
+  flag      String
   isCorrect Boolean @default(false)
 
   createdAt DateTime @default(now())

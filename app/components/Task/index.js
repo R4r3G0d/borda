@@ -1,5 +1,7 @@
-export { default as TaskGrid } from './TaskGrid';
-export {default as TaskView} from './TaskView';
-export {default as TaskCard} from './TaskCard';
-export { TaskHeader, TaskBody, TaskFooter, TaskSolutionsList } from './TaskBase';
-export {TaskControls} from './TaskControls';
+export { default as TaskGrid } from './Grid'
+export { default as TaskView } from './View'
+export { default as TaskCard } from './Card'
+export { default as TaskControls } from './Controls'
+export { default as TaskSolutions } from './Solutions'
+export { default as TaskHeader } from './Header'
+export { default as TaskFlagInput } from './FlagInput'
