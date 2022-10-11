@@ -55,9 +55,9 @@ export default function NewTask() {
     const [value, setValue] = React.useState("**Hello world!!!**");
 
     return (
-        <div className="mx-auto px-4 max-w-xl text-sm">
-            <p className='text-center pt-5'>
-                Create New Task
+        <div className="mx-auto p-5 max-w-xl text-sm">
+            <p className='font-semibold text-base pt-5 uppercase'>
+                new task
             </p>
             <Form method='post'
             // id='newTaskFrom'

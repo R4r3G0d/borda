@@ -14,6 +14,7 @@ export default function () {
         <fetcher.Form
             method='post'
             action='./flag'
+            className='w-full'
         >
             {fetcher.data?.error ? (
                 <div className='pb-2'>

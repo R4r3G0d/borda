@@ -1,9 +1,10 @@
 import { json } from '@remix-run/node';
 import { useLoaderData, useParams, useCatch } from '@remix-run/react'
+import { Role } from '@prisma/client';
 
 import prisma from '~/utils/prisma.server';
 import authenticator from "~/utils/auth.server";
-import { TaskView, TaskControls } from '~/components/Task'
+import { TaskView } from '~/components/Task'
 
 export async function loader({ request, params }) {
     let player = await authenticator.isAuthenticated(request);
@@ -45,13 +46,10 @@ export default function Task() {
     let loaderData = useLoaderData();
 
     return (
-        <div className={'absolute top-0 right-0 w-full md:w-1/2 lg:w-1/3 h-full bg-white border-l border-gray-300'}>
-            <TaskView task={loaderData.task}>
-                {loaderData.player?.role == 'ADMIN'
-                    ? <TaskControls />
-                    : null
-                }
-            </TaskView>
+        <div className={'h-full flex-auto bg-white border-l border-gray-300'}>
+            <TaskView
+                task={loaderData.task}
+                controls={loaderData.player.role == Role.ADMIN} />
         </div>
     )
 }

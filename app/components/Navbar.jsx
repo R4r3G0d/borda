@@ -44,7 +44,8 @@ function DropdownMenu({ menuItems, align, children }) {
                     >
                         <Menu.Items
                             as="div"
-                            className={`absolute z-50 mt-2 m${Array.from(align)[0]}-3 ${align}-0 w-60 min-w-full shadow-2xl bg-zinc-800 focus:outline-none`}
+                            // m${Array.from(align)[0]}-3
+                            className={`absolute z-50 mt-2  ${align}-0 w-60 min-w-full shadow-2xl bg-zinc-800 focus:outline-none`}
                         >
                             <div className="flex flex-col py-2">
                                 {menuItems.map((item, idx) => (
@@ -124,7 +125,7 @@ function Profile({ player }) {
         <DropdownMenu menuItems={locations} align='right'>
             <div className='flex flex-row items-center h-full pl-3 mr-3'>
                 <UserCircleIcon className="h-9 w-9" strokeWidth={1} />
-                <div className='w-48 pl-4 flex flex-col items-start'>
+                <div className='w-min sm:w-48 pl-4 flex flex-col items-start'>
                     <div className=" text-gray-200 text-sm font-semibold">{player.displayName}</div>
                     <div className='text-xs'>{player.team ? player.team.name : 'No Team'}</div>
                 </div>
@@ -135,9 +136,9 @@ function Profile({ player }) {
 
 function Navbar({ children }) {
     return (
-        <header className='sticky top-0 z-50 w-full h-14 bg-zinc-800 text-white flex flex-row items-center justify-between'>
+        <nav className='fixed top-0 z-50 w-full h-14 bg-zinc-800 text-white flex flex-row items-center justify-between'>
             {children}
-        </header>
+        </nav>
     )
 }
 

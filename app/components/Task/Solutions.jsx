@@ -6,7 +6,7 @@ export default function ({ solutions }) {
         return b.createdAt.localeCompare(a.createdAt);
     });
     return (
-        <div className='grow mt-5 w-full overflow-scroll max-h-20'>
+        <div className='grow mt-5 w-full'>
             <table class="table-auto w-full">
                 <tbody>
                     {sortedSolutions.map((solution) => (

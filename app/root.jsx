@@ -14,7 +14,6 @@ import { json } from "@remix-run/node";
 
 import styles from "./styles/tailwind.css";
 import authenticator from "./utils/auth.server";
-
 import { FourOhFour, ServerError } from "./components/Errors";
 import { Navbar, Profile, Navigation } from "./components/Navbar";
 
@@ -49,34 +48,35 @@ export default function App() {
                 <Links />
                 <title>{meta.title ? title : 'ADMCTF'}</title>
             </head>
-            <body className>
-                <main className="bg-slate-100 min-h-screen min-w-min">
-                    {location.pathname.includes('sign')
-                        ? null
-                        : (
-                            <Navbar>
-                                <Navigation />
-                                <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
-                                {data.player
-                                    ? <Profile player={data.player} />
-                                    : (
-                                        <Link
-                                            to="/tasks"
-                                            className='px-8 py-2 inline-block text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-lg  text-center'
-                                        >
-                                            Play
-                                        </Link>
-                                    )
-                                }
-                            </Navbar>
-                        )
-                    }
+            <body style={{ minWidth: 320 + 'px' }}>
+                {location.pathname.includes('sign')
+                    ? null
+                    : (
+                        <Navbar>
+                            <Navigation />
+                            <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
+                            {data.player
+                                ? <Profile player={data.player} />
+                                : (
+                                    <Link
+                                        to="/tasks"
+                                        className='px-8 py-2 inline-block text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-lg  text-center'
+                                    >
+                                        Play
+                                    </Link>
+                                )
+                            }
+                        </Navbar>
+                    )
+                }
 
+                <main className='mt-14'>
                     <Outlet />
-                    {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
-                    <ScrollRestoration />
-                    <Scripts />
                 </main>
+
+                {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
+                <ScrollRestoration />
+                <Scripts />
             </body>
         </html >
     );
