@@ -1,16 +1,17 @@
+import * as React from 'react'
 import clsx from 'clsx';
 
-export default function Input({ name, defaultValue, className, placeholder, readonly, errorMessage, title, ref, autocomplete, type, onChange }) {
+export default function Input({ name, defaultValue, className, placeholder, readonly, errorMessage, title, inputRef, autoComplete, type, onChange }) {
     let error = errorMessage ? true : false;
     return (
         <div className={clsx('w-full', className)}>
             {title ? <label for={title} className='inline-block mb-1 text-gray-700'>{title}</label> : null}
             <input
                 type={type}
-                ref={ref}
+                ref={inputRef}
                 readOnly={readonly}
                 name={name}
-                autocomplete={autocomplete}
+                autoComplete={autoComplete}
                 id={name}
                 defaultValue={defaultValue}
                 placeholder={placeholder}
@@ -44,12 +45,13 @@ export function EmailInput({ errorMessage, readonly, defaultValue, title, classN
             type='email'
             name='email'
             placeholder='Email'
-            autocomplete='email'
+            autoComplete='email'
             title={title}
             defaultValue={defaultValue}
             errorMessage={errorMessage}
-            readonly={readonly} 
-            className={className}/>
+            readonly={readonly}
+            className={className}
+        />
     )
 }
 export function PasswordInput({ errorMessage, name, title, className }) {
@@ -61,6 +63,7 @@ export function PasswordInput({ errorMessage, name, title, className }) {
             placeholder='Password'
             className={className}
             autocomplete='password'
-            errorMessage={errorMessage} />
+            errorMessage={errorMessage}
+        />
     )
 }
