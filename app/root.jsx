@@ -9,23 +9,25 @@ import {
     useLocation,
     useCatch,
     useLoaderData
-} from "@remix-run/react";
-import { json } from "@remix-run/node";
+} from '@remix-run/react'
+import { json } from '@remix-run/node'
+import {clsx} from 'clsx'
 
-import styles from "./styles/tailwind.css";
-import authenticator from "./utils/auth.server";
-import { FourOhFour, ServerError } from "./components/Errors";
-import { Navbar, Profile, Navigation } from "./components/Navbar";
+import styles from './styles/tailwind.css'
+import authenticator from './utils/auth.server'
+import { ServerError } from './components/Errors'
+import { Navbar, Profile, Navigation } from './components/Navbar'
+import { Button } from '~/components/Button'
 
 export const meta = () => ({
-    charset: "utf-8",
-    title: "ADMCTF",
-    viewport: "width=device-width,initial-scale=1",
+    charset: 'utf-8',
+    title: 'ADMCTF',
+    viewport: 'width=device-width,initial-scale=1',
 });
 
 export function links() {
     return [
-        { rel: "stylesheet", href: styles }
+        { rel: 'stylesheet', href: styles }
     ]
 }
 
@@ -49,20 +51,20 @@ export default function App() {
                 <title>{meta.title ? title : 'ADMCTF'}</title>
             </head>
             <body style={{ minWidth: 320 + 'px' }}>
-                {location.pathname.includes('sign')
+                {location.pathname.includes('sign') || location.pathname.includes('login')
                     ? null
                     : (
-                        <Navbar>
+                        <Navbar color={location.pathname === '/' ? 'bg-black' : null}>
                             <Navigation />
                             <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
                             {data.player
                                 ? <Profile player={data.player} />
                                 : (
                                     <Link
-                                        to="/tasks"
-                                        className='px-8 py-2 inline-block text-black bg-white focus:ring-4 focus:outline-none focus:ring-grey font-medium rounded-lg text-lg  text-center'
+                                        to='/tasks'
+                                        className='mr-4 flex items-center'
                                     >
-                                        Play
+                                        <Button text='Play' />
                                     </Link>
                                 )
                             }
@@ -88,12 +90,12 @@ export default function App() {
 //     console.error('CatchBoundary', caught)
 //     if (caught.status === 404) {
 //         return (
-//             <html lang="en" className="dark">
+//             <html lang='en' className='dark'>
 //                 <head>
 //                     <title>Oh no...</title>
 //                     <Links />
 //                 </head>
-//                 <body className="bg-white transition duration-500 dark:bg-gray-900">
+//                 <body className='bg-white transition duration-500 dark:bg-gray-900'>
 //                     <FourOhFour/>
 //                     <Scripts />
 //                 </body>
@@ -107,7 +109,7 @@ export function ErrorBoundary({ error }) {
     console.error(error)
     const location = useLocation()
     return (
-        <html lang="en" className="dark">
+        <html lang='en' className='dark'>
             <head>
                 <title>Oh no...</title>
                 <Links />

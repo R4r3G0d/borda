@@ -1,34 +1,34 @@
 import * as React from 'react'
-import { Link, useLoaderData } from "@remix-run/react";
-import Typist from 'react-typist';
+import { useLoaderData } from '@remix-run/react'
+import Typist from 'react-typist'
 
-import { MakaraIcon } from '~/components/icons/MakaraIcon';
-import authenticator from '~/utils/auth.server';
+import { MakaraIcon } from '~/components/icons/MakaraIcon'
+import authenticator from '~/utils/auth.server'
 
 export async function action({ request }) {
-    return await authenticator.logout(request, { redirectTo: "/sign-in", });
-};
+    return await authenticator.logout(request, { redirectTo: '/sign-in', })
+}
 
 export default function RootPage() {
-    const data = useLoaderData();
+    const data = useLoaderData()
     console.log(data)
 
-    const [isTypingDone, setTypingDone] = React.useState(0);
+    const [isTypingDone, setTypingDone] = React.useState(0)
 
     // is it possible not to use useEffect???
     React.useEffect(() => {
-        setTypingDone(0);
-    }, [isTypingDone]);
+        setTypingDone(0)
+    }, [isTypingDone])
 
     return (
-        <div className='min-h-screen bg-black'>
-            <div className='py-12 md:py-16 px-8 grid grid-cols-1 grid-rows-2 md:grid-cols-2 gap-6 max-w-5xl w-full m-auto'>
-                <div className='p-5'>
-                    <MakaraIcon className={'w-full h-auto max-w-xs'} />
+        <div className='absolute top-0 left-0 w-full min-h-screen bg-black'>
+            <div className='py-24 px-8 grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1 gap-6 max-w-5xl mx-auto'>
+                <div className='p-5 flex justify-center'>
+                    <MakaraIcon className='w-full h-auto max-w-xs' />
                 </div>
-                <div className='md:order-first'>
+                <div className='lg:order-first'>
                     <h1 className='h-48 text-white text-6xl font-bold uppercase'>
-                        {isTypingDone ? "" : (
+                        {isTypingDone ? '' : (
                             <Typist avgTypingDelay={100} cursor={{ blink: true, }} onTypingDone={() => setTypingDone(1)}>
                                 <span>admiral</span><br />
                                 <Typist.Delay ms={100} />
@@ -52,7 +52,7 @@ export default function RootPage() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 export function ErrorBoundary({ error }) {

@@ -1,15 +1,18 @@
 import {
     Form,
     Link,
-    useLoaderData,
+    useActionData,
     useTransition
 } from '@remix-run/react'
-import { json } from '@remix-run/server-runtime'
+import { json } from '@remix-run/node'
+import { z } from 'zod'
 
 import authenticator from '~/utils/auth.server'
 import { sessionStorage } from '~/utils/session.server'
+import { passwordValidator } from '~/utils/validator'
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
-import { EmailInput, PasswordInput } from '~/components/Input'
+import { EmailField, PasswordField } from '~/components/Field'
+import { Button } from '~/components/Button'
 
 export async function loader({ request }) {
     await authenticator.isAuthenticated(request, {
@@ -25,68 +28,49 @@ export async function loader({ request }) {
 };
 
 export async function action({ request, context }) {
-    const resp = await authenticator.authenticate("form", request, {
+    return await authenticator.authenticate("form", request, {
         successRedirect: "/tasks",
         failureRedirect: "/sign-in",
         throwOnError: true,
         context,
     });
 
-    return resp;
+    // let session = await getSession(request.headers.get("cookie"));
+    // let error = session.get(authenticator.sessionErrorKey);
+    // return json({ error });
 };
 
-export default function LoginPage() {
-    const loaderData = useLoaderData();
+export default function SignIn() {
+    const actionData = useActionData();
     const transition = useTransition();
 
     return (
-        <div className='min-h-screen bg-white flex flex-col'>
-            <div className='w-full m-auto pt-12 flex flex-grow justify-center'>
-                <Form method='post'
-                    className='flex flex-col items-center p-8 max-w-sm w-full text-base text-black'
-                >
-                    <div className='p-4 flex justify-center'>
-                        <MakaraIcon className={'w-56 h-56'} />
-                    </div>
+        <div className='container max-w-sm mx-auto '>
+            <Form
+                method='post'
+                className='px-6'
+            >
+                <div className='p-4 flex justify-center'>
+                    <MakaraIcon className={'w-56 h-56'} />
+                </div>
+                <div className='min-h-8'>
+                    {actionData?.error ? <p>{actionData?.error?.message}</p> : null}
+                </div>
 
-                    <div className='min-h-8 mt-2'>
-                        {loaderData?.error ? <p className='text-red-600'>{loaderData?.error?.message}</p> : null}
-                    </div>
-                    <EmailInput className='mb-1' />
-                    {/* <input
-                        name="email"
-                        placeholder="Email"
-                        type="email"
-                        autocomplete="email"
-                        required
-                        className='w-full h-12 px-3 mt-4 border-4 focus-ring rounded-lg border-blue-900'>
-                    </input> */}
-                    <PasswordInput />
-                    {/* <input
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        autocomplete="password"
-                        className='w-full h-12 px-3 mt-4 border-2 focus-ring rounded-lg text-black border-black focus:border-blue-800'
-                    >
-                    </input> */}
+                <EmailField error={actionData?.error.email} />
+                <PasswordField error={actionData?.error.password} />
 
-                    <button
-                        className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700' : 'bg-black'}  text-white text-lg`}
-                        disabled={transition.submission}
-                    >
-                        {transition.submission
-                            ? 'Wait...'
-                            : 'Sign In'}
-                    </button>
+                <Button
+                    className={'w-full h-12 mt-4'}
+                    text='Sign in'
+                    disabled={transition.submission}
+                />
 
-                    <div className="h-16 flex items-center place-content-center">
-                        No account?
-                        <Link to="/sign-up" className="pl-3 text-indigo-700">Create new one</Link>
-                    </div>
-                </Form>
-            </div>
-
+                <div className="h-16 flex items-center place-content-center">
+                    No account?
+                    <Link to="/sign-up" className="pl-3 text-indigo-700">Create new one</Link>
+                </div>
+            </Form>
         </div>
     )
 }

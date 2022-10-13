@@ -134,9 +134,17 @@ function Profile({ player }) {
     )
 }
 
-function Navbar({ children }) {
+function Navbar({ children, color }) {
     return (
-        <nav className='fixed top-0 z-50 w-full h-14 bg-zinc-800 text-white flex flex-row items-center justify-between'>
+        <nav
+            className={clsx(
+                'fixed top-0 z-50 w-full h-14',
+                'flex flex-row items-center justify-between',
+                ' text-white',
+                { 'bg-zinc-800': !color },
+                color,
+            )}
+        >
             {children}
         </nav>
     )

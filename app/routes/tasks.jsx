@@ -175,16 +175,15 @@ export default function Tasks() {
 
 					</div>
 				</div>
-				<motion.main
+				<motion.div
 					key={useLocation().pathname}
 					initial={{ y: '100', opacity: 0 }}
 					animate={{ y: 0, opacity: 1 }}
 					exit={{ x: '-100', opacity: 0 }}
 					transition={{ duration: 0.3 }}
 				>
-					{/* {outlet} */}
 					<Outlet />
-				</motion.main>
+				</motion.div>
 
 			</div>
 		</div >

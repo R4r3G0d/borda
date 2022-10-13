@@ -10,8 +10,11 @@ import { z } from 'zod'
 
 import prisma from '~/utils/prisma.server'
 import authenticator from '~/utils/auth.server'
+import { passwordValidator } from '~/utils/validator'
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
-import { EmailInput } from '~/components/Input'
+import { EmailField, PasswordField, Field } from '~/components/Field'
+import { Button } from '~/components/Button'
+
 
 export const loader = async ({ request }) => {
     return await authenticator.isAuthenticated(request, {
@@ -22,19 +25,15 @@ export const loader = async ({ request }) => {
 export async function action({ request }) {
     let formData = await request.formData()
 
-    let signUpInput = {
-        email: formData.get('email'),
-        password: formData.get('password'),
-        displayName: formData.get('name'),
-    }
+    let values = Object.fromEntries(formData)
 
     const validator = z.object({
         email: z.string().email(),
-        password: z.string().min(5),
+        password: passwordValidator,
         displayName: z.string().min(2),
     })
 
-    let result = validator.safeParse(signUpInput)
+    let result = validator.safeParse(values)
     if (!result.success) {
         // console.log(result)
 
@@ -51,19 +50,21 @@ export async function action({ request }) {
 
     let player = await prisma.player.findUnique({
         where: {
-            email: signUpInput.email,
+            email: values.email,
         },
     })
 
-    if (!player) {
+    if (player) {
+        return json({ error: { email: 'This email is already in use. Please try another one.' } })
+    } else {
         let newPlayer = await prisma.player.create({
             data: {
-                ...signUpInput,
+                ...values,
             }
         })
-        if (!newPlayer) return json({ error: { message: 'Internal error. Please try again later.' } })
-    } else {
-        return json({ error: { message: 'This email is already in use. Please try another one.' } })
+        if (!newPlayer) {
+            return json({ error: { message: 'Internal error. Please try again later.' } })
+        }
     }
 
     return redirect('/sign-in')
@@ -77,64 +78,40 @@ export default function SignUp() {
     console.log({ actionData })
 
     return (
-        <div className='min-h-screen bg-white flex flex-col'>
-            <div className='w-full m-auto pt-12 flex flex-grow justify-center'>
-                <Form method='post'
-                    className='flex flex-col items-center p-8 max-w-sm w-full text-base text-black'
-                >
-                    <div className='p-4 flex justify-center'>
-                        <MakaraIcon className={'w-56 h-56'} />
-                    </div>
+        <div className='container max-w-sm mx-auto '>
+            <Form
+                method="post"
+                className='px-6'
+            >
+                <div className='flex justify-center items-center p-6'>
+                    <MakaraIcon className={'w-56 h-56'} />
+                </div>
 
-                    <div className='min-h-8'>
-                        {actionData?.error ? <p>{actionData?.error?.message}</p> : null}
-                        {actionData?.error ? <p>{actionData?.error?.password}</p> : null}
-                        {actionData?.error ? <p>{actionData?.error?.email}</p> : null}
-                    </div>
+                <div className='min-h-8'>
+                    {actionData?.error ? <p>{actionData?.error?.message}</p> : null}
+                </div>
 
-                    {/* <InputEmail/> */}
-                    <input
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        className='w-full h-12 px-3 mt-4 border-4 focus-ring rounded-lg border-blue-900'>
-                    </input>
+                <EmailField error={actionData?.error.email} />
+                <PasswordField error={actionData?.error.password} />
 
-                    <input
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        className='w-full h-12 px-3 mt-4 border-2 focus-ring rounded-lg text-black border-black focus:border-blue-800'
-                    >
-                    </input>
+                <Field
+                    label='Display Name'
+                    name='displayName'
+                    error={actionData?.error.displayName}
+                />
 
-                    <input
-                        name="name"
-                        type="name"
-                        placeholder="Name"
-                        className='w-full h-12 px-3 mt-4 border-2 focus-ring rounded-lg text-black border-black focus:border-blue-800'
-                    >
-                    </input>
+                <Button
+                    type='submit'
+                    className='w-full h-12 mt-4'
+                    text='Create Account'
+                    disabled={transition.submission}
+                />
 
-                    <button
-                        type='submit'
-                        className={`w-full h-12 px-5 mt-4 rounded-lg ${transition.submission ? 'bg-gray-700' : 'bg-black'}  text-white text-lg`}
-                        disabled={transition.submission}
-                    >
-                        {transition.submission
-                            ? 'Creating account...'
-                            : 'Create account'}
-
-                    </button>
-
-
-                    <div className="h-16 flex items-center place-content-center">
-                        Already have an account?
-                        <Link to="/sign-in" className="pl-3 text-indigo-700">Sign in</Link>
-                    </div>
-                </Form>
-            </div>
-
+                <div className="h-16 flex items-center place-content-center">
+                    Already have an account?
+                    <Link to="/sign-in" className="pl-3 text-indigo-700">Sign in</Link>
+                </div>
+            </Form>
         </div>
     )
 }

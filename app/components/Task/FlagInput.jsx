@@ -1,16 +1,13 @@
 import * as React from 'react'
 import { useFetcher } from '@remix-run/react'
-import Button from '~/components/Button'
-import Input from '~/components/Input'
+
+import { Button } from '~/components/Button'
+import { Field } from '~/components/Field'
 
 export default function () {
     const fetcher = useFetcher()
 
-    let inputRef = React.useRef()
-
-    // React.useEffect(function () {
-    //     inputRef.current.focus()
-    // }, [])
+    let inputRef = React.forwardRef()
 
     return (
         <fetcher.Form
@@ -32,15 +29,16 @@ export default function () {
             <fieldset
                 className='flex flex-row'
                 disabled={fetcher.submission}>
-                <Input
-                    ref={inputRef}
+                <Field
+                    className='m-0'
                     name='flag'
-                    id='flag'
+                    // id='flag'
                     placeholder='flag{s0m3_fl4g}'
+                    ref={inputRef}
                 />
                 <Button
                     // className={`ml-2 hover:bg-gray-800 ${fetcher.submission ? 'bg-gray-700' : 'bg-black'}`}
-                    className='ml-2'
+                    className='ml-2 h-11'
                     type='submit'
                     name='check'
                 />
