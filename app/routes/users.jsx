@@ -1,88 +1,114 @@
 import * as React from 'react'
-import { Link, useLoaderData } from '@remix-run/react'
-import prisma from '~/utils/prisma.server'
+import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 
+import prisma from '~/utils/prisma.server'
+
 export async function loader() {
-    // взяли всех юзеров с командой
-    let users = await prisma.player.findMany({
-        include: {
-            team: true,
-        },
-    })
-
-    // const users = await prisma.user.findMany({})
-
-    // const userIds = users.map((x) => x.id)
-
-    // const posts = await prisma.post.findMany({
-    //     where: {
-    //         authorId: {
-    //             in: userIds,
-    //         },
-    //     },
-    // })
-
-    // итерируемся по каждому юзеру из юзеров
-    users.forEach(async function (user) {
-        // Достали все правильные решения пользователя по ВСЕМ таскам
-        let solutions = await prisma.solution.findMany({
-            where: {
-                playerId: user.id,
-                isCorrect: true,
-            },
+    try {
+        // Получаем id и имена и название команд всех игроков
+        let users = await prisma.player.findMany({
+            select: {
+                id: true,
+                displayName: true,
+                team: { select: { id: true, name: true } },
+                solutions: true,
+            }
         })
 
-        let s = 0
+        // Получаем очки тасков заранее, чтобы 
+        // не делать лишних запросов к таскам для каждого решения каждого игрока
+        let tasks = await prisma.task.findMany({
+            select: { id: true, points: true }
+        })
 
-        // Идем по правильным решениям пользователя
-        await Promise.all(
-            solutions.forEach(async function (solution) {
+        // Ищем правильно решеные таски для каждого игрока
+        users.forEach(async (user) => {
+            // Считаем результат
+            let score = 0
 
-                //Достали таск, который пользователь решил
-                let task = await prisma.task.findUnique({
+            if (user.team) {
+                let solutions = await prisma.solution.findMany({
                     where: {
-                        id: solution.taskId
-                    }
-                })
-
-                //Достаем все правильные решения этого таска и считаем
-                // let taskSolutions = await prisma.solutions.findMany({
-                //     select:{
-                //         _count:{
-                //             select:{
-                //                 id: { where: { id: task.id, isCorrect: true,} },
-                //             },
-                //         },
-                //     },
-                // })
-                let taskSolutions = await prisma.solution.count({
-                    where: {
-                        taskId: task.id,
+                        teamId: user.team.id,
                         isCorrect: true,
                     },
                 })
+                console.log({ solutions })
 
-                console.log(taskSolutions)
+                // for (let i = 0; i < solutions.length; i++) {
+                solutions.forEach((solution) => {
+                    for (let j = 0; j < tasks.length; j++) {
+                        // console.log(`${task.id} ${solution.taskId}`)
 
-                if ((task.points * 0.5) > (task.points - taskSolutions * 0.1 * task.points)) {
-                    s = s + (task.points * 0.5)
-                } else {
-                    s = s + task.points - (taskSolutions * 0.1 * task.points)
-                }
+                        // console.log(task.id, solution.taskId)
+                        if (tasks[j].id == solution.taskId) {
+                            // if (tasks[j].id == solutions[i].taskId) {
+                            console.log("I am here")
+                            // Нужна формула по-сложнее
+                            score += tasks[j].points
 
-            })
-        )
+                            console.log(score)
 
-        user.score = s
-    })
+                            user = Object.assign(user, { score: score });
+                        }
+                    }
+                })
+            }
 
-    return json({ users })
+            // console.log(`${user.displayName}: ${score}`)
+
+            // user.score = score
+            user = Object.assign(user, { score: score });
+
+            // console.log({ user })
+        })
+
+        // Ищем правильно решеные таски для каждого игрока
+        // for (let user of users) {
+
+
+        //     // Считаем результат
+        //     let score
+
+        //     if (user.team) {
+        //         let solutions = await prisma.solution.findMany({
+        //             where: {
+        //                 teamId: user.team.id,
+        //                 isCorrect: true,
+        //             },
+        //         })
+
+        //         for (let solution of solutions) {
+        //             for (let task of tasks) {
+        //                 console.log(`${task.id} ${solution.taskId}`)
+
+        //                 if (solution.taskId == task.id) {
+        //                     // Нужна формула по-сложнее
+        //                     score = score + task.points
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     // console.log(`${user.displayName}: ${score}`)
+
+        //     user.score = score
+        //     // user = Object.assign(user, score);
+
+        //     // console.log({ user })
+        // }
+
+        console.log({ users })
+        return json({ users })
+    }
+    catch (err) {
+        console.log(err)
+    }
 }
 
 export default function users() {
     let data = useLoaderData()
-    console.log(data.users)
+    console.log({ data })
 
     return (
         <div className='flex justify-center w-full overflow-auto items-stretch rounded-xl md:items-center content-center'>
@@ -97,7 +123,7 @@ export default function users() {
                 </thead>
                 <tbody>
                     {data.users.map((user, index) => (
-                        <tr className='h-10 whitespace-nowrap'>
+                        <tr key={user.id} className='h-10 whitespace-nowrap'>
                             <td className="border px-8 py-4">
                                 <span>{index + 1}</span>
                             </td>
@@ -108,7 +134,7 @@ export default function users() {
                                 <span>{user.team ? user.team.name : "no team"}</span>
                             </td>
                             <td className='border px-8 py-4'>
-                                <span>{user.score ? user.score : 0}</span>
+                                <span>{user.score}</span>
                             </td>
                         </tr>
                     ))}
