@@ -30,21 +30,23 @@ export async function loader({ request }) {
   }
 }
 
+
+
+
 export async function action({ request }) {
   let user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/sign-in",
   });
   const formData = await request.formData();
+  let { _action, ...values } = Object.fromEntries(formData)
   let action = formData.get("_action");
-  let teamId = formData.get("team-id");
-  let nameTeam = formData.get("team-name");
-  let kickId = formData.get("kick-id");
+
   switch (action) {
     case "joinTeam": {
       try {
-        let result = await prisma.team.update({
+        await prisma.team.update({
           where: {
-            id: teamId,
+            id: values.teamId,
           },
           data: {
             players: {
@@ -52,7 +54,6 @@ export async function action({ request }) {
             },
           },
         });
-        return redirect("./");
       } catch (error) {
         console.log({ error });
         return json({ error: { message: "Not valid invite code" } });
@@ -60,7 +61,7 @@ export async function action({ request }) {
     }
     case "leaveTeam": {
       try {
-        let result = await prisma.player.update({
+        await prisma.player.update({
           where: {
             id: user.id,
           },
@@ -76,9 +77,9 @@ export async function action({ request }) {
     }
     case "createTeam": {
       try {
-        let result = await prisma.team.create({
+        await prisma.team.create({
           data: {
-            name: nameTeam,
+            name: values.teamName,
             captainId: user.id,
             players: {
               connect: [{ id: user.id }],
@@ -93,9 +94,9 @@ export async function action({ request }) {
     }
     case "kickFromTheTeam": {
       try {
-        let result = await prisma.player.update({
+        await prisma.player.update({
           where: {
-            id: kickId,
+            id: values.kickId,
           },
           data: {
             teamId: null,
@@ -109,12 +110,16 @@ export async function action({ request }) {
     }
     case "deleteTeam": {
       try {
-        let result = await prisma.team.delete({
+        await prisma.team.delete({
           where: {
             id: user.teamId,
           },
         });
-        return redirect("./");
+        // user.team=null;
+        // const session = await getSession(request.headers.get('Cookie'))
+        // session.set(authenticator.sessionKey, user)
+        // return redirect('/account', { headers: { 'set-cookie': await commitSession(session) } })
+
       } catch (error) {
         console.log({ error });
         return json({ error: { message: "Not valid invite code" } });
@@ -145,7 +150,7 @@ export default function AccountTeam() {
               </button>
 
               <input name="_action" value="joinTeam" type="hidden" />
-              <input name="team-id" />
+              <input name="teamId" />
             </Form>
             <Form method="post">
               <button
@@ -155,7 +160,7 @@ export default function AccountTeam() {
                 Create team
               </button>
               <input name="_action" value="createTeam" type="hidden" />
-              <input name="team-name" />
+              <input name="teamName" />
             </Form>
           </div>
         </div>
@@ -185,7 +190,7 @@ export default function AccountTeam() {
                               type="hidden"
                               value="kickFromTheTeam"
                             />
-                            <input name="kick-id" value={o.id} type="hidden" />
+                            <input name="kickId" value={o.id} type="hidden" />
                           </span>
                         </li>
                       </Form>
