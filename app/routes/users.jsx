@@ -13,13 +13,19 @@ export async function loader() {
                 displayName: true,
                 team: { select: { id: true, name: true } },
                 solutions: true,
+                // score: true, // Альтернативный вариант
             }
         })
 
         // Получаем очки тасков заранее, чтобы 
         // не делать лишних запросов к таскам для каждого решения каждого игрока
         let tasks = await prisma.task.findMany({
-            select: { id: true, points: true }
+            // TODO: Добавить условие что таск активный 
+            select: {
+                id: true,
+                points: true,
+                // solutionsCounter: true, // Альтернативный вариант
+            }
         })
 
         // Ищем правильно решеные таски для каждого игрока
@@ -52,6 +58,54 @@ export async function loader() {
             users[i] = { ...user, score: score }
         }
 
+
+        // Альтернативный вариант
+        // Ищем правильно решеные таски для каждого игрока
+        // users.forEach(async (user) => {
+        //     // Считаем результат
+        //     let score = 0
+
+        //     if (user.team) {
+        //         let solutions = await prisma.solution.findMany({
+        //             where: {
+        //                 teamId: user.team.id,
+        //                 isCorrect: true,
+        //             },
+        //         })
+
+        //         solutions.forEach((solution) => {
+        //             for (let j = 0; j < tasks.length; j++) {
+        //                 if (tasks[j].id == solution.taskId) {
+
+        //                     console.log("I am here")
+        //                     // Вот формула посложнее
+        //                     if ((tasks[j].solutionsCounter > 1) && (tasks[j].points - tasks[j].points * 0.1 * (tasks[j].solutionsCounter - 1)) > 0.5 * tasks[j].points) {
+        //                         points = tasks[j].points - tasks[j].points * 0.1 * (tasks[j].solutionsCounter - 1)
+        //                     } else if ((tasks[j].solutionsCounter > 1) && (tasks[j].points - tasks[j].points * 0.1 * (tasks[j].solutionsCounter - 1)) < 0.5 * tasks[j].points) {
+        //                         points = tasks[j].points * 0.5
+        //                     } else {
+        //                         points = tasks[j].points
+        //                     }
+
+        //                     score += points
+        //                     // console.log("Score: ", score)
+
+        //                     console.log(score)
+        //                 }
+        //             }
+        //         })
+
+        //         let updateUser = await prisma.player.update({
+        //             where: {
+        //                 id: user.id,
+        //             },
+        //             data: {
+        //                 score: score,
+        //             },
+        //         })
+        //     }
+        // })
+
         return json({ users })
     }
     catch (err) {
@@ -62,7 +116,7 @@ export async function loader() {
 
 export default function users() {
     let data = useLoaderData()
-    console.log({ data })
+    console.log("Final data: ", { data })
 
     return (
         <div className='flex justify-center w-full overflow-auto items-stretch rounded-xl md:items-center content-center'>
@@ -85,7 +139,7 @@ export default function users() {
                                 <span>{user.displayName}</span>
                             </td>
                             <td className='border px-8 py-4'>
-                                <span>{user.team ? user.team.name : "no team"}</span>
+                                <span>{user.team ? user.team.name : "No team"}</span>
                             </td>
                             <td className='border px-8 py-4'>
                                 <span>{user.score}</span>

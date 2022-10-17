@@ -24,6 +24,7 @@ export async function action({ request, params }) {
                 id: taskId,
             },
             select: {
+                // solutionsCounter: true, rmnvlv
                 flag: true,
             },
         })
@@ -41,6 +42,16 @@ export async function action({ request, params }) {
         })
 
         if (isCorrect) {
+            // rmnlvl
+            // counter = 1 + task.solutionsCounter
+            // let correctSolution = await prisma.task.update({
+            //     where: {
+            //         id: taskId,
+            //     },
+            //     data: {
+            //         solutionsCounter: counter,
+            //     }
+            // })
             return json({ ok: true });
         } else {
             return json({ error: { message: 'Flag is incorrect. Please try again' } })
