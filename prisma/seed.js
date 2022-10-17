@@ -34,6 +34,7 @@ async function main() {
                     displayName: name.toUpperCase(),
                     password: 'password',
                     role: roles[Math.floor(Math.random() * roles.length)],
+                    // score: 0, rmnvlv
                 }
             })
         })
@@ -55,7 +56,8 @@ async function main() {
                         connect: {
                             email: players[Math.floor(Math.random() * players.length)].email,
                         }
-                    }
+                    },
+                    // solutionsCounter: 0, rmnvlv
                 }
             })
         })

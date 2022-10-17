@@ -35,10 +35,11 @@ model Player {
   teamId    String?
   tasks     Task[]
   solutions Solution[]
+  // score     Int rmnvlv
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  likes      Like[]
+  likes     Like[]
 }
 
 model Session {
@@ -103,8 +104,9 @@ model Task {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  solutions Solution[]
-  likes     Like[]
+  solutions        Solution[]
+  // solutionsCounter Int rmnvlv
+  likes            Like[]
 }
 
 model Like {
@@ -113,6 +115,7 @@ model Like {
   player    Player   @relation(fields: [playerId], references: [id])
   playerId  String
   createdAt DateTime @default(now())
+
   @@unique([taskId, playerId])
 }
 
