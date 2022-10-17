@@ -23,11 +23,12 @@ export async function loader() {
         })
 
         // Ищем правильно решеные таски для каждого игрока
-        users.forEach(async (user) => {
+        for (let i = 0; i < users.length; i++) {
+            let user = users[i]
             // Считаем результат
             let score = 0
 
-            if (user.team) {
+            if (users[i].team) {
                 let solutions = await prisma.solution.findMany({
                     where: {
                         teamId: user.team.id,
@@ -36,73 +37,26 @@ export async function loader() {
                 })
                 console.log({ solutions })
 
-                // for (let i = 0; i < solutions.length; i++) {
-                solutions.forEach((solution) => {
+                for (let s = 0; s < solutions.length; s++) {
                     for (let j = 0; j < tasks.length; j++) {
-                        // console.log(`${task.id} ${solution.taskId}`)
-
-                        // console.log(task.id, solution.taskId)
-                        if (tasks[j].id == solution.taskId) {
-                            // if (tasks[j].id == solutions[i].taskId) {
-                            console.log("I am here")
+                        if (tasks[j].id == solutions[s].taskId) {
                             // Нужна формула по-сложнее
                             score += tasks[j].points
 
                             console.log(score)
-
-                            user = Object.assign(user, { score: score });
                         }
                     }
-                })
+                }
             }
 
-            // console.log(`${user.displayName}: ${score}`)
+            users[i] = { ...user, score: score }
+        }
 
-            // user.score = score
-            user = Object.assign(user, { score: score });
-
-            // console.log({ user })
-        })
-
-        // Ищем правильно решеные таски для каждого игрока
-        // for (let user of users) {
-
-
-        //     // Считаем результат
-        //     let score
-
-        //     if (user.team) {
-        //         let solutions = await prisma.solution.findMany({
-        //             where: {
-        //                 teamId: user.team.id,
-        //                 isCorrect: true,
-        //             },
-        //         })
-
-        //         for (let solution of solutions) {
-        //             for (let task of tasks) {
-        //                 console.log(`${task.id} ${solution.taskId}`)
-
-        //                 if (solution.taskId == task.id) {
-        //                     // Нужна формула по-сложнее
-        //                     score = score + task.points
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     // console.log(`${user.displayName}: ${score}`)
-
-        //     user.score = score
-        //     // user = Object.assign(user, score);
-
-        //     // console.log({ user })
-        // }
-
-        console.log({ users })
         return json({ users })
     }
     catch (err) {
         console.log(err)
+        throw err
     }
 }
 
