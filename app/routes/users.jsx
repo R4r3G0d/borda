@@ -46,8 +46,26 @@ export async function loader() {
                 for (let s = 0; s < solutions.length; s++) {
                     for (let j = 0; j < tasks.length; j++) {
                         if (tasks[j].id == solutions[s].taskId) {
-                            // Нужна формула по-сложнее
-                            score += tasks[j].points
+                            
+                            //Считаем все удачные решения для таска
+                            let solutionCounter = await prisma.solution.count({
+                                where: {
+                                    taskId: tasks[j].id,
+                                    isCorrect: true,
+                                }
+                            })
+
+                            //Нужна формула по-сложнее
+                            //Вот формула посложнее
+                            if ((solutionCounter > 1) && (tasks[j].points - tasks[j].points * 0.1 * (solutionCounter - 1)) > 0.5 * tasks[j].points) {
+                                points = tasks[j].points - tasks[j].points * 0.1 * (solutionCounter - 1)
+                            } else if ((solutionCounter > 1) && (tasks[j].points - tasks[j].points * 0.1 * (solutionCounter - 1)) < 0.5 * tasks[j].points) {
+                                points = tasks[j].points * 0.5
+                            } else {
+                                points = tasks[j].points
+                            }
+
+                            score += points
 
                             console.log(score)
                         }
