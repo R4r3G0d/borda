@@ -14,10 +14,11 @@ module.exports = {
     'bg-violet-500',
   ],
   theme: {
-    // borderRadius: {
-    //   DEFAULT: '2px',
-    // },
     extend: {
+      colors: {
+        'error': 'hsla(10, 50%, 50%, 0.1)',
+        'error-dark': '#FF0000'
+      },
       animation: {
         'spin-slow': 'spin 30s linear infinite',
       }
