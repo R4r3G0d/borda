@@ -33,7 +33,7 @@ export default function () {
                 </div>
                 <div className='h-full w-full border-b'></div>
             </div>
-            <div className='pt-12'>
+            <div className='pt-12 px-5'>
                 <Outlet />
             </div>
         </>
