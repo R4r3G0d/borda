@@ -7,7 +7,7 @@ import { Field } from '~/components/Field'
 export default function ({ disabled }) {
     const fetcher = useFetcher()
 
-    let inputRef = React.forwardRef()
+    let inputRef = React.createRef()
 
     return (
         <fetcher.Form
