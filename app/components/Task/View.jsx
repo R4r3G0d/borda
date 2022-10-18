@@ -43,7 +43,7 @@ export default function ({ task, controls }) {
 
                     <div className='py-5 w-full'>{task.content}</div>
 
-                    <TaskFlagInput />
+                    <TaskFlagInput disabled={task.solved} />
 
                     {task.solutions.length > 0
                         ? <TaskSolutions solutions={task.solutions} />

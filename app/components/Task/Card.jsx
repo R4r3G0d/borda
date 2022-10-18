@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { NavLink } from '@remix-run/react'
 import { motion } from 'framer-motion'
-import { FlagIcon, ThumbUpIcon } from '@heroicons/react/outline'
+import { FlagIcon, ThumbUpIcon, CheckIcon } from '@heroicons/react/outline'
 
 import { TaskHeader } from '.'
 
@@ -25,32 +25,39 @@ export default function ({ task, link, isActive }) {
             <NavLink
                 to={link}
                 className={clsx(
-                    'w-full flex flex-col py-4 px-5 border border-gray-300 rounded-md bg-white',
-                    { 'border-blue-600 shadow-blue-600/50 ': isActive },
-                    'shadow-lg'
-                    // 'bg-gradient-to-r from-cyan-300 to-blue-300'
+                    'relative w-full flex flex-col',
+                    'outline outline-1 outline-gray-300 rounded-md',
+                    'shadow-lg bg-white',
+                    { 'outline-2 outline-blue-600 shadow-blue-600/50 ': isActive },
                 )}
             >
+                <div className='py-4 px-5'>
+                    <TaskHeader
+                        name={task.name}
+                        category={task.category}
+                        points={task.points}
+                    />
 
-                <TaskHeader
-                    name={task.title}
-                    category={task.category}
-                    points={task.points}
-                />
-
-                <div className="h-10 w-full' flex flex-row justify-between items-center text-gray-400 font-normal">
-                    <div className="flex felx-row items-end">
-                        <FlagIcon className='w-5 h-5' strokeWidth={1} />
-                        <p className="ml-2">
-                            <span className="mr-1">{task.solves}</span>solve(s)
-                        </p>
-                    </div>
-                    <div className="flex flex-row items-end">
-                        <ThumbUpIcon className="w-5 h-5" strokeWidth={1} />
-                        <p className="ml-2">{task.likes}</p>
+                    <div className="h-10 w-full' flex flex-row justify-between items-center text-gray-400 font-normal">
+                        <div className="flex felx-row items-end">
+                            <FlagIcon className='w-5 h-5' strokeWidth={1.5} />
+                            <p className="ml-2">
+                                <span className="mr-1">{task.solves}</span>solve(s)
+                            </p>
+                        </div>
+                        <div className="flex flex-row items-end">
+                            <ThumbUpIcon className="w-5 h-5" strokeWidth={1} />
+                            <p className="ml-2">{task.likes}</p>
+                        </div>
                     </div>
                 </div>
-
+                {task.isSolved
+                    ? (
+                        <div className='absolute top-0 left-0 w-full h-full flex justify-center items-center rounded-md bg-green-500 opacity-60'>
+                            <CheckIcon className='h-16 w-16 text-green-300' strokeWidth={1} />
+                        </div>
+                    ) : null
+                }
             </NavLink>
         </motion.div>
     )

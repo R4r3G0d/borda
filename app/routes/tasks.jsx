@@ -13,49 +13,51 @@ import authenticator from '~/utils/auth.server'
 import { TaskGrid, TaskCard } from '~/components/Task'
 
 
-export let loader = async ({ request }) => {
-	let player = await authenticator.isAuthenticated(request, {
-		failureRedirect: "/sign-in"
-	});
+export async function loader({ request }) {
+	try {
+		let player = await authenticator.isAuthenticated(request, {
+			failureRedirect: "/sign-in"
+		});
 
-	let tasks = await prisma.task.findMany({
-		where: {
-			disabled: false,
-		},
-		include: {
-			author: {
-				select: {
-					id: true,
-					displayName: true,
+		let tasks = await prisma.task.findMany({
+			where: {
+				disabled: false,
+			},
+			include: {
+				author: {
+					select: {
+						id: true,
+						displayName: true,
+					},
+				},
+				_count: {
+					select: {
+						likes: true,
+						// solutions: true,
+						// solutions: { where: { isCorrect: true } },
+					},
 				},
 			},
-			_count: {
-				select: {
-					likes: true,
-					// solutions: true,
-					// solutions: { where: { isCorrect: true } },
-				},
-			},
-		},
-	});
+		});
 
-	await Promise.all(
-		tasks.map(async function (task) {
-			let solvesCount = await prisma.solution.count({
+		for (let i = 0; i < tasks.length; i++) {
+			let task = tasks[i]
+
+			let solves = await prisma.solution.count({
 				where: {
 					taskId: task.id,
-					isCorrect: false,
+					isCorrect: true,
 				},
 			})
 
-			let isSolved = Boolean(false)
+			let isSolved = false
 
 			if (player.teamId) {
 				let result = await prisma.solution.findFirst({
 					where: {
 						taskId: task.id,
 						teamId: player.teamId,
-						isCorrect: false,
+						isCorrect: true,
 					},
 					select: { isCorrect: true },
 				})
@@ -65,16 +67,19 @@ export let loader = async ({ request }) => {
 				}
 			}
 
+			let likes = task._count.likes
 
-			task.solves = solvesCount;
-			task.solved = isSolved;
-
-			task.likes = task._count.likes
 			delete task._count
-		})
-	)
 
-	return json({ tasks, player });
+			tasks[i] = { ...task, solves, likes, isSolved }
+		}
+
+		return json({ tasks, player });
+	}
+	catch (err) {
+		console.log(err)
+		throw err
+	}
 }
 
 const sortOptions = ['category', 'name', 'points']
@@ -93,8 +98,6 @@ export default function Tasks() {
 	let url = location.pathname
 	// let newSearchParams = new URLSearchParams({ sort: sortProp });
 	let { taskId } = useParams();
-
-	console.log(tasks)
 
 	return (
 		<div className='absolute top-0 left-0 h-screen w-full overflow-hidden bg-slate-100'>

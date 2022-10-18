@@ -4,7 +4,7 @@ import { useFetcher } from '@remix-run/react'
 import { Button } from '~/components/Button'
 import { Field } from '~/components/Field'
 
-export default function () {
+export default function ({ disabled }) {
     const fetcher = useFetcher()
 
     let inputRef = React.forwardRef()
@@ -28,27 +28,18 @@ export default function () {
 
             <fieldset
                 className='flex flex-row'
-                disabled={fetcher.submission}>
+                disabled={fetcher.submission || disabled}>
                 <Field
                     className='m-0'
                     name='flag'
-                    // id='flag'
                     placeholder='flag{s0m3_fl4g}'
                     ref={inputRef}
                 />
                 <Button
-                    // className={`ml-2 hover:bg-gray-800 ${fetcher.submission ? 'bg-gray-700' : 'bg-black'}`}
                     className='ml-2 h-11'
                     type='submit'
-                    name='check'
+                    text='check'
                 />
-                {/* <button
-                    type='submit'
-                    className={`ml-2 h-10 px-3 rounded-md ${fetcher.submission ? 'bg-gray-700' : 'bg-black'}  text-white text-sm`}
-
-                >
-                    Check
-                </button> */}
             </fieldset>
 
         </fetcher.Form >

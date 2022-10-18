@@ -21,6 +21,7 @@ const Input = React.forwardRef(function Input(props, ref) {
         'transition ease-in-out',
         'focus:text-gray-700 focus:bg-white focus:outline-none focus:border-blue-600',
         'hover:border-gray-500',
+        'disabled:focus:border-gray-300',
         { 'border-red-500 focus:border-red-500 hover:border-red-500': props.error },
         props.Classname
     )

@@ -32,6 +32,27 @@ export async function loader({ request, params }) {
             },
         })
 
+        if (player.teamId) {
+            let result = await prisma.solution.findFirst({
+                where: {
+                    taskId: task.id,
+                    teamId: player.teamId,
+                    isCorrect: true,
+                },
+                select: { isCorrect: true },
+            })
+
+            let solved = false
+
+            if (result) {
+                solved = true
+            }
+
+            task = { ...task, solved }
+        }
+
+        console.log({ task })
+
         return json({ task, player })
     } catch (e) {
         console.log(e)
