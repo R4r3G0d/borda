@@ -1,9 +1,9 @@
 import * as React from 'react'
 import clsx from 'clsx'
-import { useMatches, Link } from '@remix-run/react'
+import { useMatches } from '@remix-run/react'
 import { Disclosure, Transition } from '@headlessui/react'
 import { ChevronRightIcon } from '@heroicons/react/solid'
-import { Hacker2 } from './Video'
+import { Hacker2, Hacker } from './Video'
 
 
 function RedBox({ error }) {
