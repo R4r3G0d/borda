@@ -21,18 +21,26 @@ export async function loader({ request, params }) {
                         displayName: true,
                     },
                 },
-                solutions: {
-                    select: {
-                        flag: true,
-                        player: { select: { displayName: true } },
-                        createdAt: true,
-                        isCorrect: true,
-                    }
-                },
             },
         })
 
+        let solutions = []
+        let solved = false
+
         if (player.teamId) {
+            solutions = await prisma.solution.findMany({
+                where: {
+                    taskId: task.id,
+                    teamId: player.teamId,
+                },
+                select: {
+                    flag: true,
+                    player: { select: { displayName: true } },
+                    createdAt: true,
+                    isCorrect: true,
+                }
+            })
+
             let result = await prisma.solution.findFirst({
                 where: {
                     taskId: task.id,
@@ -42,23 +50,19 @@ export async function loader({ request, params }) {
                 select: { isCorrect: true },
             })
 
-            let solved = false
-
             if (result) {
                 solved = true
             }
 
-            task = { ...task, solved }
         }
+
+        task = { ...task, solved, solutions }
 
         console.log({ task })
 
         return json({ task, player })
     } catch (e) {
         console.log(e)
-        if (e instanceof NotFoundError) {
-            throw new Response('Not Found', { status: 404 });
-        }
         throw e
     }
 }
