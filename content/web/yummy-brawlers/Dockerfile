@@ -1,4 +1,4 @@
-FROM alpine:latest 
+FROM golang:latest as builder
 
 #RUN  apk add --update make
 
@@ -9,7 +9,7 @@ RUN go build -o ./yummy-brawlers ./main.go
 
 FROM alpine:latest
 
-#RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates
 
 COPY --from=builder ./yummy-brawlers .
 

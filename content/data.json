@@ -87,5 +87,39 @@
 			"name": "r4r3g0d",
 			"contact": "@dropder"
 		}
+	},
+	{
+		"title": "audiotask",
+		"description": "Ух, ты, кто-то прислал нам гс и спрятал там флаг",
+		"category": "stego",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{W0w_th1s_fl4g}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"output1.wav"
+		]
+	},
+	{
+		"title": "audiotask2",
+		"description": "У нас получилось расшифровать прошлый файл и мы решили сдлеать свой аудиосекрет",
+		"category": "stego",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{H1_th1s_1s_flag}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"audiosecret.wav"
+		]
 	}
+
+
 ]
