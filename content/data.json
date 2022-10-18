@@ -1,12 +1,12 @@
 [
 	{
 		"title": "Flag format",
-		"description": "Во всех тасках флаг будет иметь формат:MACTF{Y0u_ar3_W3LC0ME}, если флаг имеет другой формат, об этом будет сказано",
+		"description": "Во всех тасках флаг будет иметь формат:ADM{Y0u_ar3_W3LC0ME}, если флаг имеет другой формат, об этом будет сказано",
 		"category": "misc",
 		"complexity": "easy",
 		"points": 1000,
 		"hint": "",
-		"flag": "MACTF{Y0u_ar3_W3LC0ME}",
+		"flag": "ADM{Y0u_ar3_W3LC0ME}",
 		"author": {
 			"name": "r4r3g0d",
 			"contact": "@dropder"
@@ -19,7 +19,7 @@
 		"complexity": "easy",
 		"points": 1000,
 		"hint": "",
-		"flag": "MACTF{sh3lly_Putb_legi}",
+		"flag": "ADM{sh3lly_Putb_legi}",
 		"author": {
 			"name": "r4r3g0d",
 			"contact": "@dropder"
@@ -37,7 +37,7 @@
 		"complexity": "easy",
 		"points": 1000,
 		"hint": "",
-		"flag": "MACTF{g0_n3xt_really_3asy}",
+		"flag": "ADM{g0_n3xt_really_3asy}",
 		"author": {
 			"name": "r4r3g0d",
 			"contact": "@dropder"
@@ -53,7 +53,7 @@
 		"complexity": "easy",
 		"points": 1000,
 		"hint": "",
-		"flag": "MACTF{makara_is_my_fav_university}",
+		"flag": "ADM{makara_is_my_fav_university}",
 		"author": {
 			"name": "thdmax",
 			"contact": "@THDMAX"
@@ -82,7 +82,7 @@
 		"complexity": "easy",
 		"points": 1000,
 		"hint": "",
-		"flag": "MACTF{go_go_sko_kov}",
+		"flag": "ADM{go_go_sko_kov}",
 		"author": {
 			"name": "r4r3g0d",
 			"contact": "@dropder"
