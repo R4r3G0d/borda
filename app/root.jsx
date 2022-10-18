@@ -11,11 +11,11 @@ import {
     useLoaderData
 } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import {clsx} from 'clsx'
+import { clsx } from 'clsx'
 
 import styles from './styles/tailwind.css'
 import authenticator from './utils/auth.server'
-import { ServerError } from './components/Errors'
+import { ServerError, NotFoundError } from './components/Errors'
 import { Navbar, Profile, Navigation } from './components/Navbar'
 import { Button } from '~/components/Button'
 
@@ -84,26 +84,27 @@ export default function App() {
     );
 }
 
-// export function CatchBoundary() {
-//     const caught = useCatch()
-//     const location = useLocation()
-//     console.error('CatchBoundary', caught)
-//     if (caught.status === 404) {
-//         return (
-//             <html lang='en' className='dark'>
-//                 <head>
-//                     <title>Oh no...</title>
-//                     <Links />
-//                 </head>
-//                 <body className='bg-white transition duration-500 dark:bg-gray-900'>
-//                     <FourOhFour/>
-//                     <Scripts />
-//                 </body>
-//             </html>
-//         )
-//     }
-//     throw new Error(`Unhandled error: ${caught.status}`)
-// }
+export function CatchBoundary() {
+    const caught = useCatch()
+    const location = useLocation()
+    console.error('CatchBoundary', caught)
+    if (caught.status === 404) {
+        return (
+            <html lang='en' theme='dark'>
+                <head>
+                    <title>Not Found</title>
+                    <Links />
+                </head>
+                <body className='bg-white transition duration-500'>
+                    <Navbar />
+                    <NotFoundError />
+                    <Scripts />
+                </body>
+            </html>
+        )
+    }
+    throw new Error(`Unhandled error: ${caught.status}`)
+}
 
 export function ErrorBoundary({ error }) {
     console.error(error)
@@ -115,6 +116,7 @@ export function ErrorBoundary({ error }) {
                 <Links />
             </head>
             <body>
+                <Navbar />
                 <ServerError error={error} />
                 <Scripts />
             </body>
