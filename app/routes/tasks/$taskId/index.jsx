@@ -34,6 +34,7 @@ export async function loader({ request, params }) {
                     teamId: player.teamId,
                 },
                 select: {
+                    id: true,
                     flag: true,
                     player: { select: { displayName: true } },
                     createdAt: true,
@@ -57,8 +58,6 @@ export async function loader({ request, params }) {
         }
 
         task = { ...task, solved, solutions }
-
-        console.log({ task })
 
         return json({ task, player })
     } catch (e) {

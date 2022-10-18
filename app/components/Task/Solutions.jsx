@@ -3,14 +3,15 @@ import { CheckIcon, XCircleIcon } from '@heroicons/react/outline'
 
 export default function ({ solutions }) {
     let sortedSolutions = solutions.sort(function (a, b) {
-        return b.createdAt.localeCompare(a.createdAt);
-    });
+        return b.createdAt.localeCompare(a.createdAt)
+    })
+    
     return (
         <div className='grow mt-5 w-full'>
-            <table class="table-auto w-full">
+            <table className='table-auto w-full'>
                 <tbody>
                     {sortedSolutions.map((solution) => (
-                        <tr className='h-10 whitespace-nowrap'>
+                        <tr key={solution.id} className='h-10 whitespace-nowrap'>
                             <td>{moment().from(solution.createdAt, Boolean)} ago</td>
                             <td className='px-3'>{solution.player.displayName}</td>
                             <td className='px-3'>{solution.flag}</td>
