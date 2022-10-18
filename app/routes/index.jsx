@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useLoaderData } from '@remix-run/react'
 import Typist from 'react-typist'
 
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
@@ -10,9 +9,6 @@ export async function action({ request }) {
 }
 
 export default function RootPage() {
-    const data = useLoaderData()
-    console.log(data)
-
     const [isTypingDone, setTypingDone] = React.useState(0)
 
     // is it possible not to use useEffect???
@@ -43,7 +39,6 @@ export default function RootPage() {
                                 <Typist.Delay ms={100} />
 
                                 <span className='whitespace-nowrap'>2022🚩</span>
-                                {/* <FlagIcon className='w-16 h-16' strokeWidth={1}/> */}
                                 <Typist.Delay ms={1000} />
                             </Typist>
                         )}
