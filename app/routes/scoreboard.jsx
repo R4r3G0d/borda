@@ -15,9 +15,10 @@ export async function loader() {
             }
         })
 
-        for (let i = 0; i < teams.lenght; i++) {
+        for (let i = 0; i < teams.length; i++) {
             let team = teams[i]
             let score = 0
+            let points = 0
 
             let solutions = await prisma.solution.findMany({
                 where: {
@@ -28,8 +29,8 @@ export async function loader() {
 
             console.log({ solutions })
 
-            for (let k = 0; k < solutions.lenght; j++) {
-                for (let j = 0; j < tasks.lenght; k++) {
+            for (let k = 0; k < solutions.length; k++) {
+                for (let j = 0; j < tasks.length; j++) {
                     if (tasks[j].id == solutions[k].taskId) {
 
                         let solutionCounter = await prisma.solution.count({
@@ -49,12 +50,12 @@ export async function loader() {
 
                         score += points
 
-                        console.log(score)
+                        console.log("I am here", score)
                     }
                 }
             }
 
-            team = { ...team, score: score }
+            teams[i] = { ...team, score: score }
             console.log(teams[i])
         }
 
