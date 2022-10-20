@@ -6,7 +6,7 @@ function Label({ className, ...labelProps }) {
         <label
             {...labelProps}
             className={clsx(
-                'inline-block text-base text-gray-700 mb-2',
+                'inline-block text-sm text-gray-700 mb-2',
                 className,
             )}
         />
@@ -50,7 +50,7 @@ function InputError({ children }) {
     }
 
     return (
-        <p className='text-sm px-2 text-red-500'>
+        <p className='text-sm p-2 text-red-500'>
             {children}
         </p>
     )

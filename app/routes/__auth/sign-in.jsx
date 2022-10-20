@@ -5,44 +5,57 @@ import {
     useTransition
 } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import { z } from 'zod'
+import { AuthorizationError } from 'remix-auth'
+
 
 import authenticator from '~/utils/auth.server'
-import { sessionStorage } from '~/utils/session.server'
-import { passwordValidator } from '~/utils/validator'
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
 import { EmailField, PasswordField } from '~/components/Field'
 import { Button } from '~/components/Button'
 
 export async function loader({ request }) {
-    await authenticator.isAuthenticated(request, {
-        successRedirect: "/tasks"
-    });
-
-    const session = await sessionStorage.getSession(
-        request.headers.get("Cookie")
-    );
-
-    const error = session.get("sessionErrorKey");
-    return json({ error });
-};
+    return await authenticator.isAuthenticated(request, { successRedirect: "/tasks" })
+}
 
 export async function action({ request, context }) {
-    return await authenticator.authenticate("form", request, {
-        successRedirect: "/tasks",
-        failureRedirect: "/sign-in",
-        throwOnError: true,
-        context,
-    });
+    try {
+        return await authenticator.authenticate("form", request, {
+            successRedirect: "/tasks",
+            throwOnError: true,
+            context,
+        })
 
-    // let session = await getSession(request.headers.get("cookie"));
-    // let error = session.get(authenticator.sessionErrorKey);
-    // return json({ error });
-};
+    } catch (error) {
+        console.log(error)
+
+        switch (true) {
+            case error instanceof Response: return error
+            case error instanceof AuthorizationError:
+                let errors = {}
+
+                try {
+                    let issues = JSON.parse(error.message)
+                    console.log(issues)
+                    issues.forEach(function (issue) {
+                        errors[issue.path[0]] = issue.message
+                    });
+
+                } catch (e) {
+                    errors.message = error.message
+                }
+
+                return json({ error: { ...errors } })
+            default:
+                throw error
+        }
+    }
+}
 
 export default function SignIn() {
-    const actionData = useActionData();
-    const transition = useTransition();
+    const actionData = useActionData()
+    const transition = useTransition()
+
+    console.log({ actionData })
 
     return (
         <div className='container max-w-sm mx-auto '>
@@ -53,12 +66,15 @@ export default function SignIn() {
                 <div className='p-4 flex justify-center'>
                     <MakaraIcon className={'w-56 h-56'} />
                 </div>
-                <div className='min-h-8'>
-                    {actionData?.error ? <p>{actionData?.error?.message}</p> : null}
-                </div>
 
-                <EmailField error={actionData?.error.email} />
-                <PasswordField error={actionData?.error.password} />
+                {actionData?.error?.message ? (
+                    <div className='min-h-8 h-10 text-sm text-red-500 flex items-center'>
+                        <p>{actionData.error.message}</p>
+                    </div>
+                ) : null}
+
+                <EmailField error={actionData?.error?.email} />
+                <PasswordField error={actionData?.error?.password} />
 
                 <Button
                     className={'w-full h-12 mt-4'}

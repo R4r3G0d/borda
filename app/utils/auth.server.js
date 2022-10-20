@@ -1,7 +1,6 @@
 import { Authenticator, AuthorizationError } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
-import { NotFoundError } from '@prisma/client/runtime'
-import { z, ZodError } from 'zod'
+import { z } from 'zod'
 import * as bcrypt from 'bcrypt'
 
 import prisma from './prisma.server'
@@ -14,45 +13,30 @@ const authenticator = new Authenticator(sessionStorage, {
 
 authenticator.use(
     new FormStrategy(async function ({ form }) {
-        let signInInput = {
-            email: form.get('email'),
-            password: form.get('password'),
-        }
+		let values = Object.fromEntries(form)
 
         const validator = z.object({
-            email: z.string().email(),
+            email: z.string().email('Invalid email format.'),
             password: z.string().min(5),
         })
 
-        try {
-            await validator.parseAsync(signInInput)
+        await validator.parseAsync(values)
 
-            let player = await prisma.player.findUniqueOrThrow({
-                where: { email: signInInput.email },
-                include: { team: { select: { id: true, name: true } } }
-            })
+        let player = await prisma.player.findUniqueOrThrow({
+            where: { email: values.email },
+            include: { team: { select: { id: true, name: true } } }
+        })
 
-            let match = await bcrypt.compare(signInInput.password, player.password)
+        let match = await bcrypt.compare(values.password, player.password)
 
-            if (match) {
-                delete player.password
-                return await Promise.resolve({ ...player })
-            } else {
-                throw new AuthorizationError("That email and password combination is incorrect.")
-            }
-        } catch (err) {
-            console.log(err)
-            if (err instanceof NotFoundError) {
-                throw new AuthorizationError("Couldn't find your account.")
-            } else if (err instanceof ZodError) {
-                throw new AuthorizationError("Incorrect password or email format.")
-            } else {
-                throw new AuthorizationError("Internal error. Please try again later.")
-            }
+        if (match) {
+            delete player.password
+            return await Promise.resolve({ ...player })
+        } else {
+            throw new AuthorizationError("That email and password combination is incorrect.")
         }
-
-    }),
-);
+    })
+)
 
 async function validatePassword(password, hashedPassword) {
     return await bcrypt.compare(password, hashedPassword)
@@ -60,7 +44,7 @@ async function validatePassword(password, hashedPassword) {
 
 function hashPassword(password) {
     return bcrypt.hash(password, 10)
-};
+}
 
 export default authenticator
 export { hashPassword, validatePassword }
