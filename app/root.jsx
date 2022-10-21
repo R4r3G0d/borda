@@ -13,6 +13,7 @@ import {
 import { json } from '@remix-run/node'
 import { clsx } from 'clsx'
 
+import  Timer  from '~/components/Timer'
 import styles from './styles/tailwind.css'
 import authenticator from './utils/auth.server'
 import { ServerError, NotFoundError } from './components/Errors'
@@ -56,7 +57,7 @@ export default function App() {
                     : (
                         <Navbar color={location.pathname === '/' ? 'bg-black' : null}>
                             <Navigation />
-                            <div className='flex-auto text-center px-4 text-red-500 text-sm justify-self-center'>Timer</div>
+                            <Timer/>
                             {data.player
                                 ? <Profile player={data.player} />
                                 : (
