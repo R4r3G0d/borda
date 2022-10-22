@@ -119,7 +119,22 @@
 		"files": [
 			"audiosecret.wav"
 		]
+	},
+	{
+		"title": "traffic",
+		"description": "Когда админ делал таск, он решил отправить флаг своим друзьям, но он не знал что его прослушивали...",
+		"category": "forensics",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{Sh4rk_w1th0uT_w4t3r}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"traffic.pcapng"
+		]
 	}
-
 
 ]
