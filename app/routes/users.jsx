@@ -46,7 +46,7 @@ export async function loader() {
                 for (let s = 0; s < solutions.length; s++) {
                     for (let j = 0; j < tasks.length; j++) {
                         if (tasks[j].id == solutions[s].taskId) {
-                            
+
                             //Считаем все удачные решения для таска
                             let solutionCounter = await prisma.solution.count({
                                 where: {
