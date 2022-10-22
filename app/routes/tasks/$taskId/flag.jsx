@@ -17,6 +17,14 @@ export async function action({ request, params }) {
         return json({ error: { message: 'Please join a team before submitting your answer' } })
     }
 
+    let oldSolution = await prisma.solution.findFirst({
+        where: {
+            id: taskId,
+            teamId: player.teamId,
+            isCorrect: true,
+        }
+    })
+
     try {
         await validateFlag(inputFlag)
         task = await prisma.task.findUnique({
@@ -41,7 +49,7 @@ export async function action({ request, params }) {
             }
         })
 
-        if (isCorrect) {
+        if (isCorrect && oldSolution == null) {
             // rmnlvl
             // counter = 1 + task.solutionsCounter
             // let correctSolution = await prisma.task.update({
@@ -53,8 +61,10 @@ export async function action({ request, params }) {
             //     }
             // })
             return json({ ok: true });
-        } else {
+        } else if (oldSolution == null) {
             return json({ error: { message: 'Flag is incorrect. Please try again' } })
+        } else {
+            return json({ error: { message: 'You already solve this task. He-he cheater :)' } })
         }
 
     } catch (error) {
