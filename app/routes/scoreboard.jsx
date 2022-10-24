@@ -49,8 +49,6 @@ export async function loader() {
                         }
 
                         score += points
-
-                        console.log("I am here", score)
                     }
                 }
             }
@@ -71,6 +69,10 @@ export default function teams() {
     let data = useLoaderData()
     console.log({ data })
 
+    let sortedTeams = data.teams.sort(function (a, b) { 
+		return b.score?.toString().localeCompare(a.score, undefined, { 'numeric': true });
+	});
+
     return (
         <div className='flex justify-center w-full overflow-auto items-stretch rounded-xl md:items-center content-center'>
             <table className="border-auto table-auto w-full max-w-3xl text-sm">
@@ -82,7 +84,7 @@ export default function teams() {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.teams.map((team, index) => (
+                    {sortedTeams.map((team, index) => (
                         <tr key={team.id} className='h-10 whitespace-nowrap'>
                             <td className="border px-8 py-4">
                                 <span>{index + 1}</span>
