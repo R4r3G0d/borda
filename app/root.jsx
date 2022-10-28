@@ -13,6 +13,7 @@ import {
 import { json } from '@remix-run/node'
 import { clsx } from 'clsx'
 
+import prisma from '~/utils/prisma.server'
 import  Timer  from '~/components/Timer'
 import styles from './styles/tailwind.css'
 import authenticator from './utils/auth.server'
@@ -35,13 +36,23 @@ export function links() {
 export async function loader({ request }) {
     let session = await authenticator.isAuthenticated(request)
 
-    return json({ player: session })
+    let start = await prisma.settings.findUnique({
+        where: {
+            name: "start"
+        }
+    })
+    let finish = await prisma.settings.findUnique({
+        where: {
+            name: "finish"
+        }
+    })
+
+    return json({ session, start, finish })
 };
 
 export default function App() {
     let data = useLoaderData()
     let location = useLocation()
-
     return (
         <html lang='en' theme='dark'>
             <head>
@@ -57,7 +68,10 @@ export default function App() {
                     : (
                         <Navbar color={location.pathname === '/' ? 'bg-black' : null}>
                             <Navigation />
-                            <Timer/>
+                            <Timer 
+                            start={data.start.value}
+                            finish={data.finish.value}
+                            />
                             {data.player
                                 ? <Profile player={data.player} />
                                 : (

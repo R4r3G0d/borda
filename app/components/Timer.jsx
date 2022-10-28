@@ -1,25 +1,23 @@
 import * as React from 'react'
 
 
-const Timer = () => {
+const Timer = ({start, finish}) => {
     const [days, setDays] = React.useState(0)
     const [hours, setHours] = React.useState(0)
     const [minutes, setMinutes] = React.useState(0)
     const [seconds, setSeconds] = React.useState(0)
 
-    const finishDate = "November, 13, 2022, 12:00"
-    const startDate = "November, 10, 2022, 12:00"
     let isStarted
 
     const getTime = () => {
-        if (Date.now() < Date.parse(startDate)) {
-            const time = Date.parse(startDate) - Date.now()
+        if (Date.now() < (start)) {
+            const time = (start) - Date.now()
             setDays(Math.floor(time / (1000 * 60 * 60 * 24)))
             setHours(Math.floor((time / (1000 * 60 * 60)) % 24))
             setMinutes(Math.floor((time / 1000 / 60) % 60))
             setSeconds(Math.floor((time / 1000) % 60))
         } else {
-            const time = Date.parse(finishDate) - Date.now()
+            const time = (finish) - Date.now()
             setDays(Math.floor(time / (1000 * 60 * 60 * 24)))
             setHours(Math.floor((time / (1000 * 60 * 60)) % 24))
             setMinutes(Math.floor((time / 1000 / 60) % 60))
@@ -27,7 +25,7 @@ const Timer = () => {
         }
     };
     React.useEffect(() => {
-        const interval = setInterval(() => getTime(startDate), 1000)
+        const interval = setInterval(() => getTime(start), 1000)
 
         return () => clearInterval(interval)
     }, []);
@@ -43,7 +41,7 @@ const Timer = () => {
     })
     return (
         <>
-            {(Date.now() < Date.parse(startDate)) ? isStarted = false : isStarted = true}
+            {(Date.now() < (start)) ? isStarted = false : isStarted = true}
 
             <div className="h-full py-2 flex items-center justify-center space-x-3">
                 {isStarted ? <p>Time to end:</p> : <p>Time to start:</p>}

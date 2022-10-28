@@ -79,7 +79,15 @@ async function main() {
         })
     );
 
+//     const tags = [{ label: 'flag_prefix', value: "flag" }, { label: 'start', value: "1668330000000" }, { label: 'finish', value: "1668070800000" }]
+//     const settings = await Promise.all(
+//        tags.forEach(function (tag) {
+//        return  prisma.settings.create ( { data: { name: tag.label, value: tag.value } } )
+//    }))
+
     await prisma.settings.create({ data: { name: "flag_prefix", value: "flag" } })
+    await prisma.settings.create({ data: { name: "start", value: "1668330000000" } })
+    await prisma.settings.create({ data: { name: "finish", value: "1668070800000" } })
 
     playerWithTeams = await prisma.player.findMany({
         include: { team: { select: { name: true } } }
