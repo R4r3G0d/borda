@@ -60,7 +60,7 @@
 		}
 	},
 	{
-		"title": "Free BTC",
+		"title": "free-btc",
 		"description": "На макару была соверешена кибер атака, нам прислали отчет, попробуй помочь найти злоумышленника. Flag format: username",
 		"category": "forensics",
 		"complexity": "middle",
@@ -106,7 +106,7 @@
 	},
 	{
 		"title": "audiotask2",
-		"description": "У нас получилось расшифровать прошлый файл и мы решили сдлеать свой аудиосекрет",
+		"description": "У нас получилось расшифровать прошлый файл и мы решили сделать свой аудиосекрет",
 		"category": "stego",
 		"complexity": "easy",
 		"points": 1000,
@@ -167,6 +167,20 @@
 		"files": [
 			"IMG.heic"
 		]
+	},
+	{
+		"title": "Feedback",
+		"description": "https://forms.gle/SewfFWm77CnsgvmW9 опрос",
+		"category": "misc",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{thx_f0r_att3nt1on}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		}
+		
 	}
 
 ]
