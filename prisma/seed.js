@@ -21,6 +21,14 @@ function getMultipleRandom(arr, num) {
     return shuffled.slice(0, num);
 }
 
+const Content = `# Urbem refeci tum artus captis carinas. O obicit pia luctusque terrae; 
+et socerialiqua loquentem et comis **ab nulla**!
+
+Lorem markdownum Cipus considere [*creverunt tumuerunt
+eligit*](http://nam.net/tertiae.aspx) Ascalaphus excelsa spumis: canes Thracum
+freto.
+`
+
 async function main() {
     await prisma.$queryRaw`SET TIMEZONE="Europe/Moscow";`
 
@@ -47,7 +55,7 @@ async function main() {
             return prisma.task.create({
                 data: {
                     name: "Task " + number,
-                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in magna eget sem volutpat efficitur.',
+                    content: Content,
                     category: categories[Math.floor(Math.random() * categories.length)],
                     points: Math.ceil(Math.random() * 10) * 100,
                     flag: "flag{some_flag}",
