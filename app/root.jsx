@@ -47,7 +47,7 @@ export async function loader({ request }) {
         }
     })
 
-    return json({ session, start, finish })
+    return json({ player: session, start, finish })
 };
 
 export default function App() {
