@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Form, useActionData, useTransition } from '@remix-run/react'
+import { Form, useActionData, useLoaderData, useTransition } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
 import { z } from 'zod'
 
@@ -9,36 +9,59 @@ import { taskValidator, formatZodError } from '~/utils/validator'
 import { Button } from '~/components/Button'
 import { Field } from '~/components/Field'
 
+export default function EditTask() {
+    const { task } = useLoaderData()
+    const actionData = useActionData()
+    console.log({ actionData })
+    const transition = useTransition()
+    // const [disabled, setDisabled] = React.useState(true)
 
-export default function NewTask() {
-    const actionData = useActionData();
-    const transition = useTransition();
+
+
+    // TODO: Markdown preview
+    // const [mardown, setMarkdown] = React.useState(task.content)
 
     return (
         <div className="container w-full max-w-2xl mx-auto sm:px-6">
             <h2 className='py-4 text-2xl text-gray-900  border-b border-gray-300'>
-                New Task
+                Edit Task
             </h2>
             <Form
                 method='post'
                 // reloadDocument
                 replace
-                className='flex flex-wrap justify-end py-5'
+                className='flex flex-wrap  justify-end py-5'
+            // TODO: disable button until form values changed
+            // onChange={function (e) {
+            //     if (player.displayName !== e.target.value) {
+            //         setDisabled(false)
+            //     } else { setDisabled(true) }
+            // }}
             >
+                <Field
+                    name='id'
+                    label='ID'
+                    defaultValue={task.id}
+                    disabled
+                    className='cursor-not-allowed'
+                />
                 <Field
                     name='name'
                     label='Name'
+                    defaultValue={task.name}
                     error={actionData?.error.name}
                 />
                 <div className='w-full flex flex-row justify-between'>
                     <Field
                         name='category'
                         label='Category'
+                        defaultValue={task.category}
                         error={actionData?.error.category}
                     />
                     <Field
                         name='points'
                         label='Points'
+                        defaultValue={task.points}
                         error={actionData?.error.points}
                         className='ml-5'
                     />
@@ -46,17 +69,20 @@ export default function NewTask() {
                 <Field
                     name='labels'
                     label='Tags'
+                    defaultValue={task.labels}
                     placeholder='tag1-tag2-tag3'
                     error={actionData?.error.labels}
                 />
                 <Field
                     name='flag'
                     label='Flag'
+                    defaultValue={task.flag}
                     error={actionData?.error.flag}
                 />
                 <Field
                     name='content'
                     label='Description'
+                    defaultValue={task.content}
                     type='textarea'
                     style={{ height: 256 }}
                 />
@@ -65,16 +91,24 @@ export default function NewTask() {
                     text='Save'
                     disabled={transition.submission}
                 />
-
-                {actionData?.error ? <p>{actionData.error.message}</p> : null}
-
             </Form>
+
         </div>
     )
 }
 
-export async function action({ request }) {
-    player = await authenticator.isAuthenticated(request)
+export async function loader({ request, params }) {
+    await authenticator.isAuthenticated(request);
+
+    let task = await prisma.task.findUnique({
+        where: { id: params.taskId }
+    })
+
+    return json({ task })
+}
+
+export async function action({ request, params }) {
+    await authenticator.isAuthenticated(request)
 
     let formData = await request.formData()
     let values = Object.fromEntries(formData)
@@ -85,15 +119,12 @@ export async function action({ request }) {
 
     try {
         taskValidator.parse(values)
-        task = await prisma.task.create({
+        await prisma.task.update({
+            where: { id: params.taskId },
             data: {
-                ...values,
-                author: { connect: { id: player.id } },
-                hint: 'hint'
+                ...values
             }
         })
-
-        return redirect('/tasks/' + task.id)
 
     } catch (err) {
         console.log(err)
@@ -101,6 +132,8 @@ export async function action({ request }) {
             let error = formatZodError(err)
             console.log(error)
             return json({ error })
-        } else throw err
+        }
     }
+
+    return redirect('/tasks/' + params.taskId)
 }
