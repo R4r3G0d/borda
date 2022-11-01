@@ -5,7 +5,7 @@ import {
 	useLoaderData, useLocation, useParams, useSearchParams
 } from '@remix-run/react'
 import { Listbox, Transition } from '@headlessui/react'
-import { SelectorIcon, CheckIcon, PlusIcon } from '@heroicons/react/solid'
+import { ChevronUpDownIcon, CheckIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import prisma from '~/utils/prisma.server'
@@ -114,7 +114,7 @@ export default function Tasks() {
 
 								<Listbox.Button className="h-8 relative flex flex-row justify-between items-center border bg-white">
 									<div className="px-3 text-sm capitalize">{sortProp}</div>
-									<SelectorIcon
+									<ChevronUpDownIcon
 										className="h-5 w-5 text-gray-400"
 										aria-hidden="true"
 									/>

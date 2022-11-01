@@ -1,4 +1,4 @@
-import { TrashIcon, PencilAltIcon } from '@heroicons/react/outline'
+import { TrashIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import { Link, useFetcher } from '@remix-run/react'
 // import { Switch } from '@headlessui/react'
 // import { useState } from 'react'
@@ -15,7 +15,7 @@ export default function () {
                 </button>
             </fetcher.Form>
             <Link to='./edit' className='flex items-center ml-3'>
-                <PencilAltIcon className='w-5 h-5' strokeWidth={1} />
+                <PencilSquareIcon className='w-5 h-5' strokeWidth={1} />
             </Link>
             <p>Сделать кнопку для скрытия таска</p>
             {/* <Switch

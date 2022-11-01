@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { CheckIcon, XCircleIcon } from '@heroicons/react/outline'
+import { CheckIcon, XCircleIcon } from '@heroicons/react/24/outline'
 
 export default function ({ solutions }) {
     let sortedSolutions = solutions.sort(function (a, b) {

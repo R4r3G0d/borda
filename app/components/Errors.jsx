@@ -2,7 +2,7 @@ import * as React from 'react'
 import clsx from 'clsx'
 import { useMatches } from '@remix-run/react'
 import { Disclosure, Transition } from '@headlessui/react'
-import { ChevronRightIcon } from '@heroicons/react/solid'
+import { ChevronRightIcon } from '@heroicons/react/24/solid'
 import { Hacker2, Hacker } from './Video'
 
 

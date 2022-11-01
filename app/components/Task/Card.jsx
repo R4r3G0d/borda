@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { NavLink } from '@remix-run/react'
 import { motion } from 'framer-motion'
-import { FlagIcon, ThumbUpIcon, CheckIcon } from '@heroicons/react/outline'
+import { FlagIcon, HandThumbUpIcon, CheckIcon } from '@heroicons/react/24/outline'
 
 import { TaskHeader } from '.'
 
@@ -46,7 +46,7 @@ export default function ({ task, link, isActive }) {
                             </p>
                         </div>
                         <div className="flex flex-row items-end">
-                            <ThumbUpIcon className="w-5 h-5" strokeWidth={1} />
+                            <HandThumbUpIcon className="w-5 h-5" strokeWidth={1} />
                             <p className="ml-2">{task.likes}</p>
                         </div>
                     </div>

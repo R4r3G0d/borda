@@ -1,7 +1,7 @@
 import { useLoaderData, Form } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
-import { TrashIcon } from '@heroicons/react/outline'
-import { StarIcon, InformationCircleIcon } from '@heroicons/react/solid'
+import { TrashIcon } from '@heroicons/react/24/outline'
+import { StarIcon, InformationCircleIcon } from '@heroicons/react/24/solid'
 
 import prisma from '~/utils/prisma.server'
 import authenticator from '~/utils/auth.server'

@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import ReactMarkdown from 'react-markdown'
 
 import { TaskSolutions, TaskFlagInput, TaskHeader, TaskControls } from '.'
-import { LinkIcon } from '@heroicons/react/outline'
+import { LinkIcon } from '@heroicons/react/24/outline'
 // import {ArrowRightOnRectangleIcon} from '@heroicons/react/24/solid'
 
 export default function ({ task, controls }) {
