@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+    you-really-brawler:
+        container_name: you-really-brawler
+        image: you-really-brawler
+        build:
+            context: ./web/you-really-brawler
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - "8080:6900"
+    yummy-brawlers:
+        container_name: yummy-brawlers
+        image: yummy-brwlers
+        build:
+            context: ./web/yummy-brawlers
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - "8080:6901"

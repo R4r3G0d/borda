@@ -1,5 +1,7 @@
 const { PrismaClient, Role } = require('@prisma/client');
 const bcrypt = require('bcrypt');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 const prisma = new PrismaClient();
 
@@ -13,71 +15,70 @@ prisma.$use(async (params, next) => {
     return next(params);
 });
 
-function getMultipleRandom(arr, num) {
-    const shuffled = [...arr].sort(function () {
-        return 0.5 - Math.random()
-    })
-
-    return shuffled.slice(0, num);
-}
-
 async function main() {
+    const data = yaml.load(fs.readFileSync('./challenges/data.yml', 'utf8'));
+    console.log(data.challenges)
+
     await prisma.$queryRaw`SET TIMEZONE="Europe/Moscow";`
 
-    const names = ['max', 'simen', 'nikita', 'vova', 'roma']
-    const roles = [Role.ADMIN, Role.PLAYER]
-    const players = await Promise.all(
+    const names = ['THDMAX', 'rmnvlv', 'r4r3g0d', 'Nixes', 'simen']
+    const admins = await Promise.all(
         names.map(function (name) {
             return prisma.player.create({
                 data: {
-                    email: name + '@borda.com',
-                    displayName: name.toUpperCase(),
+                    email: name.toLowerCase() + '@borda.com',
+                    displayName: name,
                     password: 'password',
-                    role: roles[Math.floor(Math.random() * roles.length)],
-                    // score: 0, rmnvlv
-                }
+                    role: Role.ADMIN
+                },
             })
         })
-    );
+    )
 
-    const categories = ["WEB", "CRYPTO", "FORENSICS", "OSINT", "REVERSE", "BINARY", "OTHER"]
-    const indexies = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const tasks = await Promise.all(
-        indexies.map((number) => {
-            return prisma.task.create({
-                data: {
-                    name: "Task " + number,
-                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in magna eget sem volutpat efficitur.',
-                    category: categories[Math.floor(Math.random() * categories.length)],
-                    points: Math.ceil(Math.random() * 10) * 100,
-                    flag: "flag{some_flag}",
-                    hint: "Hint...",
+        data.challenges.map((task) => {
+            return prisma.task.upsert({
+                where: {
+                    name: task.title,
+                },
+                update: {
+                    content: task.description,
+                    category: task.category.toUpperCase(),
+                    points: task.points,
+                    flag: task.flag,
+                },
+                create: {
+                    name: task.title,
+                    content: task.description,
+                    category: task.category.toUpperCase(),
+                    points: task.points,
+                    flag: task.flag,
                     author: {
                         connect: {
-                            email: players[Math.floor(Math.random() * players.length)].email,
+                            email: admins[Math.floor(Math.random() * admins.length)].email,
                         }
                     },
-                    // solutionsCounter: 0, альтернативный вариант
-                }
+                },
             })
         })
-    );
+    )
 
-    const teamNames = ["Drochers", "4fk_H4ck3r5"]
-    const teams = await Promise.all(
-        teamNames.map((name) => {
-            const playerId = players[Math.floor(Math.random() * players.length)].id
-            return prisma.team.create({
-                data: {
-                    name: name,
-                    captainId: playerId,
-                    players: {
-                        connect: [{ id: playerId }],
-                    },
-                }
-            })
-        })
-    );
+    const id = admins[Math.floor(Math.random() * admins.length)].id
+    adminTeam = await prisma.team.create({
+        data: {
+            name: 'Admin Team',
+            captainId: id,
+            players: {
+                connect: [
+                    { id: admins[0].id },
+                    { id: admins[1].id },
+                    { id: admins[2].id },
+                    { id: admins[3].id },
+                    { id: admins[4].id }
+                ],
+            },
+        }
+    })
 
     await prisma.settings.createMany({
         data: [
@@ -85,15 +86,6 @@ async function main() {
             { name: "start", value: "1668330000000" },
             { name: "finish", value: "1668070800000" },
         ]
-    })
-
-    playerWithTeams = await prisma.player.findMany({
-        include: { team: { select: { name: true } } }
-    })
-
-    console.log(`Created ${playerWithTeams.length} players`)
-    playerWithTeams.forEach(function (player) {
-        console.log(`${player.displayName}: ${player.role}, Team: ${player.team?.name}`)
     })
 }
 

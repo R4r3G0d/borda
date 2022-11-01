@@ -68,6 +68,8 @@ enum Category {
   REVERSE
   BINARY
   OTHER
+  MISC
+  STEGO
 }
 
 // model Label {
@@ -93,7 +95,7 @@ model Task {
   points   Int
   flag     String
   content  String
-  hint     String
+  hint     String?
 
   author   Player @relation(fields: [authorId], references: [id])
   authorId String

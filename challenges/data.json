@@ -1,0 +1,181 @@
+[
+	{
+		"title": "Flag format",
+		"description": "Во всех тасках флаг будет иметь формат:ADM{Y0u_ar3_W3LC0ME}, если флаг имеет другой формат, об этом будет сказано",
+		"category": "misc",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{Y0u_ar3_W3LC0ME}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		}
+	},
+	{
+		"title": "You really brawler",
+		"description": "Бравлеры создали сайт для девочек, но какие-то роботы проникли на сайт и зарегистрировали там свои аккаунты(((",
+		"category": "web",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{sh3lly_Putb_legi}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		}
+	},
+	{
+		"title": "X-file",
+		"description": "Мы получили странный файл, возможно он поможет найти флаг, попробуй его открыть",
+		"category": "misc",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{g0_n3xt_really_3asy}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"secret"
+		]
+	},
+	{
+		"title": "From A to Z",
+		"description": "Для решения этого зашифрованного флага потребуется только простой шифр замены. Переставьте буквы от А до Z. nzpziz_rh_nb_uze_fmrevihrgb",
+		"category": "crypto",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{makara_is_my_fav_university}",
+		"author": {
+			"name": "thdmax",
+			"contact": "@THDMAX"
+		}
+	},
+	{
+		"title": "free-btc",
+		"description": "На макару была соверешена кибер атака, нам прислали отчет, попробуй помочь найти злоумышленника. Flag format: username",
+		"category": "forensics",
+		"complexity": "middle",
+		"points": 1000,
+		"hint": "",
+		"flag": "Ezhov-admin",
+		"author": {
+			"name": "rmnvlv",
+			"contact": "@rmnvlv"
+		},
+		"files": [
+			"archive.zip"
+		]
+	},
+	{
+		"title": "thx for online services",
+		"description": "Вы устроились на работу в компанию, которая не так давно потерпела кибер атаку. Сотрудники утверждают, что надежно шифровали пароли. Вот один из их зашифрованных паролей: TUFDVEZ7Z29fZ29fc2tvX2tvdn0=. Сможете ли вы расшифровать пароль админа",
+		"category": "crypto",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{go_go_sko_kov}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		}
+	},
+	{
+		"title": "audiotask",
+		"description": "Ух, ты, кто-то прислал нам гс и спрятал там флаг",
+		"category": "stego",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{W0w_th1s_fl4g}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"output1.wav"
+		]
+	},
+	{
+		"title": "audiotask2",
+		"description": "У нас получилось расшифровать прошлый файл и мы решили сделать свой аудиосекрет",
+		"category": "stego",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{H1_th1s_1s_flag}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"audiosecret.wav"
+		]
+	},
+	{
+		"title": "traffic",
+		"description": "Когда админ делал таск, он решил отправить флаг своим друзьям, но он не знал что его прослушивали...",
+		"category": "forensics",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{Sh4rk_w1th0uT_w4t3r}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"traffic.pcapng"
+		]
+	},
+	{
+		"title": "AfterWOrk",
+		"description": "Я работю специалистом по ИБ в одной из компаний Санкт-Петербурга. Сегодня был долгий день и после работы я решил зайти поесть в кафе. Я попробовал все сэндвичи в этом кафе, но так вышло, что я забыл заплатить. Напишите мне сколько я должен. Вот фото с работы. Флаг это стоимость заказа",
+		"category": "osint",
+		"complexity": "hard",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{1600}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"photo.jpg"
+		]
+	},
+	{
+		"title": "MusicShop",
+		"description": "Привет, подписчики, я купил себе пластинку. Вот фото, слабо узнать где я купил? Флаг - название тотргового центра",
+		"category": "osint",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{Нарвский}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"IMG.heic"
+		]
+	},
+	{
+		"title": "Feedback",
+		"description": "https://forms.gle/SewfFWm77CnsgvmW9 опрос",
+		"category": "misc",
+		"complexity": "easy",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{thx_f0r_att3nt1on}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		}
+		
+	}
+
+]
