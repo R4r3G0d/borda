@@ -79,14 +79,20 @@ async function main() {
         })
     );
 
-    await prisma.settings.create({ data: { name: "flag_prefix", value: "flag" } })
+    await prisma.settings.createMany({
+        data: [
+            { name: "flag_prefix", value: "flag" },
+            { name: "start", value: "1668330000000" },
+            { name: "finish", value: "1668070800000" },
+        ]
+    })
 
     playerWithTeams = await prisma.player.findMany({
         include: { team: { select: { name: true } } }
     })
 
     console.log(`Created ${playerWithTeams.length} players`)
-    playerWithTeams.forEach(function(player){
+    playerWithTeams.forEach(function (player) {
         console.log(`${player.displayName}: ${player.role}, Team: ${player.team?.name}`)
     })
 }
