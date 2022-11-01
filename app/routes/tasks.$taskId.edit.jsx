@@ -14,9 +14,8 @@ export default function EditTask() {
     const actionData = useActionData()
     console.log({ actionData })
     const transition = useTransition()
+
     // const [disabled, setDisabled] = React.useState(true)
-
-
 
     // TODO: Markdown preview
     // const [mardown, setMarkdown] = React.useState(task.content)
@@ -28,7 +27,6 @@ export default function EditTask() {
             </h2>
             <Form
                 method='post'
-                // reloadDocument
                 replace
                 className='flex flex-wrap  justify-end py-5'
             // TODO: disable button until form values changed
@@ -92,7 +90,6 @@ export default function EditTask() {
                     disabled={transition.submission}
                 />
             </Form>
-
         </div>
     )
 }
@@ -115,10 +112,8 @@ export async function action({ request, params }) {
     let points = values.points
     values.points = Number(points)
 
-    console.log(values)
-
     try {
-        taskValidator.parse(values)
+        await taskValidator.parse(values)
         await prisma.task.update({
             where: { id: params.taskId },
             data: {

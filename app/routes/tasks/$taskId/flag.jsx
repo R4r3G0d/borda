@@ -1,35 +1,38 @@
-import { json } from '@remix-run/node';
-import prisma from '~/utils/prisma.server';
-import authenticator from '~/utils/auth.server';
-import { validateFlag } from '~/utils/task.server';
+import { json } from '@remix-run/node'
+import {z} from 'zod'
+
+import prisma from '~/utils/prisma.server'
+import authenticator from '~/utils/auth.server'
+import { flagValidator, formatZodError } from '~/utils/validator'
 
 
 export async function action({ request, params }) {
-    // await new Promise(resolve => setTimeout(resolve, 1000));
+    const player = await authenticator.isAuthenticated(request)
+    const formData = await request.formData()
+    const values = Object.fromEntries(formData)
 
-    const player = await authenticator.isAuthenticated(request);
-    const inputFlag = (await request.formData()).get('flag');
-    const taskId = params.taskId;
-
-
-    console.log({ player, inputFlag })
-    if (player.teamId === null) {
+    if (!player.teamId) {
         return json({ error: { message: 'Please join a team before submitting your answer' } })
     }
 
-    let oldSolution = await prisma.solution.findFirst({
+    let correctSolution = await prisma.solution.findFirst({
         where: {
-            id: taskId,
+            id: params.taskId,
             teamId: player.teamId,
             isCorrect: true,
         }
     })
 
+    if (correctSolution) {
+        return json({ error: { message: 'You already solve this task, cheater :) Try to solve an other one.' } })
+    }
+
     try {
-        await validateFlag(inputFlag)
-        task = await prisma.task.findUnique({
+        await flagValidator.parse(values.flag)
+
+        const task = await prisma.task.findUnique({
             where: {
-                id: taskId,
+                id: params.taskId,
             },
             select: {
                 // solutionsCounter: true, rmnvlv
@@ -37,38 +40,31 @@ export async function action({ request, params }) {
             },
         })
 
-        let isCorrect = (inputFlag == task.flag)
-
-        let newSolution = await prisma.solution.create({
+        const solution = await prisma.solution.create({
             data: {
-                flag: inputFlag,
-                task: { connect: { id: taskId } },
+                flag: values.flag,
+                task: { connect: { id: params.taskId } },
                 team: { connect: { id: player.teamId } },
                 player: { connect: { id: player.id } },
-                isCorrect: isCorrect
+                isCorrect: values.flag == task.flag
             }
         })
 
-        if (isCorrect && oldSolution == null) {
-            // rmnlvl
-            // counter = 1 + task.solutionsCounter
-            // let correctSolution = await prisma.task.update({
-            //     where: {
-            //         id: taskId,
-            //     },
-            //     data: {
-            //         solutionsCounter: counter,
-            //     }
-            // })
-            return json({ ok: true });
-        } else if (oldSolution == null) {
+        if (!solution.isCorrect) {
             return json({ error: { message: 'Flag is incorrect. Please try again' } })
-        } else {
-            return json({ error: { message: 'You already solve this task. He-he cheater :)' } })
         }
 
-    } catch (error) {
-        console.log(error.message)
-        return json({ error: { message: 'There was a problem submitting your answer' } });
+        return json({ ok: true })
+
+    } catch (err) {
+        console.log(err)
+
+        if (err instanceof z.ZodError) {
+            let error = formatZodError(err)
+            console.log(error)
+            return json({ error })
+        }
+
+        return json({ error: { message: 'There was a problem submitting your answer' } })
     }
 }
