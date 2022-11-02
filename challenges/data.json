@@ -176,6 +176,38 @@
 			"contact": "@dropder"
 		}
 		
+	},
+	{
+		"title": "gigameme",
+		"description": "А вы любите мемы? Насколько deep вы готовы enjoy, чтобы добраться до dark fantasy?",
+		"category": "stego",
+		"complexity": "medium",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{1_L0ve_f0otb4ll}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"memo.jpg"
+		]
+	},
+	{
+		"title": "Hi, Jonathan Joestar",
+		"description": "Чебзик открыл для себя новую соц сеть, вот его первый пост, но что-то странное в этом",
+		"category": "crypto",
+		"complexity": "medium",
+		"points": 1000,
+		"hint": "",
+		"flag": "ADM{tw1tt3r_msg_fl4g}",
+		"author": {
+			"name": "r4r3g0d",
+			"contact": "@dropder"
+		},
+		"files": [
+			"message.txt"
+		]
 	}
 
 ]

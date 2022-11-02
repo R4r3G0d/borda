@@ -155,7 +155,7 @@ challenges:
           
     - title: Feedback
       description: | 
-        Нам очень важно получить от вас обратную связь, поэтому мы сделали [опрос](https://forms.gle/SewfFWm77CnsgvmW9).
+          Нам очень важно получить от вас обратную связь, поэтому мы сделали [опрос](https://forms.gle/SewfFWm77CnsgvmW9).
       category: misc
       complexity: easy
       points: 1000
@@ -163,3 +163,29 @@ challenges:
       author:
           name: r4r3g0d
           contact: "@dropder"
+
+    - title: gigameme
+      description: >-
+          А вы любите мемы? Насколько deep вы готовы enjoy, чтобы добраться до dark fantasy? [meme](http://localhost:3000/files/stego/gigameme/memo.jpg)
+      category: stego
+      complexity: medium
+      points: 1000
+      flag: ADM{1_L0ve_f0otb4ll}
+      author:
+          name: r4r3g0d
+          contact: '@dropder'
+      files:
+          - memo.jpg
+
+      - title: Jonathan_Joestar
+        description: |
+            Чебзик открыл для себя новую соц сеть, вот его первый пост, но что-то странное в [этом](http://localhost:3000/files/crypto/Jonathan_Joestar/message.txt)
+      category: crypto
+      complexity: medium
+      points: 1000
+      flag: ADM{tw1tt3r_msg_fl4g}
+      author:
+          name: r4r3g0d
+          contact: '@dropder'
+      files:
+          - message.txt
