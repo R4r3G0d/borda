@@ -2,14 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* html,
-body,
-#root,
-#root>div {
-    height: 100vh;
-    font-style: Roboto;
-} */
-
+:root {
+    color-scheme: dark;
+}
 
 .Cursor {
     color: rgb(249 115 22)
