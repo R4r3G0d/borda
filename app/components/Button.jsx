@@ -5,7 +5,7 @@ function Button({ text, className, ...buttonPprops }) {
         <button
             className={clsx(
                 'h-10 w-24 min-w-min flex items-center justify-center',
-                'text-white capitalize bg-zinc-800 whitespace-nowrap',
+                'text-white bg-zinc-800 whitespace-nowrap',
                 'border-2 border-zinc-500 rounded-md px-4',
                 'transition-transform',
                 'hover:bg-black hover:border-black-800',
