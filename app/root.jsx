@@ -1,6 +1,5 @@
 import {
     Links,
-    Link,
     LiveReload,
     Meta,
     Outlet,
@@ -13,12 +12,11 @@ import {
 import { json } from '@remix-run/node'
 
 import prisma from '~/utils/prisma.server'
-import  Timer  from '~/components/Timer'
 import styles from './styles/tailwind.css'
 import authenticator from './utils/auth.server'
+
 import { ServerError, NotFoundError } from './components/Errors'
-import { Navbar, Profile, Navigation } from './components/Navbar'
-import { Button } from '~/components/Button'
+import { Navbar } from './components/Navbar'
 
 export const meta = () => ({
     charset: 'utf-8',
@@ -33,27 +31,18 @@ export function links() {
 }
 
 export async function loader({ request }) {
-    let session = await authenticator.isAuthenticated(request)
+    let player = await authenticator.isAuthenticated(request)
 
-    let start = await prisma.settings.findUnique({
-        where: {
-            name: "start"
-        }
-    })
-    let finish = await prisma.settings.findUnique({
-        where: {
-            name: "finish"
-        }
-    })
+    let event = await prisma.event.findUnique({ where: { id: 1 } })
 
-    return json({ player: session, start, finish })
+    return json({ player, event })
 };
 
 export default function App() {
     let data = useLoaderData()
-    let location = useLocation()
+
     return (
-        <html lang='en' theme='dark'>
+        <html lang='en'>
             <head>
                 <meta charSet='utf-8' />
                 <meta name='viewport' content='width=device-width,initial-scale=1' />
@@ -61,35 +50,11 @@ export default function App() {
                 <Links />
                 <title>{meta.title ? title : 'ADMCTF'}</title>
             </head>
-            <body style={{ minWidth: 320 + 'px' }}>
-                {location.pathname.includes('sign') || location.pathname.includes('login')
-                    ? null
-                    : (
-                        <Navbar color={location.pathname === '/' ? 'bg-black' : null}>
-                            <Navigation />
-                            <Timer 
-                            start={data.start.value}
-                            finish={data.finish.value}
-                            />
-                            {data.player
-                                ? <Profile player={data.player} />
-                                : (
-                                    <Link
-                                        to='/tasks'
-                                        className='mr-4 flex items-center'
-                                    >
-                                        <Button text='Play' />
-                                    </Link>
-                                )
-                            }
-                        </Navbar>
-                    )
-                }
-
-                <main className='mt-14'>
+            <body style={{ minWidth: 320 + 'px' }} className='bg-black'>
+                <Navbar user={data.player} />
+                <main>
                     <Outlet />
                 </main>
-
                 {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
                 <ScrollRestoration />
                 <Scripts />
@@ -100,16 +65,16 @@ export default function App() {
 
 export function CatchBoundary() {
     const caught = useCatch()
-    const location = useLocation()
     console.error('CatchBoundary', caught)
+
     if (caught.status === 404) {
         return (
-            <html lang='en' theme='dark'>
+            <html lang='en'>
                 <head>
                     <title>Not Found</title>
                     <Links />
                 </head>
-                <body className='bg-white transition duration-500'>
+                <body className='bg-black transition duration-500'>
                     <Navbar />
                     <NotFoundError />
                     <Scripts />
@@ -121,15 +86,15 @@ export function CatchBoundary() {
 }
 
 export function ErrorBoundary({ error }) {
-    console.error(error)
-    const location = useLocation()
+    console.error('ErrorBoundary', error)
+
     return (
-        <html lang='en' className='dark'>
+        <html lang='en'>
             <head>
                 <title>Oh no...</title>
                 <Links />
             </head>
-            <body>
+            <body className='bg-black transition duration-500'>
                 <Navbar />
                 <ServerError error={error} />
                 <Scripts />
