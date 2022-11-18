@@ -37,7 +37,7 @@ challenges:
     - title: From A to Z
       description: |
           Для решения этого зашифрованного флага потребуется только простой шифр замены.
-          
+
           Переставьте буквы от А до Z. **nzpziz_rh_nb_uze_fmrevihrgb**
       category: crypto
       complexity: easy
@@ -50,7 +50,7 @@ challenges:
     - title: free-btc
       description: |
           На макару была соверешена кибер атака, нам прислали отчет, попробуй помочь найти злоумышленника. 
-          
+
           Flag format: username
       category: forensics
       complexity: middle
@@ -67,7 +67,7 @@ challenges:
           Вы устроились на работу в компанию, которая не так давно потерпела
           кибер атаку. Сотрудники утверждают, что надежно шифровали пароли. Вот один из
           их зашифрованных паролей: **TUFDVEZ7Z29fZ29fc2tvX2tvdn0=**. 
-          
+
           Сможете ли вы расшифровать пароль админа??
       category: crypto
       complexity: easy
@@ -79,7 +79,7 @@ challenges:
 
     - title: audiotask
       description: |
-        Ух, ты, кто-то прислал нам гс и спрятал там флаг
+          Ух, ты, кто-то прислал нам гс и спрятал там флаг
       category: stego
       complexity: easy
       points: 1000
@@ -124,7 +124,7 @@ challenges:
           был долгий день и после работы я решил зайти поесть в кафе. Я попробовал все сэндвичи
           в этом кафе, но так вышло, что я забыл заплатить. Напишите мне сколько я должен.
           Вот [фото](http://localhost:3000/files/osint/after-work/photo.jpg) с работы. 
-          
+
           **hint: Флаг это стоимость заказа**
       category: osint
       complexity: hard
@@ -139,9 +139,9 @@ challenges:
     - title: Music Shop
       description: |
           Привет, подписчики, я купил себе пластинку. 
-          
+
           Вот [фото](http://localhost:3000/files/osint/music-shop/IMG.heic), слабо узнать где я купил ее?
-          
+
           **hint: Флаг - название тотргового центра**
       category: osint
       complexity: easy
@@ -152,9 +152,9 @@ challenges:
           contact: "@dropder"
       files:
           - IMG.heic
-          
+
     - title: Feedback
-      description: | 
+      description: |
           Нам очень важно получить от вас обратную связь, поэтому мы сделали [опрос](https://forms.gle/SewfFWm77CnsgvmW9).
       category: misc
       complexity: easy
@@ -165,7 +165,7 @@ challenges:
           contact: "@dropder"
 
     - title: gigameme
-      description: >-
+      description: |
           А вы любите мемы? Насколько deep вы готовы enjoy, чтобы добраться до dark fantasy? [meme](http://localhost:3000/files/stego/gigameme/memo.jpg)
       category: stego
       complexity: medium
@@ -173,19 +173,19 @@ challenges:
       flag: ADM{1_L0ve_f0otb4ll}
       author:
           name: r4r3g0d
-          contact: '@dropder'
+          contact: "@dropder"
       files:
           - memo.jpg
 
-      - title: Jonathan_Joestar
-        description: |
-            Чебзик открыл для себя новую соц сеть, вот его первый пост, но что-то странное в [этом](http://localhost:3000/files/crypto/Jonathan_Joestar/message.txt)
+    - title: Jonathan_Joestar
+      description: |
+          Чебзик открыл для себя новую соц сеть, вот его первый пост, но что-то странное в [этом](http://localhost:3000/files/crypto/Jonathan_Joestar/message.txt)
       category: crypto
       complexity: medium
       points: 1000
       flag: ADM{tw1tt3r_msg_fl4g}
       author:
           name: r4r3g0d
-          contact: '@dropder'
+          contact: "@dropder"
       files:
           - message.txt
