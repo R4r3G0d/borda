@@ -1,19 +1,13 @@
-const Colors = new Map([
-    ["WEB", "yellow"],
-    ["CRYPTO", "lime"],
-    ["FORENSICS", "fuchsia"],
-    ["OSINT", "blue"],
-    ["REVERSE", "rose"],
-    ["BINARY", "red"],
-    ["OTHER", "violet"],
-])
+import clsx from 'clsx'
 
 export default function ({ name = 'No Title', category = 'OTHER', points = 0 }) {
     const icon = Array.from(category)[0];
-    const color = Colors.get(category)
+
     return (
         <div className="h-10 w-full flex flex-row">
-            <div className={`flex-none h-10 w-10 bg-${color}-500 font-semibold text-base text-center text-white leading-10 capitalize rounded-sm`}>
+            <div className={clsx('flex-none h-10 w-10 font-semibold text-base text-center text-white leading-10 capitalize rounded-sm',
+                'bg-white bg-opacity-25 backdrop-blur-xl'
+            )}>
                 {icon}
             </div>
             <div className="grow ml-3 h-10">

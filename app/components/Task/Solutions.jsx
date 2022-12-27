@@ -7,8 +7,8 @@ export default function ({ solutions }) {
     })
     
     return (
-        <div className='grow mt-5 w-full'>
-            <table className='table-auto w-full'>
+        <div className='mt-5 overflow-x-auto'>
+            <table className='table-auto '>
                 <tbody>
                     {sortedSolutions.map((solution) => (
                         <tr key={solution.id} className='h-10 whitespace-nowrap'>

@@ -17,6 +17,7 @@ prisma.$use(async (params, next) => {
 
 async function main() {
     const data = yaml.load(fs.readFileSync('./challenges/data.yml', 'utf8'));
+    
     console.log(data.challenges)
 
     await prisma.$queryRaw`SET TIMEZONE="Europe/Moscow";`
@@ -83,9 +84,17 @@ async function main() {
     await prisma.settings.createMany({
         data: [
             { name: "flag_prefix", value: "flag" },
-            { name: "start", value: "1668330000000" },
-            { name: "finish", value: "1668070800000" },
         ]
+    })
+
+    await prisma.event.create({
+        data:{
+            name: 'Admiral Makarov CTF 2022',
+            startDate: new Date('December 1, 2022 11:00:00 GMT+03:00'),
+            endDate: new Date('December 1, 2022 22:00:00 GMT+03:00'),
+            location: "Online",
+            format: 'Task-based'
+        }
     })
 }
 
