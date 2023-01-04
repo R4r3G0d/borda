@@ -6,7 +6,7 @@ function Label({ className, ...labelProps }) {
         <label
             {...labelProps}
             className={clsx(
-                'inline-block text-sm text-gray-700 mb-2',
+                'inline-block text-base text-white mb-3',
                 className,
             )}
         />
@@ -15,14 +15,13 @@ function Label({ className, ...labelProps }) {
 
 const Input = React.forwardRef(function Input(props, ref) {
     const className = clsx(
-        'block w-full h-11 px-3 py-1.5',
-        'text-base font-normal text-gray-700 bg-white bg-clip-padding',
-        'border border-solid border-gray-300 rounded',
-        'transition ease-in-out',
-        'focus:text-gray-700 focus:bg-white focus:outline-none focus:border-blue-600',
-        'hover:border-gray-500',
-        'disabled:focus:border-gray-300',
-        { 'border-red-500 focus:border-red-500 hover:border-red-500': props.error },
+        'w-full p-4',
+        'text-base text-white font-normal placeholder:text-white/30',
+        'bg-neutral-900',
+        'rounded-md border-2 border-white/10 hover:border-white/60 focus:border-blue-600',
+        'focus:outline outline-4 outline-blue-500/50 outline-offset-1',
+        // {'border-red-500 hover:border-red-500 focus:border-red-500': props.error },
+        'transition ease-out',
         props.Classname
     )
 
@@ -50,7 +49,7 @@ function InputError({ children }) {
     }
 
     return (
-        <p className='text-sm p-2 text-red-500'>
+        <p className='pt-3 text-sm text-red-500 text-center'>
             {children}
         </p>
     )
@@ -66,7 +65,7 @@ const Field = React.forwardRef(function Field(
     }, ref) {
 
     return (
-        <div className={clsx('w-full mb-4', className)}>
+        <div className={clsx('w-full', className)}>
             {label && (<Label htmlFor={name}>{label}</Label>)}
             <Input
                 // @ts-expect-error no idea 🤷‍♂️
@@ -91,7 +90,7 @@ function EmailField({ label, ...props }) {
             // type='email'
             name='email'
             label={label ? label : 'Email'}
-            placeholder='me@example.com'
+            placeholder='Email (e.g. me@example.com)'
             {...props}
         />
     )
@@ -103,7 +102,7 @@ function PasswordField({ label, name, ...props }) {
             type='password'
             name={name ? name : 'password'}
             label={label ? label : 'Password'}
-            // placeholder={label ? label : 'Password'}
+            placeholder={label ? label : 'Password'}
             {...props}
         />
     )

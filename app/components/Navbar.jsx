@@ -8,7 +8,7 @@ import {
     Bars3Icon,
     ChevronDownIcon,
     Cog6ToothIcon,
-    FlagIcon, 
+    FlagIcon,
     ListBulletIcon,
     SquaresPlusIcon,
     UserCircleIcon,
@@ -18,6 +18,31 @@ import {
 } from '@heroicons/react/24/outline'
 
 import { Button } from '~/components/Button'
+
+export function Navbar({ user }) {
+    let location = useLocation()
+
+    if (location.pathname.includes('sign') || location.pathname.includes('login')) return null
+    return (
+        <header
+            className={clsx(
+                'fixed top-0 z-50 w-full h-14',
+                'backdrop-blur-xl backdrop-filter',
+                'bg-black bg-opacity-70',
+                'border-b border-white border-opacity-25',
+                'shadow-xl'
+            )}
+        >
+            <nav className='h-full px-5 flex flex-row items-center justify-between'>
+                <NavbarLogo />
+                <NavbarMenu />
+                <NavbarAccount user={user?.displayName} team={user?.team?.name} />
+
+                <NavbarMobileMenu user={user?.displayName} />
+            </nav>
+        </header>
+    )
+}
 
 function NavbarLogo({ className }) {
     return (
@@ -158,14 +183,16 @@ function NavbarMobileMenu({ user }) {
 
 function NavbarAccount({ team, user }) {
     if (!user) {
-        return (<div className="hidden sm:flex flex-row ">
-            <Link to='/sign-in'>
-                <Button text='Log in' className='bg-neutral-200 text-black font-semibold hover:bg-white' />
-            </Link>
-            <Link to='/sign-up'>
-                <Button text='Sign up' className='ml-3' />
-            </Link>
-        </div>)
+        return (
+            <div className="hidden sm:flex flex-row ">
+                <Link to='/sign-in' className='flex items-center'>
+                    <Button text='Log in' small />
+                </Link>
+                <Link to='/sign-up' className='flex items-center'>
+                    <Button text='Sign up' className='ml-3' small />
+                </Link>
+            </div>
+        )
     }
 
     const links = [
@@ -243,30 +270,3 @@ function NavbarAccount({ team, user }) {
         </Menu >
     );
 }
-
-function Navbar({ user }) {
-    let location = useLocation()
-
-    if (location.pathname.includes('sign') || location.pathname.includes('login')) return null
-    return (
-        <header
-            className={clsx(
-                'fixed top-0 z-50 w-full h-14',
-                'backdrop-blur-xl backdrop-filter',
-                'bg-black bg-opacity-70',
-                'border-b border-white border-opacity-25',
-                'shadow-xl'
-            )}
-        >
-            <nav className='h-full px-5 flex flex-row items-center justify-between'>
-                <NavbarLogo />
-                <NavbarMenu />
-                <NavbarAccount user={user?.displayName} team={user?.team?.name} />
-
-                <NavbarMobileMenu user={user?.displayName} />
-            </nav>
-        </header>
-    )
-}
-
-export { Navbar }

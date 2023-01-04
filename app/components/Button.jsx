@@ -1,21 +1,38 @@
 import clsx from 'clsx';
 
-function Button({ text, className, ...buttonPprops }) {
+function Button({ text, small, big, icon, full, className, ...buttonPprops }) {
+    let medium
+    if (!small && !big) { medium = true }
+
+    const Icon = icon;
+
     return (
         <button
             className={clsx(
-                'h-10 w-24 min-w-min flex items-center justify-center',
-                'text-white bg-zinc-800 whitespace-nowrap',
-                'border-2 border-zinc-500 rounded-md px-4',
-                'transition-transform',
-                'hover:bg-black hover:border-black-800',
-                'disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:hover:bg-zinc-700 disabled:text-zinc-300',
+                [{ 'w-full': full }, { 'h-8': small, 'h-11': medium, ' h-14': big }],
+                { 'px-4': small, 'px-6': medium, 'px-8': big },
+                'rounded-md border-2 border-blue-600 border-opacity-50 ',
+                'flex items-center justify-center',
+                'bg-blue-600 hover:bg-blue-800 disabled:bg-blue-900',
+                ['text-white disabled:text-zinc-300', {'text-sm': small, 'text-base': medium, 'text-base': big }],
+                'disabled:cursor-not-allowed ',
                 'active:scale-90',
+                'transition-transform',
                 className
             )}
             {...buttonPprops}
         >
-            {text ? text : 'Text'}
+            {icon ? (
+                <div className={clsx('h-full', { 'mr-1': small, 'mr-2': medium, 'mr-2': big })}>
+                    <Icon
+                        className={clsx({ 'w-4 h-4': small, 'w-5 h-5': medium, 'w-6 h-6': big })}
+                        strokeWidth={1}
+                    />
+                </div>
+            ) : null}
+            <p className='h-full flex items-center whitespace-nowrap'>
+                {text ? text : 'Default'}
+            </p>
         </button>
     )
 }

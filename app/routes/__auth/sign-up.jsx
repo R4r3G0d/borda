@@ -81,35 +81,39 @@ export default function SignUp() {
         <div className='container max-w-sm mx-auto '>
             <Form
                 method="post"
-                className='px-6'
+                className='px-6 pb-8 grid grid-cols-1 gap-10'
             >
                 <div className='flex justify-center items-center p-6'>
                     <MakaraIcon className={'w-56 h-56'} />
                 </div>
 
-                <div className='min-h-8'>
-                    {actionData?.error ? <p>{actionData?.error?.message}</p> : null}
+                <div className='grid grid-cols-1 gap-4'>
+                    <EmailField error={actionData?.error.email} />
+                    <PasswordField error={actionData?.error.password} />
+                    <Field
+                        label='Display name'
+                        name='displayName'
+                        placeholder='Nickname or real name'
+                        error={actionData?.error.displayName}
+                    />
                 </div>
-
-                <EmailField error={actionData?.error.email} />
-                <PasswordField error={actionData?.error.password} />
-
-                <Field
-                    label='Display Name'
-                    name='displayName'
-                    error={actionData?.error.displayName}
-                />
-
-                <Button
-                    type='submit'
-                    className='w-full h-12 mt-4'
-                    text='Create Account'
-                    disabled={transition.submission}
-                />
-
-                <div className="h-16 flex items-center place-content-center">
-                    Already have an account?
-                    <Link to="/sign-in" className="pl-3 text-indigo-700">Sign in</Link>
+                <div>
+                    {
+                        actionData?.error?.message ? (
+                            <div className='h-16 -mt-4 text-sm text-red-500 flex items-center justify-center'>
+                                <p>{actionData.error.message}</p>
+                            </div>
+                        ) : null
+                    }
+                    <Button
+                        full
+                        text='Create account'
+                        disabled={transition.submission}
+                    />
+                    <div className="h-16 flex items-center place-content-center">
+                        Already have an account?
+                        <Link to="/sign-in" className="pl-3 text-blue-600">Sign in</Link>
+                    </div>
                 </div>
             </Form>
         </div>

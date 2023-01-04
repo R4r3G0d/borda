@@ -88,7 +88,6 @@ export default function IndexPage() {
                         <p className='mt-1 text-base'>Admiral Makarov State University of Maritime and Inland Shipping</p>
                         <a href='https://gumrf.ru/en/' className='mt-auto'>
                             <Button
-                                className=''
                                 text={
                                     <span className='flex flex-row items-center'>
                                         Visit website

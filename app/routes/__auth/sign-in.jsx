@@ -61,31 +61,38 @@ export default function SignIn() {
         <div className='container max-w-sm mx-auto '>
             <Form
                 method='post'
-                className='px-6'
+                className='px-6 pb-8 grid grid-cols-1 gap-10'
             >
                 <div className='p-4 flex justify-center'>
                     <MakaraIcon className={'w-56 h-56'} />
                 </div>
 
-                {actionData?.error?.message ? (
-                    <div className='min-h-8 h-10 text-sm text-red-500 flex items-center'>
-                        <p>{actionData.error.message}</p>
-                    </div>
-                ) : null}
-
-                <EmailField error={actionData?.error?.email} />
-                <PasswordField error={actionData?.error?.password} />
-
-                <Button
-                    className={'w-full h-12 mt-4'}
-                    text='Sign in'
-                    disabled={transition.submission}
-                />
-
-                <div className="h-16 flex items-center place-content-center">
-                    No account?
-                    <Link to="/sign-up" className="pl-3 text-indigo-700">Create new one</Link>
+                <div className='grid grid-cols-1 gap-4'>
+                    <EmailField error={actionData?.error?.email} />
+                    <PasswordField error={actionData?.error?.password} />
                 </div>
+
+                <div>
+                    {
+                        actionData?.error?.message ? (
+                            <div className='h-16 -mt-4 text-sm text-red-500 flex items-center justify-center'>
+                                <p>{actionData.error.message}</p>
+                            </div>
+                        ) : null
+                    }
+                    <Button
+                        text='Sign in'
+                        full
+                        disabled={transition.submission}
+                    />
+
+                    <div className="h-16 flex items-center place-content-center">
+                        No account?
+                        <Link to="/sign-up" className="pl-3 text-blue-600">Create new one</Link>
+                    </div>
+
+                </div>
+
             </Form>
         </div>
     )
