@@ -1,10 +1,10 @@
 import clsx from 'clsx'
 
-export default function ({ name = 'No Title', category = 'OTHER', points = 0 }) {
+export default function ({ name = 'No Title', category = 'OTHER', points = 0, className }) {
     const icon = Array.from(category)[0];
 
     return (
-        <div className="h-10 w-full flex flex-row">
+        <div className={clsx("h-10 w-full flex flex-row", className)}>
             <div className={clsx('flex-none h-10 w-10 font-semibold text-base text-center text-white leading-10 capitalize rounded-sm',
                 'bg-white bg-opacity-25 backdrop-blur-xl'
             )}>

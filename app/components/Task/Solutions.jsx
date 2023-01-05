@@ -1,14 +1,15 @@
 import moment from 'moment'
+import clsx from 'clsx'
 import { CheckIcon, XCircleIcon } from '@heroicons/react/24/outline'
 
-export default function ({ solutions }) {
+export default function ({ solutions, className }) {
     let sortedSolutions = solutions.sort(function (a, b) {
         return b.createdAt.localeCompare(a.createdAt)
     })
     
     return (
-        <div className='mt-5 overflow-x-auto'>
-            <table className='table-auto '>
+        <div className={clsx('relative overflow-x-auto', className)}>
+            <table className='w-full'>
                 <tbody>
                     {sortedSolutions.map((solution) => (
                         <tr key={solution.id} className='h-10 whitespace-nowrap'>

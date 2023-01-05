@@ -3,15 +3,6 @@ import { NavLink } from '@remix-run/react'
 import { motion } from 'framer-motion'
 import { FlagIcon, HandThumbUpIcon, CheckIcon } from '@heroicons/react/24/outline'
 
-import { TaskHeader } from '.'
-// import { TaskColors } from './Colors'
-
-const spring = {
-    type: "spring",
-    stiffness: 500,
-    damping: 30
-};
-
 export const TaskColors = new Map([
     ["WEB", "from-yellow-500 to-orange-600"],
     ["CRYPTO", "from-emerald-500 to-lime-600"],
@@ -21,81 +12,65 @@ export const TaskColors = new Map([
     ["BINARY", "from-red-500 to-rose-600"],
     ["OTHER", "from-stone-500 to-gray-600"],
     ["MISC", "from-violet-500 to-indigo-600"],
-    ["STEGO", ""]
+    ["STEGO", "from-red-500 to-rose-600"]
 ])
 
-export default function ({ task, link, isActive }) {
+export default function ({ task, link, isFocused }) {
     const color = TaskColors.get(task.category)
     const icon = Array.from(task.category)[0];
 
+    console.log(isFocused, task.id)
+
     return (
         <motion.div
-            layout
-            animate={{
-                scale: [1, 1.1, 1.1, 1, 1],
-                borderRadius: ["20%", "20%", "50%", "50%", "20%"],
-                border: {}
+            initial={{ scale: 0 }}
+            animate={{ rotate: 360, scale: 1 }}
+            transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20
             }}
-            transition={spring}
         >
-            <div className={clsx(
-                'w-full rounded-xl transition-transform ease-in-out',
-                // { 'scale-105': isActive },
-                'active:scale-95',
-                { 'shadow-lg shadow-blue-500 ': isActive },
+            <NavLink
+                to={link}
+                className={({ isActive }) => clsx(
+                    'w-full py-4 px-5 grid grid-flow-row gap-2 ',
+                    'active:scale-95 ',
+                    // { 'shadow-0 shadow-blue-500/50 ': isFocused },
+                    'bg-neutral-900',
+                    ['rounded-md border-2 border-white/10 hover:border-white/60', { 'border-blue-600 hover:border-blue-600 ': isFocused }],
+                    { 'outline outline-4 outline-blue-500/50 outline-offset-1': isFocused },
+                    // { 'cursor-not-allowed': props.disabled },
+                    'transition-transform ease-in-out',
+                )}>
+                <div className='relative w-full h-24 flex flex-row'>
+                    <div className={clsx(color, 'bg-gradient-to-tl rounded-xl flex-none h-24 w-24 flex justify-center items-center')}>
+                        <p className='break-words'>
+                            <span className='text-3xl font-semibold text-white capitalize'>{icon}</span>
+                            {task.category.slice(1)}
+                        </p>
+                    </div>
 
-            )}>
-                <NavLink to={link}
-                    className={clsx(
-                        'w-full py-4 px-5 grid grid-flow-row gap-2',
-                        'rounded-xl border-2 border-white border-opacity-25 bg-neutral-900',
-
-                        // 'overflow-clip',
-                        // { 'border-opacity-90 bg-opacity-0': isActive },
-                    )}
-                >
-
-
-                    <div className='relative flex flex-row w-full'>
-                        <div className={clsx(color, 'bg-gradient-to-tl rounded-xl flex-none h-20 w-20 mr-5 flex justify-center items-center')}>
-                            <p className='text-3xl font-semibold text-white capitalize'>{icon}</p>
+                    <div className="ml-5 grid grid-cols-2 grid-rows-2 gap-2 w-full">
+                        <p className='col-span-2 text-lg truncate'>{task.name}</p>
+                        <p className="justify-self-start self-end text-3xl font-medium">{task.points}</p>
+                        <div className="justify-self-end self-center grid grid-cols-2 grid-rows-2 gap-1 place-items-center text-white/50 font-normal">
+                            <FlagIcon className='w-4 h-4' strokeWidth={2} />
+                            <p className="">{task.solves}</p>
+                            <HandThumbUpIcon className="w-4 h-4" strokeWidth={2} />
+                            <p className="">{task.likes}</p>
                         </div>
-                        <div className="w-full flex flex-col justify-between mr-5">
-                            <div className="w-full">
-                                <span className="inline-block text-white font-medium align-text-top leading-4 overflow-hidden">{task.name}</span>
-                                <p className="text-neutral-400 text-xs">{task.category}</p>
-                            </div>
-                            <p className="text-2xl font-medium leading-5">
-                                {task.points}
-                            </p>
-                        </div>
-                        {/* <TaskHeader
-                            name={task.name}
-                            category={task.category}
-                            points={task.points}
-                        /> */}
-                        <div className="flex-none flex flex-col justify-between items-start text-neutral-400 font-normal">
-                            <div className="flex felx-row items-end">
-                                <FlagIcon className='w-5 h-5' strokeWidth={1.5} />
-                                <p className="ml-2">
-                                    {task.solves}
-                                </p>
-                            </div>
-                            <div className="flex flex-row items-end">
-                                <HandThumbUpIcon className="w-5 h-5" strokeWidth={1} />
-                                <p className="ml-2">{task.likes}</p>
-                            </div>
-                        </div>
-                        {/* {task.isSolved
+                    </div>
+
+                    {task.isSolved
                             ? (
                                 <div className='absolute top-0 left-0 w-full h-full flex justify-center items-center rounded-md bg-green-500 opacity-60'>
                                     <CheckIcon className='h-16 w-16 text-green-300' strokeWidth={1} />
                                 </div>
                             ) : null
-                        } */}
-                    </div>
-                </NavLink>
-            </div>
+                        }
+                </div>
+            </NavLink>
         </motion.div>
     )
 }
