@@ -2,7 +2,6 @@ import { json } from '@remix-run/node';
 import { Link, useLoaderData, useParams, useCatch } from '@remix-run/react'
 import clsx from 'clsx'
 import ReactMarkdown from 'react-markdown'
-import { motion } from 'framer-motion'
 import { Role } from '@prisma/client'
 
 import prisma from '~/utils/prisma.server';
@@ -82,7 +81,7 @@ export default function Task() {
                 'sticky z-10 top-0 h-12 w-full flex justify-between items-center',
                 'border-b border-white border-opacity-25',
                 'backdrop-blur-xl backdrop-filter',
-                'bg-neutral-800 bg-opacity-30',
+                'bg-black/80',
             )}>
                 {isAdmin
                     ? <TaskControls />
@@ -90,63 +89,58 @@ export default function Task() {
                 }
             </div>
 
-            <div className='p-5'>
+            <div className='p-5 w-full grid grid-cols-2 gap-5 self-center'>
                 <TaskHeader
                     name={task.name}
                     category={task.category}
                     points={task.points}
+                    className={'col-span-2'}
                 />
-                <div className='mt-2 w-full'>
-                    <div className='text-black text-sm whitespace-nowrap'>
-                        by <Link to={`/users/${task.author.id}`} className='underline'>{task.author.displayName}</Link>
-                    </div>
-                    {tags
-                        ? (
-                            <div className='flex flex-row pt-2'>
-                                {tags.map((tag, idx) => (
-                                    <div className='px-2 py-px first:m-0 ml-4 rounded-lg bg-black text-white text-xs align-middle' key={idx}>{tag}</div>
-                                ))}
-                            </div>
-                        ) : null
-                    }
+                <div className='text-sm whitespace-nowrap'>
+                    by <Link to={`/users/${task.author.id}`} className='underline'>{task.author.displayName}</Link>
                 </div>
+                {tags
+                    ? (
+                        <div className='flex flex-row'>
+                            {tags.map((tag, idx) => (
+                                <div className='px-2 py-px first:m-0 ml-4 rounded-lg text-white text-xs align-middle' key={idx}>{tag}</div>
+                            ))}
+                        </div>
+                    ) : null
+                }
+                <ReactMarkdown
+                    className='col-span-2'
+                    children={task.content}
+                    components={{
+                        // Map `h1` (`# heading`) to use `h2`s.
+                        // h1: ({ children, ...props }) => <h1 className="mt-1 font-bold">{children}</h1>,
+                        // Rewrite `em`s (`*like so*`) to `i` with a red foreground color.
+                        // em: ({ node, ...props }) => <i className="text-rose-600" {...props} />,
+                        // ul: ({ children, ...props }) => <ul className="list-disc ml-4 mt-4" {...props}>{children}</ul>,
+                        // li: ({ children, ...props }) => <li className="" {...props}>{children}</li>,
+                        a: ({ children, ...props }) => (
+                            <a className='text-rose-600 font-bold flex flex-nowrap items-center not-italic hover:cursor-pointer' style={{ fontStyle: 'normal' }} {...props}>
+                                <p className='hover:underline hover:text-rose-600 not-italic'>{children}</p>
+                                <LinkIcon className='ml-1 w-4 h-4 text-rose-600' />
+                            </a>
+                        ),
+                        // img: ({alt, src}) => (
+                        //     <div className="relative w-full aspect-video drop-shadow-xl">
+                        //         <Image
+                        //             src={src}
+                        //             alt={alt}
+                        //             layout="fill"
+                        //             objectFit="cover"
+                        //             className="mt-4 mb-4"
+                        //         />
+                        //     </div>
+                        // ),
 
-                <div className='py-5 w-full'>
-                    <ReactMarkdown
-                        children={task.content}
-                        components={{
-                            // Map `h1` (`# heading`) to use `h2`s.
-                            // h1: ({ children, ...props }) => <h1 className="mt-1 font-bold">{children}</h1>,
-                            // Rewrite `em`s (`*like so*`) to `i` with a red foreground color.
-                            // em: ({ node, ...props }) => <i className="text-rose-600" {...props} />,
-                            // ul: ({ children, ...props }) => <ul className="list-disc ml-4 mt-4" {...props}>{children}</ul>,
-                            // li: ({ children, ...props }) => <li className="" {...props}>{children}</li>,
-                            a: ({ children, ...props }) => (
-                                <a className='text-rose-600 font-bold flex flex-nowrap items-center not-italic hover:cursor-pointer' style={{ fontStyle: 'normal' }} {...props}>
-                                    <p className='hover:underline hover:text-rose-600 not-italic'>{children}</p>
-                                    <LinkIcon className='ml-1 w-4 h-4 text-rose-600' />
-                                </a>
-                            ),
-                            // img: ({alt, src}) => (
-                            //     <div className="relative w-full aspect-video drop-shadow-xl">
-                            //         <Image
-                            //             src={src}
-                            //             alt={alt}
-                            //             layout="fill"
-                            //             objectFit="cover"
-                            //             className="mt-4 mb-4"
-                            //         />
-                            //     </div>
-                            // ),
-
-                        }}
-                    />
-                </div>
-
-                <TaskFlagInput disabled={task.solved} />
-
+                    }}
+                />
+                <TaskFlagInput disabled={task.solved} className='col-span-2' />
                 {task.solutions.length > 0
-                    ? <TaskSolutions solutions={task.solutions} />
+                    ? <TaskSolutions solutions={task.solutions} className='col-span-2' />
                     : null
                 }
             </div>

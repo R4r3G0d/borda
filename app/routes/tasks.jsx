@@ -103,7 +103,7 @@ export default function Tasks() {
 							task={task}
 							key={task.id}
 							link={`./${taskId === task.id ? '' : task.id}?${searchParams}`}
-							isActive={taskId === task.id}
+							isFocused={taskId === task.id}
 						/>
 					))}
 				</TaskGrid>
@@ -113,7 +113,7 @@ export default function Tasks() {
 					animate={{ y: 0, opacity: 1 }}
 					exit={{ x: '-100', opacity: 0 }}
 					transition={{ duration: 0.3 }}
-					className='overflow-y-auto max-h-full h-full w-full border-l border-white border-opacity-25 bg-neutral-900'
+					className='overflow-y-auto max-h-full h-full w-full border-l border-white border-opacity-25'
 				>
 					<Outlet />
 				</motion.div>
