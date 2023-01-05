@@ -134,40 +134,45 @@ export default function users() {
     let data = useLoaderData()
     console.log("Final data: ", { data })
 
-    let sortedUsers = data.users.sort(function (a, b) { 
-		return b.score?.toString().localeCompare(a.score, undefined, { 'numeric': true });
-	});
+    let sortedUsers = data.users.sort(function (a, b) {
+        return b.score?.toString().localeCompare(a.score, undefined, { 'numeric': true });
+    });
 
     return (
-        <div className='flex justify-center w-full overflow-auto items-stretch rounded-xl md:items-center content-center'>
-            <table className="border-auto table-auto w-full max-w-3xl text-sm">
-                <thead>
-                    <tr>
-                        <th className='w-16 bg-blue-100 border text-left px-8 py-4'>№</th>
-                        <th className='bg-blue-100 border text-left px-8 py-4'>Name</th>
-                        <th className='bg-blue-100 border text-left px-8 py-4'>Team</th>
-                        <th className='bg-blue-100 border text-left px-8 py-4'>Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {sortedUsers.map((user, index) => (
-                        <tr key={user.id} className='h-10 whitespace-nowrap'>
-                            <td className="border px-8 py-4">
-                                <span>{index + 1}</span>
-                            </td>
-                            <td className='border px-8 py-4'>
-                                <span>{user.displayName}</span>
-                            </td>
-                            <td className='border px-8 py-4'>
-                                <span>{user.team ? user.team.name : "No team"}</span>
-                            </td>
-                            <td className='border px-8 py-4'>
-                                <span>{user.score}</span>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className='container max-w-5xl mx-auto'>
+            <div className='mt-14 px-5 w-full'>
+
+                <div className='py-5 relative overflow-x-auto'>
+                    <table className="w-full table-fixed">
+                        <thead>
+                            <tr className='h-12 whitespace-nowrap border-b border-white/30 font-bold'>
+                                <td className="px-3" >№</td>
+                                <td className="px-3">Name</td>
+                                <td className="px-3">Team</td>
+                                <td className="px-3">Score</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sortedUsers.map((user, index) => (
+                                <tr key={user.id} className='h-12 whitespace-nowrap border-b border-white/30 last:border-none '>
+                                    <td className="px-3 font-bold">
+                                        {index + 1}
+                                    </td>
+                                    <td className="px-3">
+                                        {user.displayName}
+                                    </td>
+                                    <td className='px-3'>
+                                        {user.team ? user.team.name : "no team"}
+                                    </td>
+                                    <td className="px-3">
+                                        {user.score}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     )
 }
