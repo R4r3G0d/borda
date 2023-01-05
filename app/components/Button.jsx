@@ -23,7 +23,7 @@ function Button({ text, small, big, icon, full, className, ...buttonPprops }) {
             {...buttonPprops}
         >
             {icon ? (
-                <div className={clsx('h-full', { 'mr-1': small, 'mr-2': medium, 'mr-2': big })}>
+                <div className={clsx('h-full flex items-center', { 'mr-1': small, 'mr-2': medium, 'mr-2': big })}>
                     <Icon
                         className={clsx({ 'w-4 h-4': small, 'w-5 h-5': medium, 'w-6 h-6': big })}
                         strokeWidth={1}
@@ -31,7 +31,7 @@ function Button({ text, small, big, icon, full, className, ...buttonPprops }) {
                 </div>
             ) : null}
             <p className='h-full flex items-center whitespace-nowrap'>
-                {text ? text : 'Default'}
+                {text ? text : icon? null: "Dfeault"}
             </p>
         </button>
     )
