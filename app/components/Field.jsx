@@ -18,9 +18,9 @@ const Input = React.forwardRef(function Input(props, ref) {
         'w-full p-4',
         'text-base text-white font-normal placeholder:text-white/30',
         'bg-neutral-900',
-        'rounded-md border-2 border-white/10 hover:border-white/60 focus:border-blue-600',
+        ['rounded-md border-2 border-white/10 focus:border-blue-600', { 'hover:border-white/60': !props.disabled }],
         'focus:outline outline-4 outline-blue-500/50 outline-offset-1',
-        // {'border-red-500 hover:border-red-500 focus:border-red-500': props.error },
+        { 'cursor-not-allowed': props.disabled },
         'transition ease-out',
         props.Classname
     )
