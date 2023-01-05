@@ -48,7 +48,7 @@ export async function action({ request }) {
 		const formData = await request.formData()
 		let { _action, ...values } = Object.fromEntries(formData)
 
-		console.log({_action, values})
+		console.log({ _action, values })
 
 		// Зачем???
 		// let action = formData.get('_action')
@@ -131,43 +131,67 @@ export default function TeamSettingsPage() {
 
 	return (
 		<div className='container w-full max-w-2xl mx-auto sm:px-6'>
-			<h2 className='py-4 text-2xl text-gray-900  border-b border-gray-300'>
-				Team Settings
-			</h2>
-			<Form method='post' reloadDocument replace className='w-full py-5'>
+			<Form
+				method='post'
+				reloadDocument
+				replace
+				className='pt-5 pb-10 grid grid-cols-2 gap-5'
+			>
+				<h2 className='col-span-2 py-2 text-lg text-white border-b border-white/30'>
+					Team settings
+				</h2>
 				{data.team
 					? (
 						<>
-							<div className='w-full flex flex-row justify-between items-end'>
-								<Field name='teamId' label='Team ID' disabled value={data.team.id} className='mr-5' />
-								<Button text='Leave team' name='_action' value='leave' className=' whitespace-nowrap mb-4 h-11'
-								/>
-							</div>
-							<div className='w-full flex flex-row justify-between items-end'>
-								<Field name='teamName' label='Team Name' disabled value={data.team.name} className='mr-5' />
-								<Button text='Delete team' name='_action' value='delete' className='whitespace-nowrap px-4 mb-4 h-11' />
-							</div>
-
-							<h3 className='py-4 text-xl text-gray-900  border-b border-gray-300'>
-								Team Members
-							</h3>
-							<table class="mt-5 table-auto w-full text-black">
+							<Field
+								name='teamId'
+								label='Team ID'
+								disabled
+								value={data.team.id}
+								className='col-span-2'
+							/>
+							<Field
+								name='teamName'
+								label='Team Name'
+								disabled
+								value={data.team.name}
+								className='col-span-2'
+							/>
+							<Button
+								text='Leave team'
+								name='_action'
+								value='leave'
+								className='self-center'
+							/>
+							<Button
+								text='Delete team'
+								name='_action'
+								value='delete'
+								className='self-center'
+							/>
+							<h2 className='col-span-2 py-2 text-lg text-white border-b border-white/30'>
+								Team members
+							</h2>
+							<table className="col-span-2 table-auto">
 								<tbody>
 									{data.team.players.map(function (player, index) {
 										return (
-											<tr key={player.id} className='h-10 whitespace-nowrap'>
+											<tr key={player.id} className='h-10 whitespace-nowrap border-b  border-white/30 '>
 												<td>{index + 1}</td>
 												<td className='px-3'>{player.displayName}</td>
 												{player.id == data.team.captainId
 													? (
 														<>
 															<td className='px-3'>
-																<StarIcon className='w-8 h-8 text-yellow-500' />
+																<StarIcon className='w-5 h-5 text-yellow-500' />
 															</td>
 															<td className='flex justify-end'>
 																<input name='teammateId' value={player.id} type='hidden' />
-																<Button name='_action' value='kick'
-																	text={<TrashIcon strokeWidth={2} className='h-4 w-4 font-bold text-white' />}
+																<Button
+																	name='_action'
+																	value='kick'
+																	icon={TrashIcon}
+																	small
 																>
 																</Button>
 															</td>

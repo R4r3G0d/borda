@@ -22,7 +22,7 @@ export async function loader({ request }) {
 }
 
 export default function () {
-    const links = [
+    let links = [
         {
             path: '.',
             text: 'Settings',
@@ -33,38 +33,29 @@ export default function () {
         }
     ]
     const { user } = useLoaderData()
+    if (user.role == 'ADMIN') { links.push({ path: './event', text: 'Manage CTF' }) }
+
     return (
         <>
-
-            <div className='fixed top-14 left-0 w-full h-12 bg-white'>
-                <div className="absolute h-12 flex flex-row items-center px-5">
-                    {links.map((link) => (
-                        <NavLink
-                            to={link.path}
-                            end
-                            key={link.text}
-                            className={({ isActive }) =>
-                                clsx('h-full px-5 border-b flex flex-row items-center text-center', { 'border-black': isActive })
-                            }
-                        >
-                            {link.text}
-                        </NavLink>
-                    ))}
-                    {user.role == 'ADMIN' ?
-                        <NavLink
-                            to={'./event'}
-                            end
-                            className={({ isActive }) =>
-                                clsx('h-full px-5 border-b flex flex-row items-center text-center', { 'border-black': isActive })
-                            }
-                        >
-                            Admin
-                        </NavLink> : null}
-
-                </div>
-                <div className='h-full w-full border-b'></div>
+            <div className={clsx(
+                "sticky top-14 left-0 h-12 w-full flex flex-row items-center px-5",
+                'border-b border-white/25',
+                'backdrop-blur-xl backdrop-filter',
+                'bg-black bg-opacity-30',)}>
+                {links.map((link) => (
+                    <NavLink
+                        to={link.path}
+                        end
+                        key={link.text}
+                        className={({ isActive }) =>
+                            clsx('h-12 px-5 mt-px border-b border-white/0 flex flex-row items-center text-center', { 'border-white/75': isActive })
+                        }
+                    >
+                        {link.text}
+                    </NavLink>
+                ))}
             </div>
-            <div className='pt-12 px-5'>
+            <div className='pt-14'>
                 <Outlet />
             </div>
         </>

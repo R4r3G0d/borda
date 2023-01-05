@@ -143,9 +143,6 @@ export default function Profile() {
 
     return (
         <div className='container w-full max-w-2xl mx-auto sm:px-6'>
-            <h2 className='py-4 text-2xl text-gray-900  border-b border-gray-300'>
-                Account Setting
-            </h2>
             <Form
                 reloadDocument
                 replace
@@ -155,70 +152,70 @@ export default function Profile() {
                         setDisabled(false)
                     } else { setDisabled(true) }
                 }}
-                className='flex flex-wrap  justify-end py-5'
+                className='pt-5 grid grid-cols-2 gap-5'
             >
-                <EmailField defaultValue={player.email} readOnly />
-
-                <div className='w-full flex flex-row justify-between'>
-                    <Field
-                        name='displayName'
-                        label='Display Name'
-                        defaultValue={player.displayName}
-                    />
-                    <Field
-                        name='telegram'
-                        label='Telegram'
-                        readOnly
-                        defaultValue={player.telegramId}
-                        placeholder={'https://t.me/nickname'}
-                        className={'ml-8'}
-                    />
-                </div>
-
+                <h2 className='col-span-2 py-2 text-lg text-white border-b border-white/30'>
+                    Account settings
+                </h2>
+                <EmailField
+                    defaultValue={player.email}
+                    readOnly
+                    className='col-span-2'
+                    disabled={disabled}
+                />
+                <Field
+                    name='displayName'
+                    label='Display name'
+                    defaultValue={player.displayName}
+                />
+                <Field
+                    name='telegram'
+                    label='Telegram'
+                    readOnly
+                    defaultValue={player.telegramId}
+                    placeholder={'https://t.me/{nickname}'}
+                    disabled={disabled}
+                />
                 <Button
                     text='Save'
                     name='_action'
                     value='updateProfile'
                     disabled={disabled}
+                    className='col-span-2 self-center justify-self-end'
                 />
             </Form>
 
-            <h2 className='py-4 text-2xl text-gray-900  border-b border-gray-300'>
-                Privacy Setting
-            </h2>
             <Form
                 method='post'
                 action='/account?index'
                 replace
-                className='flex flex-wrap justify-end py-5'
+                className='pt-5 pb-10 grid grid-cols-2 gap-5'
             >
-                <div className='w-full flex flex-row justify-between'>
-
-                    <PasswordField error={actionData?.errors.password} />
-
-                    <div className='w-full ml-8'>
-                        <PasswordField
-                            key={1}
-                            name='passwordNew'
-                            label='New password'
-                            error={actionData?.errors.passwordNew}
-                        />
-                        <PasswordField
-                            key={2}
-                            name='passwordRepeat'
-                            label='Repeat password'
-                            error={actionData?.errors.passwordRepeat}
-                        />
-                    </div>
-                </div>
-
+                <h2 className='col-span-2 py-2 text-lg text-white border-b border-white/30'>
+                    Security settings
+                </h2>
+                <PasswordField error={actionData?.errors.password} />
+                <PasswordField
+                    key={1}
+                    name='passwordNew'
+                    label='New password'
+                    error={actionData?.errors.passwordNew}
+                // className='col-span-2 justify-self-end'
+                />
+                <PasswordField
+                    key={2}
+                    name='passwordRepeat'
+                    label='Repeat password'
+                    error={actionData?.errors.passwordRepeat}
+                    className='col-start-2 justify-self-end'
+                />
                 <Button
                     text='Update'
                     name='_action'
                     value='updatePassword'
+                    className='col-span-2 self-center justify-self-end'
                 />
             </Form>
-            {/* </div> */}
         </div>
     );
 }

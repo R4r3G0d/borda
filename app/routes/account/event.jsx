@@ -88,9 +88,6 @@ export default function EventPage() {
 
     return (
         <div className='container w-full max-w-2xl mx-auto sm:px-6'>
-            <h2 className='py-4 text-2xl text-gray-900  border-b border-gray-300'>
-                AdminKa
-            </h2>
             <Form
                 reloadDocument
                 replace
@@ -100,29 +97,27 @@ export default function EventPage() {
                         setDisabled(false)
                     } else { setDisabled(true) }
                 }}
-                className='w-full flex flex-col py-5'
+                className='pt-5 pb-10 grid grid-cols-2 gap-5'
             >
-                <div className='flex flex-row justify-between'>
-                    <Field
-                        name='startDate'
-                        label='Start Date'
-                        placeholder='2020-09-25 18:36'
-                        error={actionData?.errors.start_notValidFormat || actionData?.errors.start_notValidTime}
-                    />
-                    <Field
-                        name='finishDate'
-                        label='End Date'
-                        placeholder='2020-09-25 18:36'
-                        error={actionData?.errors.finish_notValidFormat || actionData?.errors.finish_notValidTime}
-                        className='ml-5'
-                    />
-                </div>
-
+                <h2 className='col-span-2 py-2 text-lg text-white border-b border-white/30'>
+                    Event dates
+                </h2>
                 <Field
-                    label='Сюда еще что то:'
+                    name='startDate'
+                    label='Start Date'
+                    placeholder='2020-09-25 18:36'
+                    error={actionData?.errors.start_notValidFormat || actionData?.errors.start_notValidTime}
                 />
-                
-                <Button text='Update' />
+                <Field
+                    name='finishDate'
+                    label='End Date'
+                    placeholder='2020-09-25 18:36'
+                    error={actionData?.errors.finish_notValidFormat || actionData?.errors.finish_notValidTime}
+                />
+                <Button
+                    text='Update'
+                    className='col-span-2 self-center justify-self-end'
+                />
             </Form>
         </div>
     );
