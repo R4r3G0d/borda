@@ -60,13 +60,13 @@ function NavbarEventSwitcher() {
 function NavbarMenu() {
     const links = ['tasks', 'scoreboard', 'users']
     return (
-        <div className=' hidden sm:flex flex-row text-neutral-300'>
+        <div className=' hidden h-14 mt-px sm:flex flex-row text-neutral-300'>
             {links.map((link, id) => (
                 <NavLink
                     key={id}
                     to={'/' + link}
                     className={({ isActive }) => clsx(
-                        'capitalize px-3 md:px-5 py-1 hover:text-white shrink',
+                        'capitalize px-3 md:px-5 hover:text-white shrink grid place-items-center',
                         { 'text-white border-b border-white': isActive }
                     )}
                 >
