@@ -1,20 +1,20 @@
 import clsx from 'clsx'
+import { TaskColors } from './Colors'
 
 export default function ({ name = 'No Title', category = 'OTHER', points = 0, className }) {
     const icon = Array.from(category)[0];
+    const color = TaskColors.get(category)
 
     return (
-        <div className={clsx("h-10 w-full flex flex-row", className)}>
-            <div className={clsx('flex-none h-10 w-10 font-semibold text-base text-center text-white leading-10 capitalize rounded-sm',
-                'bg-white bg-opacity-25 backdrop-blur-xl'
-            )}>
+        <div className={clsx("h-10 w-full flex flex-row items-center", className)}>
+            <div className={clsx(
+                'flex-none h-10 w-10 font-semibold text-2xl text-white capitalize grid place-items-center',
+                'bg-gradient-to-tl rounded-sm', color)}
+            >
                 {icon}
             </div>
-            <div className="grow ml-3 h-10">
-                <p className="font-medium whitespace-nowrap text-sm">{name}</p>
-                <p className="text-gray-400 text-xs">{category}</p>
-            </div>
-            <div className="flex-none h-10 ml-3 font-medium text-2xl ">
+            <p className="grow self-start px-3 font-medium text-sm truncate">{name}</p>
+            <div className="flex-none h-10 font-medium text-2xl ">
                 {points}
             </div>
         </div>
