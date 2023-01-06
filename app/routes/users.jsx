@@ -143,13 +143,13 @@ export default function users() {
             <div className='mt-14 px-5 w-full'>
 
                 <div className='py-5 relative overflow-x-auto'>
-                    <table className="w-full table-fixed">
+                    <table className="w-full table-auto">
                         <thead>
                             <tr className='h-12 whitespace-nowrap border-b border-white/30 font-bold'>
                                 <td className="px-3" >№</td>
                                 <td className="px-3">Name</td>
                                 <td className="px-3">Team</td>
-                                <td className="px-3">Score</td>
+                                <td className="px-3 text-center">Score</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -164,7 +164,7 @@ export default function users() {
                                     <td className='px-3'>
                                         {user.team ? user.team.name : "no team"}
                                     </td>
-                                    <td className="px-3">
+                                    <td className="px-3 text-center">
                                         {user.score}
                                     </td>
                                 </tr>
