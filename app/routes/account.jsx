@@ -38,7 +38,7 @@ export default function () {
     return (
         <>
             <div className={clsx(
-                "sticky top-14 left-0 h-12 w-full flex flex-row items-center px-5",
+                "sticky top-14 left-0 h-14 w-full flex flex-row items-center px-5",
                 'border-b border-white/25',
                 'backdrop-blur-xl backdrop-filter',
                 'bg-black bg-opacity-30',)}>
@@ -48,7 +48,7 @@ export default function () {
                         end
                         key={link.text}
                         className={({ isActive }) =>
-                            clsx('h-12 px-5 mt-px border-b border-white/0 flex flex-row items-center text-center', { 'border-white/75': isActive })
+                            clsx('h-14 px-5 mt-px border-b border-white/0 flex flex-row items-center text-center', { 'border-white/75': isActive })
                         }
                     >
                         {link.text}

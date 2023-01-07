@@ -9,7 +9,7 @@ import prisma from '~/utils/prisma.server';
 import authenticator from "~/utils/auth.server";
 
 import { TaskSolutions, TaskFlagInput, TaskHeader, TaskControls } from '~/components/Task'
-import { ArrowTopRightOnSquareIcon, LinkIcon } from '@heroicons/react/24/outline'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 
 export async function loader({ request, params }) {
     let player = await authenticator.isAuthenticated(request);
@@ -62,9 +62,6 @@ export async function loader({ request, params }) {
 
         }
 
-        // const taskDescription = await markdownToHtml2(task.content)
-        // console.log(taskDescription)
-
         task = { ...task, solved, solutions }
 
         return json({ task, player })
@@ -83,7 +80,7 @@ export default function Task() {
     return (
         <>
             <div className={clsx(
-                'sticky z-10 top-0 h-12 w-full flex justify-between items-center',
+                'sticky z-10 top-0 h-14 w-full flex justify-between items-center',
                 'border-b border-white border-opacity-25',
                 'backdrop-blur-xl backdrop-filter',
                 'bg-black/80',
@@ -93,7 +90,6 @@ export default function Task() {
                     : null
                 }
             </div>
-
             <div className='p-5 w-full grid grid-cols-2 gap-5 self-center'>
                 <TaskHeader
                     name={task.name}
@@ -117,25 +113,16 @@ export default function Task() {
                     className='col-span-2'
                     children={task.content}
                     components={{
-                        // Map `h1` (`# heading`) to use `h2`s.
-                        // h1: ({ children, ...props }) => <h1 className="mt-1 font-bold">{children}</h1>,
-                        // Rewrite `em`s (`*like so*`) to `i` with a red foreground color.
-                        // em: ({ node, ...props }) => <i className="text-rose-600" {...props} />,
                         ul: function ({ children, ...props }) {
                             return <ul className="list-disc list-inside" {...props}>{children}</ul>
                         },
                         li: function ({ children, ...props }) {
                             return <li className="ml-3" {...props}>{children}</li>
                         },
-
                         p: function ({ className, ...props }) {
-                            console.log(className)
                             return <p className='py-2' {...props}></p>
                         },
                         a: function ({ href, children, ...otherProps }) {
-
-                            console.log(children)
-
                             return (
                                 <>
                                     <Link
@@ -148,7 +135,6 @@ export default function Task() {
                                             <ArrowTopRightOnSquareIcon className=' w-4 h-4' />
                                         </div>
                                     </Link>
-
                                 </>
                             )
                         },
@@ -163,7 +149,6 @@ export default function Task() {
                         //         />
                         //     </div>
                         // ),
-
                     }}
                 />
                 <TaskFlagInput disabled={task.solved} className='col-span-2' />

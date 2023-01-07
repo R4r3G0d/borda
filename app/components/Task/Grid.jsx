@@ -7,7 +7,7 @@ export default function ({ children, className }) {
     return (
         <div className='hidden sm:block md:col-span-2 overflow-y-auto overflow-x-hidden max-h-full h-full w-full'>
             <div className={clsx(
-                'sticky z-10 top-0 h-12 w-full flex justify-between items-center',
+                'sticky z-10 top-0 h-14 w-full flex justify-between items-center',
                 'border-b border-white border-opacity-25',
                 'backdrop-blur-xl backdrop-filter',
                 'bg-black bg-opacity-30',
