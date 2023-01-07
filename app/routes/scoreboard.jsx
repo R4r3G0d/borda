@@ -27,8 +27,6 @@ export async function loader() {
                 }
             })
 
-            console.log({ solutions })
-
             for (let k = 0; k < solutions.length; k++) {
                 for (let j = 0; j < tasks.length; j++) {
                     if (tasks[j].id == solutions[k].taskId) {
@@ -54,11 +52,8 @@ export async function loader() {
             }
 
             teams[i] = { ...team, score: score }
-            console.log(teams[i])
         }
-
         return json({ teams })
-
     } catch (err) {
         console.log(err)
         throw err
@@ -67,7 +62,6 @@ export async function loader() {
 
 export default function teams() {
     let data = useLoaderData()
-    console.log({ data })
 
     let sortedTeams = data.teams.sort(function (a, b) {
         return b.score?.toString().localeCompare(a.score, undefined, { 'numeric': true });

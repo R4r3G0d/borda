@@ -35,7 +35,7 @@ export async function action({ request, context }) {
 
                 try {
                     let issues = JSON.parse(error.message)
-                    console.log(issues)
+
                     issues.forEach(function (issue) {
                         errors[issue.path[0]] = issue.message
                     });
@@ -52,10 +52,8 @@ export async function action({ request, context }) {
 }
 
 export default function SignIn() {
-    const actionData = useActionData()
-    const transition = useTransition()
-
-    console.log({ actionData })
+    let actionData = useActionData()
+    let transition = useTransition()
 
     return (
         <div className='container max-w-sm mx-auto '>

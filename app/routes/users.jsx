@@ -132,7 +132,6 @@ export async function loader() {
 
 export default function users() {
     let data = useLoaderData()
-    console.log("Final data: ", { data })
 
     let sortedUsers = data.users.sort(function (a, b) {
         return b.score?.toString().localeCompare(a.score, undefined, { 'numeric': true });
