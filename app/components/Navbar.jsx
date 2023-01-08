@@ -27,8 +27,8 @@ export function Navbar({ user }) {
         <header
             className={clsx(
                 'fixed top-0 z-50 w-full h-14',
-                'backdrop-blur-xl backdrop-filter',
-                'bg-black bg-opacity-70',
+                'backdrop-blur-lg backdrop-filter',
+                'bg-black/60',
                 'border-b border-white border-opacity-25',
                 'shadow-xl'
             )}

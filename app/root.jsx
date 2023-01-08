@@ -49,11 +49,9 @@ export default function App() {
                 <Links />
                 <title>{meta.title ? meta.title : 'ADMCTF'}</title>
             </head>
-            <body style={{ minWidth: 320 + 'px' }} className='bg-black'>
+            <body className='bg-black min-w-xs'>
                 <Navbar user={data?.player} />
-                <main>
-                    <Outlet />
-                </main>
+                <Outlet />
                 {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
                 <ScrollRestoration />
                 <Scripts />

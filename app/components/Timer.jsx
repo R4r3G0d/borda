@@ -27,29 +27,29 @@ const CountdownTimer = ({ time, className }) => {
 
     return (
         <div className={clsx('', className)}>
-            <p className='text-2xl mb-5 whitespace-nowrap'>Starts in</p>
+            <p className='mb-5 md:text-lg whitespace-nowrap'>Starts in</p>
             <div className='flex flex-row flex-nowrap items-center'>
 
-                <div className="w-16 h-16 flex flex-col items-center justify-center border-2 border-gray-500 rounded-lg opacity-80 px-2">
-                    <p className="text-2xl">{duration.days()}</p>
+                <div className="w-16 h-16 flex flex-col items-center justify-center border-2 border-white/50 rounded-lg opacity-80 px-2">
+                    <p className="text-xl">{duration.days()}</p>
                     <span className=" text-xs pb-1">days</span>
                 </div>
                 <div className='px-3'>:</div>
 
-                <div className="w-16 h-16 flex flex-col items-center justify-center border-2 border-gray-500 rounded-lg opacity-80 px-2">
-                    <p className="text-2xl">{duration.hours()}</p>
+                <div className="w-16 h-16 flex flex-col items-center justify-center border-2 border-white/50 rounded-lg opacity-80 px-2">
+                    <p className="text-xl">{duration.hours()}</p>
                     <span className=" text-xs pb-1">hours</span>
                 </div>
                 <div className='px-3'>:</div>
 
-                <div className="w-16 h-16 flex flex-col items-center justify-center border-2 border-gray-500 rounded-lg opacity-80 px-2">
-                    <p className="text-2xl">{duration.minutes()}</p>
+                <div className="w-16 h-16 flex flex-col items-center justify-center border-2 border-white/50 rounded-lg opacity-80 px-2">
+                    <p className="text-xl">{duration.minutes()}</p>
                     <span className=" text-xs pb-1">minutes</span>
                 </div>
                 <div className='px-3'>:</div>
 
-                <div className="w-16 h-16 flex flex-col items-center justify-center border-2 border-gray-500 rounded-lg opacity-80 px-2">
-                    <p className="text-2xl">{duration.seconds()}</p>
+                <div className="w-16 h-16 flex flex-col items-center justify-center border-2 border-white/50 rounded-lg opacity-80 px-2">
+                    <p className="text-xl">{duration.seconds()}</p>
                     <span className=" text-xs pb-1">seconds</span>
                 </div>
             </div>

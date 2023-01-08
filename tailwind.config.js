@@ -37,6 +37,9 @@ module.exports = {
         //     // 'grey-100':'rgb(238, 239, 252)',
         // },
         extend: {
+            minWidth: {
+                'xs': '320px',
+            },
             backgroundImage: {
                 'pixel-man': "url('/images/pixel-man.jpg')",
             },
@@ -54,13 +57,19 @@ module.exports = {
             fontSize: {
                 custom: ['8px', '8px'],
             },
-            height:{
-                '8vh':'80vh',
-                'sh': 'calc(100vh - 56px)'
-            },
-            maxHeight:{
+            height: {
+                '8vh': '80vh',
                 'sh': 'calc(100vh - 56px)',
-            }
+                '600': '600px',
+            },
+            maxHeight: {
+                'sh': 'calc(100vh - 56px)',
+                '2vh': '200vh',
+                '800': '800px'
+            },
+            minHeight: {
+                '600': '600px',
+            },
         },
     },
     plugins: [
