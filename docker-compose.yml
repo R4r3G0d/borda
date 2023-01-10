@@ -4,8 +4,11 @@ services:
     proxy:
         # The official v2 Traefik docker image
         image: traefik:v2.9
+        container_name: proxy
         # Enables the web UI and tells Traefik to listen to docker
-        command: --api.insecure=true --providers.docker
+        command:
+            - "--api.insecure=true"
+            - "--providers.docker"
         ports:
             # The HTTP port
             - "80:80"
@@ -14,26 +17,42 @@ services:
         volumes:
             # So that Traefik can listen to the Docker events
             - /var/run/docker.sock:/var/run/docker.sock
-    borda:
-        labels:
-            - "traefik.http.routers.borda.rule=Host(`borda.localhost`)"
+        networks:
+            - main
+
+    ctfboard:
         build: .
-        volumes:
-            - .:/usr/app/
-            - /usr/app/node_modules
+        container_name: ctfboard
+        labels:
+            - "traefik.http.routers.borda.rule=Host(`ctfboard.localhost`)"
+        # volumes:
+        #     - .:/usr/app/
+        #     - /usr/app/node_modules
         ports:
             - "3000:3000"
         env_file:
             - .env
+        networks:
+            - main
+        depends_on:
+            - postgres
+
+    postgres:
+        image: postgres:alpine
+        container_name: postgres
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data/
+        networks:
+            - main
         environment:
-            DATABASE_URL: $DATABASE_URL
-    # postgres:
-    #     image: postgres:alpine
-    #     ports:
-    #         - "5432:5432"
-    #     environment:
-    #         - POSTGRES_USER=admin
-    #         - POSTGRES_PASSWORD=secret
-    #         - POSTGRES_DB=borda
-    #     volumes:
-    #         - ./.db/data:/var/lib/postgresql/data:Z
+            - POSTGRES_USER=ctfboard
+            - POSTGRES_PASSWORD=ctfboard
+            - POSTGRES_DB=ctfboard
+
+networks:
+    main:
+
+volumes:
+    pgdata:

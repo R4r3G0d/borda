@@ -1,5 +1,5 @@
 {
-    "name": "borda",
+    "name": "ctf-board",
     "version": "0.0.0-dev",
     "engines": {
         "node": ">=16",

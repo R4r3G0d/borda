@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y openssl
 # Install all node_modules, including dev dependencies
 FROM base as deps
 
-WORKDIR /borda
+WORKDIR /app
 
 ADD package.json ./
 RUN npm install --production=false
@@ -17,18 +17,18 @@ RUN npm install --production=false
 # Setup production node_modules
 FROM base as production-deps
 
-WORKDIR /borda
+WORKDIR /app
 
-COPY --from=deps /borda/node_modules /borda/node_modules
+COPY --from=deps /app/node_modules /app/node_modules
 ADD package.json ./
 RUN npm prune --production
 
 # Build the app
 FROM base as build
 
-WORKDIR /borda
+WORKDIR /app
 
-COPY --from=deps /borda/node_modules /borda/node_modules
+COPY --from=deps /app/node_modules /app/node_modules
 
 ADD prisma .
 RUN npx prisma generate
@@ -42,18 +42,14 @@ FROM base
 ENV PORT="3000"
 ENV NODE_ENV="production"
 
-WORKDIR /borda
+WORKDIR /app
 
-COPY --from=production-deps /borda/node_modules /borda/node_modules
-COPY --from=build /borda/node_modules/.prisma /borda/node_modules/.prisma
+COPY --from=production-deps /app/node_modules /app/node_modules
+COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
 
-COPY --from=build /borda/build /borda/build
-COPY --from=build /borda/public /borda/public
-COPY --from=build /borda/package.json /borda/package.json
-# COPY --from=build /borda/start.sh /borda/start.sh
-COPY --from=build /borda/prisma /borda/prisma
+COPY --from=build /app/build /app/build
+COPY --from=build /app/public /app/public
+COPY --from=build /app/package.json /app/package.json
+COPY --from=build /app/prisma /app/prisma
 
-EXPOSE 3000
-
-# ENTRYPOINT [ "./start.sh" ]
 CMD ["npm", "run" ,"start"]
