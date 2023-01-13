@@ -11,7 +11,7 @@ import {
 import { json } from '@remix-run/node'
 
 import prisma from '~/utils/prisma.server'
-import styles from './styles/tailwind.css'
+import styles from './styles/index.css'
 import authenticator from './utils/auth.server'
 
 import { ServerError, NotFoundError } from './components/Errors'

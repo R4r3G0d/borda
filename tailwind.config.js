@@ -6,36 +6,14 @@ module.exports = {
         './app/**/*.{js,jsx,ts,tsx,vue}',
     ],
     safelist: [
-        'bg-yellow-500',
-        'bg-lime-500',
-        'bg-fuchsia-500',
-        'bg-blue-500',
-        'bg-rose-500',
-        'bg-red-500',
-        'bg-violet-500',
-        'from-yellow-500',
-        'from-emerald-500',
-        'from-fuchsia-500',
-        'from-sky-500',
-        'from-red-500',
-        'from-stone-500',
-        'from-violet-500',
-        'to-orange-600',
-        'to-lime-600',
-        'to-purple-600',
-        'bg-gradient-to-tl',
-        'to-blue-600',
-        'to-rose-600',
-        'to-gray-600',
-        'to-indigo-600',
-
+        {
+            pattern: /from-(yellow|emerald|fuchsia|sky|red|stone|violet)-500/,
+        },
+        {
+            pattern: /to-(orange|lime|lime|blue|rose|gray|indigo)-600/,
+        },
     ],
     theme: {
-        // colors: {
-        //     // 'black': '#0c0717',
-        //     // 'black':'#161719',
-        //     // 'grey-100':'rgb(238, 239, 252)',
-        // },
         extend: {
             minWidth: {
                 'xs': '320px',
@@ -74,6 +52,5 @@ module.exports = {
     },
     plugins: [
         require('@shrutibalasa/tailwind-grid-auto-fit'),
-        require("tailwindcss-inner-border"),
     ],
 }
