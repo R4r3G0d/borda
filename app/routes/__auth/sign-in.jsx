@@ -11,7 +11,7 @@ import { AuthorizationError } from 'remix-auth'
 import authenticator from '~/utils/auth.server'
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
 import { EmailField, PasswordField } from '~/components/Field'
-import { Button } from '~/components/Button'
+import { Button } from '~/components'
 
 export async function loader({ request }) {
     return await authenticator.isAuthenticated(request, { successRedirect: "/tasks" })

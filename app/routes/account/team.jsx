@@ -6,8 +6,8 @@ import { StarIcon, InformationCircleIcon } from '@heroicons/react/24/solid'
 import prisma from '~/utils/prisma.server'
 import authenticator from '~/utils/auth.server'
 import { getSession, commitSession } from '~/utils/session.server'
-import { Button } from '~/components/Button'
 import { Field } from '~/components/Field'
+import { Button } from '~/components'
 
 export async function loader({ request }) {
 	try {

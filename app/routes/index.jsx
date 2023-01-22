@@ -6,8 +6,11 @@ import moment from 'moment-timezone'
 import { ArrowSmallRightIcon } from '@heroicons/react/24/outline'
 
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
-import { Button } from '~/components/Button'
-import { CountdownTimer } from '~/components/Timer'
+
+import {
+    Button,
+    CountdownTimer
+} from '~/components'
 
 import authenticator from '~/utils/auth.server'
 import prisma from '~/utils/prisma.server'
@@ -111,7 +114,30 @@ export default function IndexPage() {
                         <MakaraIcon className='w-72 h-72' />
                     </div>
                 </div>
+                <Event />
             </div>
         </div>
     )
+}
+
+function Event({ event, className }) {
+    <div className='flex-col md:flex-row rounded-3xl overflow-hidden bg-blue-500'>
+        <div className='md:w-1/2 p-8 text-white flex flex-col'>
+            <h3 className='mt-auto text-2xl font-semibold'>Sponsor</h3>
+            <p className='mt-1 text-base'>Admiral Makarov State University of Maritime and Inland Shipping</p>
+            <a href='https://gumrf.ru/en/' className='mt-auto'>
+                <Button
+                    text={
+                        <span className='flex flex-row items-center'>
+                            Play
+                            <ArrowSmallRightIcon className='w-5 h-5 ml-5' />
+                        </span>
+                    }
+                />
+            </a>
+        </div>
+        <div className='md:w-1/2 flex justify-center p-8'>
+            <MakaraIcon className='w-72 h-72' />
+        </div>
+    </div>
 }

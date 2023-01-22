@@ -17,7 +17,7 @@ import {
     XMarkIcon
 } from '@heroicons/react/24/outline'
 
-import { Button } from '~/components/Button'
+import { Button } from '~/components'
 
 export function Navbar({ user }) {
     let location = useLocation()
@@ -48,7 +48,7 @@ function NavbarLogo({ className }) {
     return (
         <Link to='/' className={clsx('flex flex-row flex-shrink-0 flex-grow-0 items-center h-full', className)}>
             <SquaresPlusIcon className='w-9 h-9 p-1 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 rounded-lg' />
-            <h1 className='ml-4 font-bold text-2xl text-white'>ADMCTF</h1>
+            <h1 className='ml-4 font-bold text-2xl text-white'>CTFBoard</h1>
         </Link>
     )
 }

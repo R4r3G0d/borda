@@ -37,4 +37,4 @@ function Button({ text, small, big, icon, full, className, ...buttonPprops }) {
     )
 }
 
-export { Button }
+export default Button

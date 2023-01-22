@@ -12,7 +12,7 @@ import { z } from 'zod'
 
 import prisma from '~/utils/prisma.server'
 import authenticator from '~/utils/auth.server'
-import { Button } from '~/components/Button'
+import { Button } from '~/components'
 import { Field } from '~/components/Field'
 
 export async function action({ request }) {

@@ -6,7 +6,7 @@ import { z } from 'zod'
 import prisma from '~/utils/prisma.server'
 import authenticator from '~/utils/auth.server'
 import { taskValidator, formatZodError } from '~/utils/validator'
-import { Button } from '~/components/Button'
+import { Button } from '~/components'
 import { Field } from '~/components/Field'
 
 export default function EditTask() {

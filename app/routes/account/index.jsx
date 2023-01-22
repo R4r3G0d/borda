@@ -15,7 +15,7 @@ import authenticator from '~/utils/auth.server'
 import { validatePassword, hashPassword } from '~/utils/auth.server'
 import { getSession, commitSession } from '~/utils/session.server'
 import { passwordValidator } from '~/utils/validator'
-import { Button } from '~/components/Button'
+import { Button } from '~/components'
 import { EmailField, Field, PasswordField } from '~/components/Field'
 
 export async function action({ request }) {

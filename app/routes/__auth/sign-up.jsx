@@ -13,7 +13,7 @@ import authenticator from '~/utils/auth.server'
 import { passwordValidator } from '~/utils/validator'
 import { MakaraIcon } from '~/components/icons/MakaraIcon'
 import { EmailField, PasswordField, Field } from '~/components/Field'
-import { Button } from '~/components/Button'
+import { Button } from '~/components'
 
 
 export const loader = async ({ request }) => {
