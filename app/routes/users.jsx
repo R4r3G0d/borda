@@ -4,6 +4,10 @@ import { json } from '@remix-run/node'
 
 import prisma from '~/utils/prisma.server'
 
+export const meta = () => ({
+    title: 'USERS | CTFBOARD',
+});
+
 export async function loader() {
     try {
         // Получаем id и имена и название команд всех игроков

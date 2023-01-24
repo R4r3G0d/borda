@@ -15,11 +15,11 @@ import styles from './styles/index.css'
 import authenticator from './utils/auth.server'
 
 import { ServerError, NotFoundError } from './components/Errors'
-import { Navbar } from './components/Navbar'
+import { Footer, Navbar } from "~/components";
 
 export const meta = () => ({
     charset: 'utf-8',
-    title: 'ADMCTF',
+    title: 'CTFBOARD',
     viewport: 'width=device-width,initial-scale=1',
 });
 
@@ -31,27 +31,22 @@ export function links() {
 
 export async function loader({ request }) {
     let player = await authenticator.isAuthenticated(request)
-
-    let event = await prisma.event.findUnique({ where: { id: 1 } })
-
-    return json({ player, event })
+    return json({ player })
 }
 
 export default function App() {
-    let data = useLoaderData()
+    let { player } = useLoaderData()
 
     return (
         <html lang='en'>
             <head>
-                <meta charSet='utf-8' />
-                <meta name='viewport' content='width=device-width,initial-scale=1' />
                 <Meta />
                 <Links />
-                <title>{meta.title ? meta.title : 'ADMCTF'}</title>
             </head>
-            <body className='bg-black min-w-xs'>
-                <Navbar user={data?.player} />
+            <body className='bg-black min-w-xs min-h-screen flex flex-col'>
+                <Navbar user={player} />
                 <Outlet />
+                <Footer/>
                 {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
                 <ScrollRestoration />
                 <Scripts />
@@ -79,7 +74,7 @@ export function CatchBoundary() {
             </html>
         )
     }
-    throw new Error(`Unhandled error: ${caught.status}`)
+    throw new Error(`Unhandled error: ${ caught.status } `)
 }
 
 export function ErrorBoundary({ error }) {

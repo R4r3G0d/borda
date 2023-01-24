@@ -13,6 +13,10 @@ import prisma from '~/utils/prisma.server'
 import authenticator from '~/utils/auth.server'
 import { TaskGrid, TaskCard } from '~/components/Task'
 
+export const meta = () => ({
+    title: 'TASKS | CTFBOARD',
+});
+
 export async function loader({ request }) {
 	try {
 		let player = await authenticator.isAuthenticated(request, {

@@ -4,6 +4,10 @@ import { json } from '@remix-run/node'
 
 import prisma from '~/utils/prisma.server'
 
+export const meta = () => ({
+    title: 'SCOREBOARD | CTFBOARD',
+});
+
 export async function loader() {
     try {
         let teams = await prisma.team.findMany()
