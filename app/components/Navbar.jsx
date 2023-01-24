@@ -19,7 +19,7 @@ import {
 
 import { Button } from '~/components'
 
-export function Navbar({ user }) {
+function Navbar({ user }) {
     let location = useLocation()
 
     if (location.pathname.includes('sign') || location.pathname.includes('login')) return null
@@ -270,3 +270,5 @@ function NavbarAccount({ team, user }) {
         </Menu >
     );
 }
+
+export default Navbar
