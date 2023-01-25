@@ -1,23 +1,36 @@
+import * as React from "react";
 import clsx from 'clsx'
 import { Link, useLocation, useSearchParams } from '@remix-run/react'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronUpDownIcon, CheckIcon, PlusIcon } from '@heroicons/react/24/solid'
 
 export default function ({ children, className }) {
-    return (
-        <div className='hidden sm:block md:col-span-2 overflow-y-auto overflow-x-hidden max-h-full h-full w-full'>
-            <div className={clsx(
-                'sticky z-10 top-0 h-14 w-full flex justify-between items-center',
-                'border-b border-white border-opacity-25',
-                'backdrop-blur-xl backdrop-filter',
-                'bg-black bg-opacity-30',
-            )}>
-                <TaskGridSort />
-                <TaskGridNewTask />
-            </div>
+    // const [scroll, setScroll] = React.useState(0)
+    // const ref = React.useRef(null)
 
-            <div className='p-5 grid grid-auto-fit-md gap-5'>
-                {children}
+    // // const getscroll = () => {
+    // //     setScroll(Math.abs(ref.current.getBoundingClientRect().top - ref.current.offsetTop));
+    // //     console.log(scroll);
+    // // };
+
+    // React.useEffect(() => {
+    //     // setHeight(ref.current.clientHeight)
+
+    //     // ref.current.scrollTop = 100
+    //     console.log(ref.current.offsetTop)
+    // }, [])
+
+    return (
+        <div className='sticky h-full flex-grow'>
+            <div className="h-screen w-full overflow-y-auto overflow-x-hidden hidden sm:flex flex-col">
+                <div className="h-full pt-14 pb-5">
+                    <div className="px-5 pt-5 flex justify-between items-center">
+                        <TaskGridSort />
+                    </div>
+                    <div className='p-5 grid grid-auto-fit-md gap-5'>
+                        {children}
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -42,13 +55,10 @@ function TaskGridSort() {
     let location = useLocation();
     let url = location.pathname
     return (
-        <div className='flex felx-row px-3'>
-            <div className={'px-3 h-8 font-semibold leading-8 text-sm'}>
-                Sort:
-            </div>
+        <div className='z-10 flex felx-row'>
             <Listbox as={'div'} className={'w-24 relative'} value={sortProp}>
                 <Listbox.Button className="h-8 relative flex flex-row justify-between items-center border rounded-md border-white border-opacity-25">
-                    <div className="px-3 text-sm capitalize">{sortProp}</div>
+                    <div className="px-3 text-sm capitalize">{sortProp ? sortProp : 'sort'}</div>
                     <ChevronUpDownIcon
                         className="h-5 w-5 text-neutral-300"
                         aria-hidden="true"

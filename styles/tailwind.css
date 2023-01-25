@@ -5,3 +5,19 @@
 :root {
     color-scheme: dark;
 }
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+    background-color: #171717;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 14px;
+    background-color: #171717;
+    border: 3px solid rgb(255 255 255 / 0.1);
+}

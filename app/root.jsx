@@ -45,8 +45,10 @@ export default function App() {
             </head>
             <body className='bg-black min-w-xs min-h-screen flex flex-col'>
                 <Navbar user={player} />
-                <Outlet />
-                <Footer/>
+                <main className='min-h-screen'>
+                    <Outlet />
+                </main>
+                <Footer />
                 {process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
                 <ScrollRestoration />
                 <Scripts />
@@ -74,7 +76,7 @@ export function CatchBoundary() {
             </html>
         )
     }
-    throw new Error(`Unhandled error: ${ caught.status } `)
+    throw new Error(`Unhandled error: ${caught.status} `)
 }
 
 export function ErrorBoundary({ error }) {

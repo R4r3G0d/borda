@@ -2,10 +2,10 @@ import clsx from 'clsx'
 import { NavLink } from '@remix-run/react'
 import { motion } from 'framer-motion'
 import { FlagIcon, HandThumbUpIcon, CheckIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
-import { TaskColors } from './Colors'
+import Colors from './TaskColors'
 
 export default function ({ task, link, isFocused }) {
-    const color = TaskColors.get(task.category)
+    const color = Colors.get(task.category)
     const icon = Array.from(task.category)[0];
 
     return (

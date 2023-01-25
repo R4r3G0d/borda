@@ -1,5 +1,4 @@
 export { default as TaskGrid } from './Grid'
-export { default as TaskView } from './View'
 export { default as TaskCard } from './Card'
 export { default as TaskControls } from './Controls'
 export { default as TaskSolutions } from './Solutions'

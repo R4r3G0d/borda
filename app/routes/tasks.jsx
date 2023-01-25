@@ -99,8 +99,7 @@ export default function Tasks() {
 	let { taskId } = useParams();
 
 	return (
-		<div className='fixed h-full w-full'>
-			<div className='pt-14 h-full w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3'>
+			<div className='min-h-screen w-full flex flex-1'>
 				<TaskGrid>
 					{sortedTasks.map((task) => (
 						<TaskCard
@@ -117,11 +116,10 @@ export default function Tasks() {
 					animate={{ y: 0, opacity: 1 }}
 					exit={{ x: '-100', opacity: 0 }}
 					transition={{ duration: 0.3 }}
-					className='overflow-y-auto max-h-full h-full w-full border-l border-white border-opacity-25'
+					className='w-taskView'
 				>
 					<Outlet />
 				</motion.div>
 			</div>
-		</div >
 	);
 }

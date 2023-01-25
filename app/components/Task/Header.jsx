@@ -1,9 +1,9 @@
 import clsx from 'clsx'
-import { TaskColors } from './Colors'
+import Colors from './TaskColors'
 
 export default function ({ name = 'No Title', category = 'OTHER', points = 0, className }) {
     const icon = Array.from(category)[0];
-    const color = TaskColors.get(category)
+    const color = Colors.get(category)
 
     return (
         <div className={clsx("h-10 w-full flex flex-row items-center", className)}>

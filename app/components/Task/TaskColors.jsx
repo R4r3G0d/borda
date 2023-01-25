@@ -1,4 +1,4 @@
-export const TaskColors = new Map([
+const Colors = new Map([
     ["WEB", "from-yellow-500 to-orange-600"],
     ["CRYPTO", "from-emerald-500 to-lime-600"],
     ["FORENSICS", "from-fuchsia-500 to-purple-600"],
@@ -10,3 +10,4 @@ export const TaskColors = new Map([
     ["STEGO", "from-red-500 to-rose-600"]
 ])
 
+export default Colors

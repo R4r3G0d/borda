@@ -37,8 +37,11 @@ module.exports = {
             },
             height: {
                 '8vh': '80vh',
-                'sh': 'calc(100vh - 56px)',
+                'screenMinusNavbar': 'calc(100vh - 56px)',
                 '600': '600px',
+            },
+            width:{
+                'taskView':'440px',
             },
             maxHeight: {
                 'sh': 'calc(100vh - 56px)',
