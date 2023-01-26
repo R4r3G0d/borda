@@ -9,9 +9,9 @@ import { getSession, commitSession } from '~/utils/session.server'
 import { Field } from '~/components/Field'
 import { Button } from '~/components'
 
-export default function users() {
+export default function settings() {
     return (
-            <div> users </div>
+            <div className='colour-white pt-14'> settings </div>
     )
 }
 
