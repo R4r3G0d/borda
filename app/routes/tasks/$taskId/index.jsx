@@ -125,8 +125,9 @@ export default function Task() {
                         a: function ({ href, children, ...otherProps }) {
                             return (
                                 <>
-                                    <Link
-                                        to={href}
+                                    <a
+                                        href={href}
+                                        target="_blank"
                                         className='text-rose-600 font-bold hover:cursor-pointer inline-flex items-center'
                                         {...otherProps}
                                     >
@@ -134,7 +135,7 @@ export default function Task() {
                                         <div className='px-1'>
                                             <ArrowTopRightOnSquareIcon className=' w-4 h-4' />
                                         </div>
-                                    </Link>
+                                    </a>
                                 </>
                             )
                         },
