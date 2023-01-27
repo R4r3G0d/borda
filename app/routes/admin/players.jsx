@@ -10,24 +10,15 @@ import { Field } from '~/components/Field'
 import { Button } from '~/components'
 
 export async function loader() {
-    try {
-        let players = await prisma.player.findMany()
-
-        return json({ players })
-    } catch (err) {
-        console.log(err)
-        throw err
-    }
+    let players = await prisma.player.findMany()
+    return json({ players })
 }
 
-export default function players() {
-    let data = useLoaderData()
-    //let actionData = useActionData()
+export default function PlayersAdminRoute() {
+    let {players} = useLoaderData()
 
     return (
-        <div className='container max-w-5xl mx-auto'>
-        <div className='mt-14 px-5 w-full'>
-
+        <div className='flex-grow w-full'>
             <div className='py-5 relative overflow-x-auto'>
                 <table className="w-full table-auto">
                     <thead>
@@ -38,10 +29,10 @@ export default function players() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.players.map((player) => (
+                        {players.map((player) => (
                             <tr key={player.id} className='h-12 whitespace-nowrap border-b  border-white/30 last:border-none'>
                                 <td className="px-3 font-bold">
-                                    <Button 
+                                    <Button
                                     />
                                 </td>
                                 <td className="px-3">
@@ -56,7 +47,6 @@ export default function players() {
                 </table>
             </div>
         </div>
-    </div>
     )
 }
 

@@ -1,4 +1,4 @@
-import { useLoaderData, Form, useActionData } from '@remix-run/react'
+import { useLoaderData, Link, useActionData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { StarIcon, InformationCircleIcon } from '@heroicons/react/24/solid'
@@ -20,12 +20,12 @@ export async function loader() {
     }
 }
 
-export async function action({request}) {
+export async function action({ request }) {
     const formData = await request.formData()
-	let { _action, ...values } = Object.fromEntries(formData)
+    let { _action, ...values } = Object.fromEntries(formData)
 
-    switch(_action){
-        case 'edit':{
+    switch (_action) {
+        case 'edit': {
             console.log(values.taskId)
             return redirect("./tasks/" + values.taskId)
         }
@@ -38,42 +38,42 @@ export default function tasks() {
 
     return (
         <div className='container max-w-5xl mx-auto'>
-        <div className='mt-14 px-5 w-full'>
+            <div className='mt-14 px-5 w-full'>
 
-            <div className='py-5 relative overflow-x-auto'>
-                <table className="w-full table-auto">
-                    <thead>
-                        <tr className='h-12 whitespace-nowrap border-b border-white/30 font-bold '>
-                            <td className="px-3">TaskId</td>
-                            <td className="px-3">Name</td>
-                            <td className="px-3 text-center">Description</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.tasks.map((task) => (
-                            <tr key={task.id} className='h-12 whitespace-nowrap border-b  border-white/30 last:border-none'>
-                                <td className="px-3 font-bold">
-                                    <input name='taskId' valur={task.id} type='hidden' />
-                                    {/* {task.id} */}
-                                    <Button 
-                                        name='_action'
-                                        text='Edit'
-                                        value='edit'
-                                    />
-                                </td>
-                                <td className="px-3">
-                                    {task.name}
-                                </td>
-                                <td className="px-3">
-                                    {task.content}
-                                </td>
+                <div className='py-5 relative overflow-x-auto'>
+                    <table className="w-full table-auto">
+                        <thead>
+                            <tr className='h-12 whitespace-nowrap border-b border-white/30 font-bold '>
+                                <td className="px-3">TaskId</td>
+                                <td className="px-3">Name</td>
+                                <td className="px-3 text-center">Description</td>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {data.tasks.map((task) => (
+                                <tr key={task.id} className='h-12 whitespace-nowrap border-b  border-white/30 last:border-none'>
+                                    <td className="px-3 font-bold">
+                                        <input name='taskId' valur={task.id} type='hidden' />
+                                        {/* {task.id} */}
+                                        <Link to={`/admin/edit/tasks/${task.id}`}>
+                                            <Button
+                                                text='Edit'
+                                            />
+                                        </Link>
+                                    </td>
+                                    <td className="px-3">
+                                        {task.name}
+                                    </td>
+                                    <td className="px-3">
+                                        {task.content}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
     )
 }
 

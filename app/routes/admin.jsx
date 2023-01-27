@@ -2,64 +2,60 @@ import { NavLink, Outlet } from "@remix-run/react"
 import clsx from "clsx"
 import { useLoaderData, Form } from '@remix-run/react'
 import { json, redirect, Response } from '@remix-run/node'
-import {Role} from '@prisma/client'
+import { Role } from '@prisma/client'
 
 import authenticator from '~/utils/auth.server'
-import { response } from "express"
 
-export async function loader({ request }) { 
-        let player = await authenticator.isAuthenticated(request, {
-			failureRedirect: '/sign-in',
-		})
+export async function loader({ request }) {
+    let player = await authenticator.isAuthenticated(request, {
+        failureRedirect: '/sign-in',
+    })
 
-        let isAdmin = player.role == Role.ADMIN
+    let isAdmin = player.role == Role.ADMIN
 
-    if (!isAdmin){ //Change
+    if (!isAdmin) {
         throw new Response("", { status: 404 });
-        }
-    
-    return json({Ok: true})
+    }
+
+    return new Response("", { status: 200 })
 }
 
-export default function(){
-    let links = [
+export default function () {
+    let routes = [
         {
-            path: './settings',
-            text: 'Settings',
+            path: './players',
+            name: 'Players',
         },
         {
             path: './tasks',
-            text: 'Tasks',
+            name: 'Tasks',
         },
         {
-            path: './players',
-            text: 'Players',
+            path: './settings',
+            name: 'Settings',
         }
     ]
 
     return (
-        <>
-        <div className={clsx(
-            "sticky top-14 left-0 h-14 w-full flex flex-row items-center px-5",
-            'border-b border-white/25',
-            'backdrop-blur-xl backdrop-filter',
-            'bg-black bg-opacity-30',)}>
-            {links.map((link) => (
-                <NavLink
-                    to={link.path}
-                    end
-                    key={link.text}
-                    className={({ isActive }) =>
-                        clsx('h-14 px-5 mt-px border-b border-white/0 flex flex-row items-center text-center', { 'border-white/75': isActive })
+        <div className=' pt-14 w-full'>
+            <div className="min-h-screen text-white flex flex-row">
+                <div className="sticky flex-none grid grid-cols-1 gap-5 min-w-max h-fit">
+                    {
+                        routes.map((route, idx) => (
+                            <NavLink
+                                to={route.path}
+                                key={idx}
+                                className={({ isActive }) =>
+                                    clsx('text-white p-5', { 'bg-blue-600': isActive })
+                                }
+                            >
+                                {route.name}
+                            </NavLink>
+                        ))
                     }
-                >
-                    {link.text}
-                </NavLink>
-            ))}
+                </div>
+                <Outlet />
+            </div>
         </div>
-        <div className='pt-14'>
-            <Outlet />
-        </div>
-    </>
-)
+    )
 }
