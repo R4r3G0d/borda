@@ -18,14 +18,13 @@ export async function loader() {
             email: true,
             telegramId: true,
         }
-    }
-    )
-        
+    })
+
     return json({ players })
 }
 
 export default function PlayersAdminRoute() {
-    let {players} = useLoaderData()
+    let { players } = useLoaderData()
 
     return (
         <div className='flex-grow w-full'>
@@ -44,13 +43,13 @@ export default function PlayersAdminRoute() {
                         {players.map((player) => (
                             <tr key={player.id} className='h-12 whitespace-nowrap border-b  border-white/30 last:border-none'>
                                 <td className="px-3 font-bold">
-                                <input name='playerId' valur={player.id} type='hidden' />
-                                        {/* {player.id} */}
-                                        <Link to={`/admin/edit/players/${player.id}`}>
-                                            <Button
-                                                text='Edit'
-                                            />
-                                        </Link>
+                                    <input name='playerId' valur={player.id} type='hidden' />
+                                    {/* {player.id} */}
+                                    <Link to={`/admin/edit/players/${player.id}`}>
+                                        <Button
+                                            text='Edit'
+                                        />
+                                    </Link>
                                 </td>
                                 <td className="px-3">
                                     {player.displayName}
@@ -62,7 +61,7 @@ export default function PlayersAdminRoute() {
                                     {player.telegramId}
                                 </td>
                                 <td className="px-3">
-                                    {player.team.name}
+                                    {player.team?.name }
                                 </td>
                             </tr>
                         ))}

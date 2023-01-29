@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import prisma from '~/utils/prisma.server'
 import authenticator from '~/utils/auth.server'
-import { taskValidator, formatZodError } from '~/utils/validator'
+import { formatZodError } from '~/utils/validator'
 import { Button } from '~/components'
 import { Field } from '~/components/Field'
 import { passwordValidator } from '../../../utils/validator'
@@ -16,11 +16,6 @@ export default function EditPlayer() {
     console.log({ actionData })
     const transition = useTransition()
 
-    // const [disabled, setDisabled] = React.useState(true)
-
-    // TODO: Markdown preview
-    // const [mardown, setMarkdown] = React.useState(task.content)
-
     return (
         <div className="container w-full max-w-2xl mx-auto sm:px-6">
             <h2 className='py-4 text-2xl text-white  border-b border-gray-300'>
@@ -30,12 +25,6 @@ export default function EditPlayer() {
                 method='post'
                 replace
                 className='pt-5 grid grid-cols-2 gap-5'
-            // TODO: disable button until form values changed
-            // onChange={function (e) {
-            //     if (player.displayName !== e.target.value) {
-            //         setDisabled(false)
-            //     } else { setDisabled(true) }
-            // }}
             >
                 <Field
                     name='id'
@@ -44,21 +33,19 @@ export default function EditPlayer() {
                     disabled
                     className='cursor-not-allowed col-span-2'
                 />
-
                 <Field
-                    name='name'
+                    name='displayName'
                     label='Name'
                     defaultValue={player.displayName}
                     error={actionData?.error.displayName}
                 />
-
                 <Field
                     name='telegramId'
                     label='Telegram'
                     defaultValue={player.telegramId}
                     error={actionData?.error.telegramId}
+                    disabled
                 />
-
                 <Field
                     name='email'
                     label='Email'
@@ -66,14 +53,11 @@ export default function EditPlayer() {
                     defaultValue={player.email}
                     error={actionData?.error.email}
                 />
-
                 <Field
                     name='password'
                     label='Password'
-                    error={actionData?.errors.password}
+                    error={actionData?.error.password}
                 />
-                
-
                 <Button
                     text='Save'
                     disabled={transition.submission}
@@ -99,16 +83,23 @@ export async function action({ request, params }) {
     await authenticator.isAuthenticated(request)
 
     let formData = await request.formData()
-    let values = Object.fromEntries(formData)
-    let password = values.password
-    values.password = Number(points)
+    // let values = Object.fromEntries(formData)
+
+    let password = formData.get("password")
+    let eamil = formData.get("email")
+
+
+    // let data = {}
+    // for i in range values
+    //     if value != ""
+    //         data.key = value
 
     try {
-        await passwordValidator.parse(values)
+        // await passwordValidator.parse(values.password)
         await prisma.player.update({
-            where: { id: params.taskId },
+            where: { id: params.playerId },
             data: {
-                ...values
+                ...values,
             }
         })
 
@@ -121,5 +112,5 @@ export async function action({ request, params }) {
         }
     }
 
-    return redirect('/players/' + params.playerId)
+    return redirect('/admin/edit/players/' + params.playerId)
 }
