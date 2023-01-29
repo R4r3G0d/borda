@@ -20,18 +20,6 @@ export async function loader() {
     }
 }
 
-export async function action({ request }) {
-    const formData = await request.formData()
-    let { _action, ...values } = Object.fromEntries(formData)
-
-    switch (_action) {
-        case 'edit': {
-            console.log(values.taskId)
-            return redirect("./tasks/" + values.taskId)
-        }
-    }
-}
-
 export default function tasks() {
     let data = useLoaderData()
     let actionData = useActionData()
@@ -54,7 +42,6 @@ export default function tasks() {
                                 <tr key={task.id} className='h-12 whitespace-nowrap border-b  border-white/30 last:border-none'>
                                     <td className="px-3 font-bold">
                                         <input name='taskId' valur={task.id} type='hidden' />
-                                        {/* {task.id} */}
                                         <Link to={`/admin/edit/tasks/${task.id}`}>
                                             <Button
                                                 text='Edit'
