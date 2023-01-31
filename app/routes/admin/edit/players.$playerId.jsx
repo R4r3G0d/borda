@@ -9,6 +9,7 @@ import { formatZodError } from '~/utils/validator'
 import { Button } from '~/components'
 import { Field } from '~/components/Field'
 import { passwordValidator } from '../../../utils/validator'
+import { hashPassword } from '../../../utils/auth.server'
 
 export default function EditPlayer() {
     const { player } = useLoaderData()
@@ -56,6 +57,7 @@ export default function EditPlayer() {
                 <Field
                     name='password'
                     label='Password'
+                    className='col-span-2'
                     error={actionData?.error.password}
                 />
                 <Button
@@ -83,23 +85,21 @@ export async function action({ request, params }) {
     await authenticator.isAuthenticated(request)
 
     let formData = await request.formData()
-    // let values = Object.fromEntries(formData)
+    let values = Object.fromEntries(formData)
 
-    let password = formData.get("password")
-    let eamil = formData.get("email")
+    let data = {}
 
-
-    // let data = {}
-    // for i in range values
-    //     if value != ""
-    //         data.key = value
-
+    Object.entries(values).forEach(function ([key, value]) {
+        if (value != '') {
+            data[key] = value
+        }
+    })
+    
     try {
-        // await passwordValidator.parse(values.password)
         await prisma.player.update({
             where: { id: params.playerId },
             data: {
-                ...values,
+                ...data,
             }
         })
 
