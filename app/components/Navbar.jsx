@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { NavLink, Link, useLocation } from '@remix-run/react'
 import { Menu, Transition, Dialog } from '@headlessui/react'
 import {
+    AdjustmentsHorizontalIcon,
     ArrowLeftOnRectangleIcon,
     ArrowRightOnRectangleIcon,
     Bars3Icon,
@@ -18,6 +19,7 @@ import {
 } from '@heroicons/react/24/outline'
 
 import { Button } from '~/components'
+import { Role } from '@prisma/client'
 
 function Navbar({ user }) {
     let location = useLocation()
@@ -36,8 +38,7 @@ function Navbar({ user }) {
             <nav className='h-full px-5 flex flex-row items-center justify-between'>
                 <NavbarLogo />
                 <NavbarMenu />
-                <NavbarAccount user={user?.displayName} team={user?.team?.name} />
-
+                <NavbarAccount user={user?.displayName} team={user?.team?.name} isAdmin={user?.role === Role.ADMIN} />
                 <NavbarMobileMenu user={user?.displayName} />
             </nav>
         </header>
@@ -181,7 +182,7 @@ function NavbarMobileMenu({ user }) {
     )
 }
 
-function NavbarAccount({ team, user }) {
+function NavbarAccount({ team, user, isAdmin }) {
     if (!user) {
         return (
             <div className="hidden sm:flex flex-row ">
@@ -212,6 +213,15 @@ function NavbarAccount({ team, user }) {
             icon: <ArrowLeftOnRectangleIcon className='w-5 h-5' />
         },
     ]
+
+    if (isAdmin) {
+        links.splice(2, 0, {
+            link: '/admin',
+            text: 'Admin',
+            icon: <AdjustmentsHorizontalIcon className='w-5 h-5' />
+        })
+    }
+
     return (
         <Menu as='div' className={'relative hidden sm:block'}>
             <Menu.Button
