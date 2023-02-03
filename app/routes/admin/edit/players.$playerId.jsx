@@ -95,6 +95,14 @@ export async function action({ request, params }) {
         }
     })
     
+    console.log(data)
+    console.log(data.password)
+
+    if (data.password) {
+            data.password = await hashPassword(data.password)
+    }
+    console.log(data.password)
+   
     try {
         await prisma.player.update({
             where: { id: params.playerId },
