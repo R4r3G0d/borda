@@ -84,7 +84,20 @@ export default function EditTask() {
                     type='textarea'
                     style={{ height: 256 }}
                 />
-
+                <div className='w-full flex flex-row justify-between'>
+                <Field
+                    name='active'
+                    label='Active'
+                    defaultValue={task.active}
+                    error={actionData?.error.active}
+                />
+                <Field
+                    name='disabled'
+                    label='Disabled'
+                    defaultValue={task.disabled}
+                    error={actionData?.error.disabled}
+                />
+                </div>
                 <Button
                     text='Save'
                     disabled={transition.submission}
@@ -110,6 +123,22 @@ export async function action({ request, params }) {
     let formData = await request.formData()
     let values = Object.fromEntries(formData)
     let points = values.points
+    let disabled = values.disabled
+    let active = values.active
+
+
+    if (disabled == "true"){
+        values.disabled = true
+    } else {
+        values.disabled = false
+    }
+    if (active == "true"){
+        values.active = true
+    } else {
+        values.active = false
+    }
+    console.log(values)
+
     values.points = Number(points)
 
     try {
