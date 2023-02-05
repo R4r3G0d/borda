@@ -54,6 +54,18 @@ export async function loader({ request }) {
 				},
 			})
 
+			let points = 0
+
+			if ((solves.length > 1) && (task.points - task.points * 0.1 * (solves.length - 1)) > 0.5 * task.points) {
+				points = task.points - task.points * 0.1 * (solves.length - 1)
+			} else if ((solves.length > 1) && (task.points - task.points * 0.1 * (solves.length - 1)) < 0.5 * task.points) {
+				points = task.points * 0.5
+			} else {
+				points = task.points
+			}
+
+			tasks[i].points = points
+
 			let isSolved = false
 
 			if (player.teamId) {
