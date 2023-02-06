@@ -23,6 +23,10 @@ export async function loader({ request }) {
 export default function () {
     let routes = [
         {
+            path: "./",
+            name: "Dashboard"
+        },
+        {
             path: './players',
             name: 'Players',
         },
@@ -37,25 +41,30 @@ export default function () {
     ]
 
     return (
-        <div className=' pt-14 w-full'>
-            <div className="min-h-screen text-white flex flex-row">
-                <div className="sticky flex-none grid grid-cols-1 gap-5 min-w-max h-fit">
-                    {
-                        routes.map((route, idx) => (
-                            <NavLink
-                                to={route.path}
-                                key={idx}
-                                className={({ isActive }) =>
-                                    clsx('text-white p-5', { 'bg-blue-600': isActive })
-                                }
-                            >
-                                {route.name}
-                            </NavLink>
-                        ))
-                    }
+        <div className='min-h-screen w-full flex flex-row pt-14 text-white'>
+            <div className="w-56 flex-none bg-neutral-900 border-r border-white/20">
+                <div className=" h-full min-h-screen pt-6 flex flex-col items-start my-auto">
+                    <div className="w-full flex-none grid grid-cols-1 gap-2">
+                        {
+                            routes.map((route, idx) => (
+                                <NavLink
+                                    to={route.path}
+                                    key={idx}
+                                    className="w-full px-3"
+                                >
+                                    {({ isActive }) => (
+                                        <p className={clsx('text-white h-11 px-5 rounded-xl flex items-center', { 'bg-blue-600': isActive })}>
+                                            {route.name}
+                                        </p>
+                                    )}
+                                </NavLink>
+                            ))
+                        }
+                    </div>
                 </div>
-                <Outlet />
             </div>
+            <Outlet />
+
         </div>
     )
 }

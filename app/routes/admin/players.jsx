@@ -27,47 +27,46 @@ export default function PlayersAdminRoute() {
     let { players } = useLoaderData()
 
     return (
-        <div className='flex-grow w-full'>
-            <div className='py-5 relative overflow-x-auto'>
-                <table className="w-full table-auto">
-                    <thead>
-                        <tr className='h-12 whitespace-nowrap border-b border-white/30 font-bold '>
-                            <td className="px-3 "></td>
-                            <td className="px-3 ">Nickname</td>
-                            <td className="px-3 ">Email</td>
-                            <td className="px-3 ">Telegram</td>
-                            <td className="px-3 ">Team</td>
+        <div className='px-5 w-full overflow-x-auto'>
+            <h2 className='ml-3 py-2 text-xl text-white'>
+                Players
+            </h2>
+            <table className="w-full table-auto">
+                <thead>
+                    <tr className='h-16 whitespace-nowrap border-b border-white/30 font-bold '>
+                        <td className="px-3 ">ID</td>
+                        <td className="px-3 "></td>
+                        <td className="px-3 ">Name</td>
+                        <td className="px-3 ">Email</td>
+                        <td className="px-3 ">Team</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {players.map((player) => (
+                        <tr key={player.id} className='h-16 whitespace-nowrap border-b  border-white/30 last:border-none'>
+                            <td className="px-3">
+                                <p>{player.id}</p>
+                            </td>
+                            <td className="px-3">
+                                <Link to={`/admin/edit/players/${player.id}`}>
+                                    <Button
+                                        text='Edit'
+                                    />
+                                </Link>
+                            </td>
+                            <td className="px-3">
+                                {player.displayName}
+                            </td>
+                            <td className="px-3">
+                                {player.email}
+                            </td>
+                            <td className="px-3">
+                                {player.team?.name}
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {players.map((player) => (
-                            <tr key={player.id} className='h-12 whitespace-nowrap border-b  border-white/30 last:border-none'>
-                                <td className="px-3 font-bold">
-                                    <input name='playerId' valur={player.id} type='hidden' />
-                                    {/* {player.id} */}
-                                    <Link to={`/admin/edit/players/${player.id}`}>
-                                        <Button
-                                            text='Edit'
-                                        />
-                                    </Link>
-                                </td>
-                                <td className="px-3">
-                                    {player.displayName}
-                                </td>
-                                <td className="px-3">
-                                    {player.email}
-                                </td>
-                                <td className="px-3">
-                                    {player.telegramId}
-                                </td>
-                                <td className="px-3">
-                                    {player.team?.name }
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 }

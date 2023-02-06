@@ -1,40 +1,26 @@
 import { NavLink, Outlet } from "@remix-run/react"
 import clsx from "clsx"
-import { useLoaderData, Form } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
 
 import authenticator from '~/utils/auth.server'
 
 export async function loader({ request }) {
-    try {
-        let user = await authenticator.isAuthenticated(request, {
-            failureRedirect: '/sign-in',
-        })
-
-        return json({ user })
-
-    } catch (err) {
-        console.log(err)
-        // Также к верхнему зачем???
-        // return json({ error: { message: 'Invalid token' } })
-        throw err
-    }
+    return await authenticator.isAuthenticated(request, {
+        failureRedirect: '/sign-in',
+    })
 }
 
-export default function () {
-    let links = [
-        {
-            path: '.',
-            text: 'Settings',
-        },
-        {
-            path: './team',
-            text: 'Team',
-        }
-    ]
-    const { user } = useLoaderData()
-    if (user.role == 'ADMIN') { links.push({ path: './event', text: 'Manage CTF' }) }
+const links = [
+    {
+        path: '.',
+        text: 'Settings',
+    },
+    {
+        path: './team',
+        text: 'Team',
+    }
+]
 
+export default function () {
     return (
         <>
             <div className={clsx(

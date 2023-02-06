@@ -87,34 +87,23 @@ export async function action({ request, params }) {
     let formData = await request.formData()
     let values = Object.fromEntries(formData)
 
+    // let password = formData.get("password")
+    // let eamil = formData.get("email")
+
+
     let data = {}
 
-    Object.entries(values).forEach(function ([key, value]) {
+    Object.entries(values).forEach(async function ([key, value]) {
         if (value != '') {
-            data[key] = value
+            if (key === 'password') {
+                data[key] = await hashPassword(data.password)
+            } else {
+                data[key] = value
+            }
         }
     })
 
-    if (data.password) {
-            data.password = await hashPassword(data.password)
-    }
-   
-    try {
-        await prisma.player.update({
-            where: { id: params.playerId },
-            data: {
-                ...data,
-            }
-        })
-
-    } catch (err) {
-        console.log(err)
-        if (err instanceof z.ZodError) {
-            let error = formatZodError(err)
-            console.log(error)
-            return json({ error })
-        }
-    }
+    await prisma.player.update({ where: { id: params.playerId }, data })
 
     return redirect('/admin/edit/players/' + params.playerId)
 }

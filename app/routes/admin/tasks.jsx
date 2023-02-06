@@ -25,43 +25,45 @@ export default function tasks() {
     let actionData = useActionData()
 
     return (
-        <div className='container max-w-5xl mx-auto'>
-            <div className='mt-14 px-5 w-full'>
-
-                <div className='py-5 relative overflow-x-auto'>
-                    <table className="w-full table-auto">
-                        <thead>
-                            <tr className='h-12 whitespace-nowrap border-b border-white/30 font-bold '>
-                                <td className="px-3">TaskId</td>
-                                <td className="px-3">Name</td>
-                                <td className="px-3 text-center">Description</td>
+        <div className='px-5 w-full overflow-x-auto'>
+            <h2 className='ml-3 py-2 text-xl text-white'>
+                Tasks
+            </h2>
+            <div className='w-full overflow-x-auto'>
+                <table className="w-full table-auto">
+                    <thead>
+                        <tr className='h-16 whitespace-nowrap border-b border-white/30 font-bold '>
+                            <td className="px-3">TaskId</td>
+                            <td className="px-3">Name</td>
+                            <td className="px-3"></td>
+                            <td className="px-3">Description</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.tasks.map((task) => (
+                            <tr key={task.id} className='h-16    whitespace-nowrap border-b  border-white/30 last:border-none'>
+                                <td className="px-3">
+                                    <p className=''>{task.id}</p>
+                                    {/* <input name='taskId' value={task.id} type='hidden' /> */}
+                                </td>
+                                <td className="px-3">
+                                    {task.name}
+                                </td>
+                                <td className="px-3">
+                                    <Link to={`/admin/edit/tasks/${task.id}`}>
+                                        <Button
+                                            text='Edit'
+                                        />
+                                    </Link>
+                                </td>
+                                <td className="px-3">
+                                    {task.content}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {data.tasks.map((task) => (
-                                <tr key={task.id} className='h-12 whitespace-nowrap border-b  border-white/30 last:border-none'>
-                                    <td className="px-3 font-bold">
-                                        <input name='taskId' valur={task.id} type='hidden' />
-                                        <Link to={`/admin/edit/tasks/${task.id}`}>
-                                            <Button
-                                                text='Edit'
-                                            />
-                                        </Link>
-                                    </td>
-                                    <td className="px-3">
-                                        {task.name}
-                                    </td>
-                                    <td className="px-3">
-                                        {task.content}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     )
 }
-
-// Ура редактировать таски - БЕСПЛАТНО
