@@ -17,4 +17,3 @@
 
         docker compose up -d
 
-        
