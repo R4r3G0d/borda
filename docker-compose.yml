@@ -1,49 +1,6 @@
 version: '3.9'
 
 services:
-  traefik:
-    image: traefik:latest
-    container_name: traefik
-    restart: unless-stopped
-    command:
-      - "--api"
-      - "--providers.file.filename=/traefik/traefik.yml"
-
-      - "--providers.docker"
-      - "--providers.docker.exposedbydefault=false"
-      - '--providers.docker.defaultRule=Host(`{{ index .Labels "com.docker.compose.service" }}.${DOMAIN}`)'
-      - "--providers.docker.network=traefik"
-      
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      
-      - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.websecure.http.tls=true"
-
-    labels:
-      - "traefik.enable=true"
-
-      - "traefik.http.middlewares.traefik-auth.basicauth.usersfile=/traefik/traefik.secret"
-      # - "traefik.http.middlewares.traefik-strip.stripprefix.prefixes=/traefik"
-      
-      # - "traefik.http.routers.traefik.entrypoints=web"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
-      - "traefik.http.routers.traefik.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik.service=api@internal"
-
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - traefik_data:/traefik
-    networks:
-      - traefik
-    depends_on:
-      - postgres
-      - ctfboard
-
   ctfboard:
     image: ctfboard/ctfboard
     container_name: ctfboard
@@ -61,74 +18,24 @@ services:
       DOMAIN: ${DOMAIN}
       SESSION_SECRET: ${SESSION_SECRET}
       DATABASE_URL: ${DATABASE_URL}
-    networks:
-      - backend
-      - traefik
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
     depends_on:
       - postgres
 
   postgres:
     image: postgres:alpine
     container_name: postgres
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    networks:
-      - backend
+      - pgdata:/var/lib/postgresql/data/
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-
-  prisma-studio:
-    container_name: prisma-studio
-    image: ctfboard/prisma-studio:latest
-    # build:
-    #   context: ./
-    #   dockerfile: ./prisma-studio/Dockerfile
-    restart: unless-stopped
-    labels: 
-      - "traefik.enable=true"
-      - "traefik.docker.network=traefik"
-      
-      - "traefik.http.middlewares.prisma-auth.basicauth.usersfile=/traefik/prisma.secret"
-      # - "traefik.http.middlewares.prisma-strip.stripprefix.prefixes=/prisma"
-      # - "traefik.http.middlewares.prisma-add-api.addprefix.prefix=/prisma"
-
-      # - "traefik.http.routers.prisma-studio-api.rule=Host(`m.${DOMAIN}`) && PathPrefix(`/api`)"
-      # - "traefik.http.routers.prisma-studio-api.middlewares=prisma-add-api,auth"
-
-      - "traefik.http.routers.prisma-studio.rule=Host(`prisma.${DOMAIN}`)"
-      - "traefik.http.routers.prisma-studio.entrypoints=websecure"
-      - "traefik.http.routers.prisma-studio.middlewares=prisma-auth"
-
-    networks:
-      - backend
-      - traefik
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
-
-  whoami:
-    image: traefik/whoami
-    container_name: whoami
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.entrypoints=web"
-    networks:
-      - traefik
-
-networks:
-  traefik:
-    external: true
-  backend:
-    internal: true
+      - POSTGRES_USER=ctfboard
+      - POSTGRES_PASSWORD=ctfboard
+      - POSTGRES_DB=ctfboard
 
 volumes:
-  postgres_data:
-  traefik_data:
+  pgdata:
