@@ -1,6 +1,5 @@
 import { RemixServer } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
-import { sanitizeInput } from "./utils";
 
 export default function handleRequest(
   request,
@@ -8,11 +7,8 @@ export default function handleRequest(
   responseHeaders,
   remixContext
 ) {
-  // Санитизация входных данных из URL
-  const sanitizedUrl = sanitizeInput(request.url);
-
   let markup = renderToString(
-    <RemixServer context={remixContext} url={sanitizedUrl} />
+    <RemixServer context={remixContext} url={request.url} />
   );
 
   responseHeaders.set("Content-Type", "text/html");
