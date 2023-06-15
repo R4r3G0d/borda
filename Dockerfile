@@ -1,4 +1,4 @@
-FROM node:alpine as base
+FROM node:bookworm-slim as base
 
 WORKDIR /app
 
@@ -29,7 +29,7 @@ RUN npm run build:css
 RUN npm run build
 
 # Finally, build the production image with minimal footprint
-FROM node:alpine
+FROM node:bookworm-slim
 
 ENV PORT="3000"
 ENV NODE_ENV="production"
